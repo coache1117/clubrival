@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Club Rival · CR036</title>
+<link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;max-width:100%;overflow-x:hidden;background:var(--bg);color:var(--tx);font:500 15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body::before{content:'';position:fixed;inset:0 0 auto 0;height:420px;pointer-events:none;background:radial-gradient(60% 55% at 50% 0%,rgba(255,60,50,.16),rgba(255,160,40,.05) 45%,transparent 72%)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}a{color:inherit;text-decoration:none}
+/* CR016 - the clock and battery sat on top of the logo when you scrolled. A solid strip now sits under the phone's status bar. */
+#sbar{position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top);background:#060607;z-index:25;pointer-events:none}
+main{position:relative;max-width:940px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 44px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;min-width:0}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1}.brand>div{min-width:0}.brand img{width:52px;height:52px;border-radius:15px;box-shadow:0 0 26px rgba(255,90,40,.35),0 0 0 1px rgba(255,255,255,.08)}
+.logo{white-space:nowrap;font:900 italic 28px/1 -apple-system,sans-serif;letter-spacing:.01em}.logo b{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:3px}
+.ver{overflow:hidden;text-overflow:ellipsis;margin-top:6px;font:800 8.5px/1 -apple-system,sans-serif;letter-spacing:.2em;color:var(--mut);white-space:nowrap}
+.pill{white-space:nowrap;flex:none;max-width:34vw;overflow:hidden;text-overflow:ellipsis;padding:11px 15px;border-radius:999px;border:1px solid var(--ln);background:rgba(16,16,20,.8);backdrop-filter:blur(8px);font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.12em}
+/* level */
+.lv{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:16px;border-radius:24px;margin-bottom:6px;background:linear-gradient(135deg,rgba(28,28,34,.92),rgba(12,12,15,.92));border:1px solid var(--ln);box-shadow:0 20px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05)}
+.ring{--p:0;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(from -90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759 calc(var(--p)*1%),#22222a 0);box-shadow:0 0 30px rgba(255,120,40,.25)}
+.ring>div{width:74px;height:74px;border-radius:50%;background:#08080a;display:grid;place-items:center;text-align:center}.ring b{display:block;font:900 italic 30px/1 -apple-system,sans-serif}.ring span{display:block;margin-top:3px;font:900 8px/1 -apple-system,sans-serif;letter-spacing:.22em;color:var(--mut)}
+.lvt{font:900 11px/1.3 -apple-system,sans-serif;letter-spacing:.13em;color:var(--mut)}.lvt b{color:var(--tx)}
+.bar{height:8px;border-radius:9px;background:var(--s2);overflow:hidden;margin:9px 0 11px}.bar i{display:block;height:100%;border-radius:9px;background:var(--rb);transition:width .7s cubic-bezier(.2,.9,.3,1)}
+.xp2{display:flex;gap:22px}.xp2 span{display:block;font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.18em;color:var(--mut)}.xp2 b{display:block;margin-top:5px;font:900 italic 21px/1 -apple-system,sans-serif}
+/* categories + cards */
+.cat{margin:26px 2px 12px;display:flex;align-items:center;gap:12px;font:900 12px/1 -apple-system,sans-serif;letter-spacing:.26em}.cat::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--ln),transparent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:14px}}@media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
+.app{--ac:#fff;position:relative;display:block;aspect-ratio:1/1.16;border-radius:26px;overflow:hidden;background:#000;text-align:left;box-shadow:0 14px 34px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.07);transition:transform .14s,box-shadow .2s;animation:rise .5s both}
+.app:nth-child(2){animation-delay:.05s}.app:nth-child(3){animation-delay:.1s}.app:nth-child(4){animation-delay:.15s}@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.app img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.app::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 48%,rgba(0,0,0,.9) 100%);pointer-events:none}
+.app:active{transform:scale(.965)}.app.open:active,.app.need:active{box-shadow:0 0 0 2px var(--ac),0 0 34px color-mix(in srgb,var(--ac) 55%,transparent)}
+@media(hover:hover){.app.open:hover,.app.need:hover{box-shadow:0 0 0 2px var(--ac),0 0 34px color-mix(in srgb,var(--ac) 45%,transparent)}}
+.app .st{position:absolute;top:11px;left:11px;z-index:2;display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.16em;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1)}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}.st.open{color:var(--grn)}.st.need{color:var(--yel)}.st.soon{color:#b9b9c4}
+.app .tx{position:absolute;left:13px;right:13px;bottom:13px;z-index:2}.app .tx b{display:block;font:900 italic 19px/1.02 -apple-system,sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.9)}.app .tx span{display:block;margin-top:5px;font:700 11.5px/1.28 -apple-system,sans-serif;color:rgba(255,255,255,.78);text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.app .tx u{display:block;width:26px;height:3px;border-radius:3px;background:var(--ac);margin-bottom:8px;box-shadow:0 0 10px var(--ac)}
+@media(max-width:639px){.grid .app:last-child:nth-child(odd){grid-column:1/-1;aspect-ratio:2/1.12}.grid .app:last-child:nth-child(odd) img{object-position:50% 36%}.grid .app:last-child:nth-child(odd) .tx b{font-size:23px}.grid .app:last-child:nth-child(odd) .tx span{font-size:12.5px}}
+.app.soon{cursor:default}.app.soon img{filter:saturate(.35) brightness(.55)}
+/* activity */
+.card{padding:16px;border-radius:24px;background:linear-gradient(135deg,rgba(24,24,30,.92),rgba(12,12,15,.92));border:1px solid var(--ln)}
+.ah{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.ah b{font:900 12px/1 -apple-system,sans-serif;letter-spacing:.22em}.ah span{font:900 9px/1 -apple-system,sans-serif;letter-spacing:.16em;color:var(--mut)}
+.row{--ac:var(--grn);display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--ln)}.row:first-of-type{border-top:0}
+.row img{width:46px;height:46px;border-radius:13px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.08)}.row .nm{display:flex;justify-content:space-between;align-items:baseline;font:900 13px/1 -apple-system,sans-serif;letter-spacing:.03em}.row .nm em{font:800 9.5px/1 -apple-system,sans-serif;letter-spacing:.12em;font-style:normal;color:var(--mut)}
+.row .ub{height:7px;border-radius:9px;background:var(--s2);margin-top:8px;overflow:hidden}.row .ub i{display:block;height:100%;border-radius:9px;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .7s cubic-bezier(.2,.9,.3,1)}
+.row .x{text-align:right;font:900 italic 18px/1 -apple-system,sans-serif}.row .x small{display:block;margin-top:3px;font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.18em;font-style:normal;color:var(--mut)}
+.small{font:600 12.5px/1.45 -apple-system,sans-serif;color:var(--mut)}
+/* sheet */
+#sh{position:fixed;inset:0;z-index:20;display:none;align-items:flex-end;background:rgba(0,0,0,.66);backdrop-filter:blur(6px)}#sh.on{display:flex}
+#shC{width:100%;max-width:520px;max-height:86vh;max-height:calc(100dvh - 40px);overflow:auto;margin:0 auto;padding:22px 18px calc(env(safe-area-inset-bottom) + 22px);border-radius:28px 28px 0 0;background:#0f0f13;border:1px solid var(--ln);animation:up .28s cubic-bezier(.2,.9,.3,1)}@keyframes up{from{transform:translateY(50px);opacity:0}}
+.ey{font:900 10px/1 -apple-system,sans-serif;letter-spacing:.24em;color:var(--org)}.big{font:900 italic 27px/1.05 -apple-system,sans-serif;margin:8px 0}
+input{width:100%;margin-top:12px;padding:15px;border-radius:15px;border:1px solid var(--ln);background:var(--s1);color:var(--tx);font:700 17px -apple-system,sans-serif}
+.go{width:100%;margin-top:12px;padding:17px;border-radius:17px;background:var(--rb);color:#000;font:900 italic 17px/1 -apple-system,sans-serif}.go:disabled{opacity:.5}.go.ghost{background:var(--s2);color:var(--tx);font-style:normal;font-size:12px;letter-spacing:.12em}
+.err{min-height:18px;margin-top:8px;font:700 12.5px/1.3 -apple-system,sans-serif;color:var(--yel)}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);z-index:30;padding:12px 17px;border-radius:999px;background:#fff;color:#000;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.1em;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap}#toast.on{opacity:1}
+/* CR014: today's schedule + pro panel */
+.ev{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--ln)}.ev:first-of-type{border-top:0}.ev time{font:900 italic 15px/1 -apple-system,sans-serif}.ev b{display:block;font:900 13px/1.2 -apple-system,sans-serif}.ev span{display:block;margin-top:3px;font:700 10.5px/1.3 -apple-system,sans-serif;color:var(--mut)}
+.tg{padding:5px 8px;border-radius:999px;border:1px solid var(--ln);font:900 8px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut);white-space:nowrap}.ev .tg{max-width:82px;white-space:normal;text-align:center;line-height:1.25;border-radius:10px;letter-spacing:.1em}.ev>div{min-width:0}.ev time{white-space:nowrap;min-width:62px}.ev b{overflow-wrap:anywhere}.tg.w{color:var(--yel);border-color:#5c4d12}.tg.g{color:var(--grn);border-color:#1c5a30}
+.pp{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;width:100%;text-align:left}.pp img{width:64px;height:64px;border-radius:17px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 0 24px rgba(90,162,255,.25)}
+.pn{font:900 italic 30px/1 -apple-system,sans-serif}.pn small{font:900 9px/1 -apple-system,sans-serif;font-style:normal;letter-spacing:.16em;color:var(--mut);margin-left:6px}.up{color:var(--grn)}.dn{color:var(--yel)}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.kv div{padding:11px;border-radius:14px;background:var(--s2);border:1px solid var(--ln)}.kv span{display:block;font:900 8px/1.2 -apple-system,sans-serif;letter-spacing:.15em;color:var(--mut)}.kv b{display:block;margin-top:6px;font:900 italic 17px/1.1 -apple-system,sans-serif}.kv em{display:block;margin-top:3px;font:700 10.5px/1.25 -apple-system,sans-serif;font-style:normal;color:var(--mut)}
+.seg{display:flex;gap:6px;margin:12px 0}.seg button{flex:1;padding:11px 4px;border-radius:12px;background:var(--s1);border:1px solid var(--ln);font:900 9px/1 -apple-system,sans-serif;letter-spacing:.1em}.seg button.on{background:#5aa2ff;border-color:#5aa2ff;color:#000}
+.card>.hr:first-child{border-top:0}.hr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--ln)}.hr b{font:900 13px/1.2 -apple-system,sans-serif}.hr span{display:block;font:700 10.5px/1.3 -apple-system,sans-serif;color:var(--mut)}.hr i{font:900 italic 16px/1 -apple-system,sans-serif}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;margin:14px 0 0;font:900 9px/1.2 -apple-system,sans-serif;letter-spacing:.16em;color:var(--mut)}h3{margin:22px 0 4px;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.22em}
+.chips{display:flex;gap:6px;margin-top:8px}.chips button{flex:1;padding:12px 0;border-radius:12px;background:var(--s1);border:1px solid var(--ln);font:900 12px/1 -apple-system,sans-serif}.chips button.on{background:var(--org);border-color:var(--org);color:#000}
+select{width:100%;margin-top:8px;padding:15px;border-radius:15px;border:1px solid var(--ln);background:var(--s1);color:var(--tx);font:700 16px -apple-system,sans-serif}label+input{margin-top:8px}
+button.ev{width:100%;text-align:left}.ev .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ac,#888);margin-right:7px;box-shadow:0 0 8px var(--ac,#888)}
+.dayh{margin:18px 0 2px;font:900 10px/1 -apple-system,sans-serif;letter-spacing:.2em;color:var(--org)}
+.mx{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 0;border-top:1px solid var(--ln)}.mx:first-of-type{border-top:0}.mx img{width:46px;height:46px;border-radius:13px;object-fit:cover}.mx b{display:block;font:900 13px/1.2 -apple-system,sans-serif}.mx span{display:block;margin-top:3px;font:700 10.5px/1.3 -apple-system,sans-serif;color:var(--mut)}.mx i{font:900 italic 17px/1 -apple-system,sans-serif;text-align:right}.mx i small{display:block;margin-top:3px;font:900 8px/1 -apple-system,sans-serif;font-style:normal;letter-spacing:.14em;color:var(--mut)}
+.wk{display:flex;align-items:flex-end;gap:8px;height:90px;margin-top:10px}.wk div{flex:1;text-align:center;font:900 9px/1 -apple-system,sans-serif;color:var(--mut)}.wk u{display:block;margin:0 auto 6px;width:100%;border-radius:8px 8px 3px 3px;background:var(--ac,#5aa2ff);min-height:3px;text-decoration:none}.wk b{display:block;margin-bottom:4px;color:var(--tx);font-size:12px}
+/* time + date boxes: iPhone gives these their own width and ignores ours, so two side by side ran into each other. Take the phone's styling off and let them shrink. */.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.two>div{min-width:0}input,select,textarea{display:block;box-sizing:border-box;min-width:0;max-width:100%}input[type=time],input[type=date]{-webkit-appearance:none;appearance:none;height:54px;line-height:22px;text-align:left;overflow:hidden}input[type=time]::-webkit-date-and-time-value,input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0;min-height:22px}input[type=checkbox]{display:inline-block}
+textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15px;border:1px solid var(--ln);background:var(--s1);color:var(--tx);font:600 15px/1.4 -apple-system,sans-serif}.note{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--s2);border:1px solid var(--ln);font:600 13px/1.45 -apple-system,sans-serif;white-space:pre-wrap}.note span{display:block;margin-bottom:5px;font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.16em;color:var(--org)}
+.pan{margin-top:12px;padding:14px;border-radius:16px;background:var(--s2);border:1px solid var(--ln)}.pan>span{display:block;margin-bottom:8px;font:900 9px/1 -apple-system,sans-serif;letter-spacing:.18em;color:var(--org)}.pan.ok{border-color:#1c5a30}.pan.ok>span{color:var(--grn)}.pan p{margin:0 0 7px;font:600 14px/1.45 -apple-system,sans-serif}.pan p:last-child{margin-bottom:0}.mt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mt div{padding:11px;border-radius:13px;background:var(--s1);border:1px solid var(--ln)}.mt span{display:block;font:900 8px/1.2 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut)}.mt b{display:block;margin-top:6px;font:900 italic 19px/1.1 -apple-system,sans-serif}.mt em{display:inline-block;margin-top:5px;padding:3px 6px;border-radius:6px;background:var(--grn);color:#000;font:900 8px/1 -apple-system,sans-serif;font-style:normal;letter-spacing:.1em}.xpl{display:flex;justify-content:space-between;padding:6px 0;font:800 13px/1.3 -apple-system,sans-serif}.xpl b{color:var(--grn)}
+/* CR015: small app icons, schedule first, app links in the schedule */
+.agrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 10px;margin:6px 0 4px}@media(min-width:640px){.agrid{grid-template-columns:repeat(6,1fr)}}
+.ai{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;color:var(--tx,#fff);text-align:center}
+.ai img{width:60px;height:60px;border-radius:15px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+.ai b{font:800 11px/1.2 -apple-system,sans-serif;letter-spacing:.01em;max-width:76px}
+.ai.soon img,.ai.need img{opacity:.45;filter:grayscale(.6)}
+.ai .as{position:absolute;top:-4px;right:6px;font:900 7px/1 -apple-system,sans-serif;letter-spacing:.1em;background:#222;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px 5px;font-style:normal}
+.evw{border-top:1px solid var(--ln)}.evw:first-of-type{border-top:0}.evw .ev{border-top:0;padding-bottom:6px}
+.evgo{display:inline-flex;align-items:center;gap:6px;margin:0 0 10px 0;padding:5px 10px 5px 5px;border-radius:999px;border:1px solid var(--ac,#888);background:rgba(255,255,255,.04);color:var(--ac,#fff);font:900 11px/1 -apple-system,sans-serif;letter-spacing:.04em}
+.evgo img{width:20px;height:20px;border-radius:6px;object-fit:cover}
+.allapps{display:flex;align-items:center;gap:12px;width:100%;margin:16px 0 4px;padding:14px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;text-align:left}
+.allapps>span:first-child{flex:1}.allapps b{display:block;font:900 14px/1.2 -apple-system,sans-serif;letter-spacing:.14em}.allapps small{display:block;color:var(--mut,#999);font-size:12px;margin-top:3px}
+.allapps .aimgs{display:flex}.allapps .aimgs img{width:30px;height:30px;border-radius:9px;object-fit:cover;margin-left:-8px;box-shadow:0 0 0 2px #111}.allapps i{font-style:normal;font-size:24px;color:var(--mut,#999)}
+.back{display:inline-block;margin:6px 0 4px;padding:9px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:none;color:inherit;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.14em}
+.lvb{width:100%;text-align:left;color:inherit;border:0;font:inherit;position:relative;margin-top:6px}.lvb .lvgo{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-size:26px;color:var(--mut,#999)}
+.pled .pl{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--ln)}.pled .pl:first-child{border-top:0}
+.pled .pd{flex:none;width:112px;color:var(--mut,#999);font-size:12px}.pled .pw{flex:1;font-size:13px}.pled .pw i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px}.pled b{font:900 italic 16px/1 -apple-system,sans-serif;color:#34c759}
+/* CR017 schedule rows */
+.evw{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--ln)}
+.evw .ev{display:block;width:100%;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
+.evw .ev b{display:flex;align-items:baseline;gap:9px;font:900 14px/1.2 -apple-system,sans-serif;overflow-wrap:anywhere}
+.evw .ev time{flex:none;min-width:0;font:900 italic 14px/1.2 -apple-system,sans-serif;color:var(--ac,#fff)}
+.evw .ev span{display:block;margin-top:3px;font:700 11px/1.3 -apple-system,sans-serif;color:var(--mut)}
+.evr{display:flex;flex-direction:column;gap:6px}
+.evr .tg,.evr .evgo{box-sizing:border-box;width:96px;max-width:96px;margin:0;justify-content:center;text-align:center}
+.evr .tg{padding:6px 4px;font-size:8px;line-height:1.2}
+.evgo{display:flex;align-items:center;gap:5px;height:28px;padding:0 8px 0 4px;border-radius:999px;border:1px solid var(--ac,#888);background:rgba(255,255,255,.04);color:var(--ac,#fff);font:900 11px/1 -apple-system,sans-serif;letter-spacing:.02em;cursor:pointer}
+.evgo img{width:20px;height:20px;border-radius:6px;object-fit:cover;flex:none}.evgo span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+/* CR018 - "drop the XP from the top, use only the small": big numbers only, XP lives in the small label */
+.xp2 b{white-space:nowrap}
+.lvs{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:center;width:100%;margin:6px 0 4px;padding:10px 12px;border-radius:16px;border:1px solid var(--ln);background:linear-gradient(135deg,rgba(28,28,34,.92),rgba(12,12,15,.92));color:inherit;font:inherit;text-align:left;cursor:pointer}
+.lvs .lvn,.lvs .lvw{display:flex;flex-direction:column;align-items:center;font:900 8px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut)}
+.lvs .lvn b{font:900 italic 24px/1 -apple-system,sans-serif;color:#fff;letter-spacing:0;margin-bottom:3px}.lvs .lvw b{font:900 italic 17px/1 -apple-system,sans-serif;color:#fff;letter-spacing:0;margin-bottom:4px}
+.lvs .lvm{min-width:0}.lvs .lvm em{display:block;font:800 11px/1.2 -apple-system,sans-serif;font-style:normal;color:var(--mut);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvs .bar{display:block;height:6px;border-radius:9px;background:#22222a;overflow:hidden}.lvs .bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
+.lvs .lvgo2{font-style:normal;font-size:20px;color:var(--mut)}
+.vsn{display:flex;align-items:baseline;gap:8px;margin:2px 0 4px}.vsn b{font:900 italic 34px/1 -apple-system,sans-serif}.vsn span{font:800 12px/1 -apple-system,sans-serif;color:var(--mut)}.vsn em{margin-left:auto;font:900 12px/1 -apple-system,sans-serif;font-style:normal;color:var(--mut)}
+.vsn em.up,.vsr em.up{color:#34c759}.vsn em.dn,.vsr em.dn{color:#ff6b6b}
+.vsl{margin-top:10px}.vsr{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto 34px;gap:9px;align-items:center;padding:8px 0;border-top:1px solid var(--ln)}
+.vsr img{width:24px;height:24px;border-radius:7px;object-fit:cover}.vsr span{font:900 13px/1 -apple-system,sans-serif;color:var(--ac)}.vsr b{font:900 italic 17px/1 -apple-system,sans-serif}.vsr small{font:700 10.5px/1 -apple-system,sans-serif;color:var(--mut)}.vsr em{font:900 12px/1 -apple-system,sans-serif;font-style:normal;color:var(--mut);text-align:right}
+.boss{margin:6px 0 4px;padding:12px 14px 10px;border-radius:18px;border:1px solid var(--ln);background:radial-gradient(120% 90% at 100% 0%,rgba(52,199,89,.08),transparent 60%),linear-gradient(135deg,rgba(26,26,32,.95),rgba(10,10,13,.95))}
+.boss .bh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.boss .bh b{font:900 italic 13px/1 -apple-system,sans-serif;letter-spacing:.06em}.boss .bh span{font:800 8.5px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut);text-align:right}
+.bnums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 4px}.bnums div{display:flex;flex-direction:column;gap:3px}.bnums em{font:900 italic 22px/1 -apple-system,sans-serif;font-style:italic;color:#fff}.bnums em.pth{color:#8d8d98}.bnums em.up{color:#34c759}.bnums small{font:800 8px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut)}
+.bgr{display:block;width:100%;height:auto;overflow:visible}.bpath{fill:none;stroke:#5c5c66;stroke-width:2;stroke-dasharray:4 5}.byou{fill:none;stroke:url(#bg1);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.bcore{fill:#fff}.bring{fill:rgba(52,199,89,.25);stroke:#34c759;stroke-width:1.5;transform-origin:0 0;animation:bpulse 1.6s ease-out infinite}@keyframes bpulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.bfoot{margin-top:6px;font:700 11px/1.4 -apple-system,sans-serif;color:var(--mut)}.bfoot b{color:#fff}.bice{display:block;margin-top:2px;font-style:italic;color:#6f6f7a}
+.brule{margin-top:6px;font:700 11px/1.45 -apple-system,sans-serif;color:var(--mut)}.brule summary{cursor:pointer;color:#cfcfd6;font-weight:800;padding:6px 0;min-height:24px}.brule b{color:#fff}
+@media (prefers-reduced-motion: reduce){.bring{animation:none}}
+#boot{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#000;transition:opacity .45s ease,visibility .45s}
+#boot.gone{opacity:0;visibility:hidden}#boot svg{width:170px;height:170px;overflow:visible}
+#boot circle{opacity:.16;animation:seg 1.12s ease-in-out infinite}@keyframes seg{0%,100%{opacity:.16}22%{opacity:1;filter:drop-shadow(0 0 7px currentColor)}50%{opacity:.5}}
+#boot text{animation:crb 2.24s ease-in-out infinite}@keyframes crb{0%,100%{opacity:.85}50%{opacity:1}}
+#boot .bt{font:900 10px/1 -apple-system,sans-serif;letter-spacing:.32em;color:#8d8d98}#boot .bt i{font-style:normal;animation:dot 1.2s infinite}#boot .bt i:nth-child(2){animation-delay:.2s}#boot .bt i:nth-child(3){animation-delay:.4s}@keyframes dot{0%,100%{opacity:.2}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){#boot circle{animation:none;opacity:1}#boot .bt i{animation:none}}
+#busy{position:fixed;top:calc(env(safe-area-inset-top) + 8px);right:14px;z-index:30;width:26px;height:26px;opacity:0;transition:opacity .2s;pointer-events:none}#busy.on{opacity:1}#busy svg{width:100%;height:100%;animation:spin 1.1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:grid;grid-template-columns:repeat(4,1fr);max-width:640px;margin:0 auto;padding:8px 10px calc(env(safe-area-inset-bottom) + 8px);background:rgba(6,6,8,.92);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--ln)}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:50px;padding:6px 0;border:0;background:none;color:#7d7d88;font:900 9px/1 -apple-system,sans-serif;letter-spacing:.14em;cursor:pointer}
+.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav button.on{color:#fff}.nav button.on svg{stroke:url(#navg);filter:drop-shadow(0 0 6px rgba(255,140,30,.45))}
+.nav button.on span{background:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759);-webkit-background-clip:text;background-clip:text;color:transparent}
+main{padding-bottom:calc(env(safe-area-inset-bottom) + 96px)!important}
+.obg{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}.obt{display:grid;grid-template-columns:52px minmax(0,1fr) 30px;gap:12px;align-items:center;width:100%;padding:8px;border-radius:16px;border:1px solid var(--ln);background:rgba(255,255,255,.02);color:inherit;text-align:left;cursor:pointer}
+.obt img{width:52px;height:52px;border-radius:12px;object-fit:cover}.obt b{display:block;font:900 15px/1.15 -apple-system,sans-serif}.obt span{display:block;margin-top:3px;font:600 12px/1.35 -apple-system,sans-serif;color:var(--mut)}.obt em{display:inline-block;margin-top:6px;padding:3px 7px;border-radius:99px;border:1px solid #34c759;color:#34c759;font:900 8px/1 -apple-system,sans-serif;font-style:normal;letter-spacing:.14em}
+.obt.on{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac),0 0 22px color-mix(in srgb,var(--ac) 30%,transparent)}
+.obn{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ac,#fff);color:#000;font:900 italic 14px/1 -apple-system,sans-serif;font-style:normal}.obe{width:26px;height:26px;border-radius:50%;border:2px solid var(--ln)}
+.obl{display:flex;flex-direction:column;margin-top:10px}.obr{display:grid;grid-template-columns:28px 40px minmax(0,1fr) 44px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--ln)}.obr:first-child{border-top:0}.obr img{width:40px;height:40px;border-radius:10px;object-fit:cover}.obr b{display:block;font:900 14px/1.2 -apple-system,sans-serif}.obr span{display:block;margin-top:2px;font:700 11.5px/1.3 -apple-system,sans-serif;color:var(--mut)}
+.obup{width:44px;height:44px;border-radius:12px;border:1px solid var(--ln);background:none;color:inherit;font:900 18px/1 -apple-system,sans-serif;cursor:pointer}
+.obslot{display:flex;align-items:center;gap:10px;margin:12px 0 6px;font:900 9px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut)}.obslot i{display:flex;gap:4px}.obslot u{width:22px;height:8px;border-radius:4px;background:#26262e}.obslot u.on{background:linear-gradient(90deg,#ff8a1f,#34c759)}.obslot b{color:#fff;letter-spacing:.06em}.obslot.on{display:block;font:700 13px/1.4 -apple-system,sans-serif;letter-spacing:0;color:#cfcfd6}.obslot.on b{color:#34c759}
+.obstart{margin-top:6px;border-color:rgba(255,138,31,.45);background:radial-gradient(120% 100% at 100% 0%,rgba(255,138,31,.16),transparent 60%),linear-gradient(135deg,rgba(26,26,32,.95),rgba(10,10,13,.95))}
+/* CR026 fixes: rank numbers centred; pop-up sheets sit above the nav bar */
+.obr b.obn,.obt i.obn{display:grid;place-items:center;margin:0;font:900 14px/1 -apple-system,sans-serif;font-style:normal;color:#000}
+#sh{z-index:45!important}
+.scedit{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln);background:none;color:#fff;font:900 10px/1 -apple-system,sans-serif;letter-spacing:.14em;cursor:pointer}
+#sc.editing .scedit{background:#fff;color:#000;border-color:#fff}#sc.editing{border-color:rgba(255,138,148,.45)}
+.evdel{box-sizing:border-box;width:96px;min-height:34px;border-radius:999px;border:1px solid #ff5a66;background:rgba(255,90,102,.1);color:#ff8a94;font:900 10px/1 -apple-system,sans-serif;letter-spacing:.08em;cursor:pointer}
+
+/* ======================================================================
+   CR029 - LIGHT MODE. Coach E: "every app has to be able to go light or dark ... it's Apple, it's kind of beautiful."
+   html[data-theme] is set from the phone's own Light/Dark setting (AUTO), or by the switch in ACCOUNT (LIGHT / DARK).
+   ====================================================================== */
+html[data-theme="light"]{--bg:#f3f3f6;--s1:#ffffff;--s2:#ebebf0;--ln:#dadae2;--tx:#121216;--mut:#5b5b67;--red:#e0162b;--org:#c95a00;--yel:#8a6a00;--grn:#15843a;color-scheme:light}
+html[data-theme="dark"]{color-scheme:dark}
+html[data-theme="light"] body::before{background:radial-gradient(60% 55% at 50% 0%,rgba(255,90,40,.12),rgba(255,180,40,.05) 45%,transparent 72%)}
+html[data-theme="light"] #sbar{background:#f3f3f6}
+html[data-theme="light"] .brand img{box-shadow:0 6px 18px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.06)}
+html[data-theme="light"] .pill{background:rgba(255,255,255,.9);color:var(--tx)}
+html[data-theme="light"] .card,html[data-theme="light"] .lv,html[data-theme="light"] .lvs,html[data-theme="light"] .boss{background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(20,20,40,.06)}
+html[data-theme="light"] .boss{background:radial-gradient(120% 90% at 100% 0%,rgba(52,199,89,.10),transparent 60%),#fff}
+html[data-theme="light"] .obstart{background:radial-gradient(120% 100% at 100% 0%,rgba(255,138,31,.16),transparent 60%),#fff}
+html[data-theme="light"] .ring{background:conic-gradient(from -90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759 calc(var(--p)*1%),#e2e2e8 0)}
+html[data-theme="light"] .ring>div{background:#fff}
+html[data-theme="light"] .lvs .lvn b,html[data-theme="light"] .lvs .lvw b,html[data-theme="light"] .bnums em,html[data-theme="light"] .bfoot b,html[data-theme="light"] .brule b,html[data-theme="light"] .obslot b{color:var(--tx)}
+html[data-theme="light"] .bnums em.pth{color:#7a7a86}html[data-theme="light"] .bnums em.up{color:var(--grn)}
+html[data-theme="light"] .lvs .bar,html[data-theme="light"] .obslot u{background:#e4e4ea}
+html[data-theme="light"] .bpath{stroke:#a9a9b4}html[data-theme="light"] .bcore{fill:#121216}html[data-theme="light"] .bice{color:#7a7a86}
+html[data-theme="light"] .row img,html[data-theme="light"] .ai img{box-shadow:0 2px 8px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.06)}
+html[data-theme="light"] .ai .as{background:#fff;border-color:var(--ln);color:var(--tx)}
+html[data-theme="light"] .app{box-shadow:0 10px 24px rgba(20,20,40,.18)}
+html[data-theme="light"] #sh{background:rgba(20,20,30,.35)}
+html[data-theme="light"] #shC{background:#fbfbfd;border-color:var(--ln);box-shadow:0 -10px 40px rgba(0,0,0,.12)}
+html[data-theme="light"] .evgo,html[data-theme="light"] .allapps,html[data-theme="light"] .obt{background:#fff;border-color:var(--ln)}
+html[data-theme="light"] .evgo{border-color:var(--ac,#888)}
+html[data-theme="light"] .obt.on{border-color:var(--ac)}
+html[data-theme="light"] .back{border-color:var(--ln)}
+html[data-theme="light"] .tg.w{border-color:#d9c27a}html[data-theme="light"] .tg.g{border-color:#9fd3b0}
+html[data-theme="light"] .scedit{color:var(--tx)}html[data-theme="light"] #sc.editing .scedit{background:var(--tx);color:#fff;border-color:var(--tx)}
+html[data-theme="light"] .evdel{background:rgba(224,22,43,.06);color:#c4142a;border-color:#e88b96}
+html[data-theme="light"] .nav{background:rgba(255,255,255,.92);border-top-color:var(--ln)}
+html[data-theme="light"] .nav button{color:#7a7a86}html[data-theme="light"] .nav button.on{color:var(--tx)}
+html[data-theme="light"] .nav button.on svg{filter:none}
+html[data-theme="light"] #boot{background:#f3f3f6}html[data-theme="light"] #boot text{fill:#121216}html[data-theme="light"] #boot .bt{color:#5b5b67}
+html[data-theme="light"] #boot circle{opacity:.22}
+html[data-theme="light"] #busy{filter:drop-shadow(0 1px 2px rgba(0,0,0,.2))}
+html[data-theme="light"] .go.ghost{background:var(--s2)}
+html[data-theme="light"] .chips button.on{color:#fff}
+html[data-theme="light"] .obn{color:#000}
+.thm{display:flex;gap:8px;margin-top:8px}.thm button{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--s1);color:var(--tx);font:900 11px/1 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer}.thm button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+html[data-theme="light"] .evw .ev time,html[data-theme="light"] .evgo,html[data-theme="light"] .vsr span,html[data-theme="light"] .ev time,html[data-theme="light"] .row b{color:color-mix(in srgb,var(--ac,#555) 62%,#000)}
+html[data-theme="light"] .app .tx,html[data-theme="light"] .app .tx b,html[data-theme="light"] .app .tx span{color:#fff}
+html[data-theme="light"] .brule summary{color:var(--tx)}
+#rvOrb{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom) + 86px);z-index:45;width:54px;height:54px;border-radius:50%;border:0;padding:0;cursor:pointer;background:radial-gradient(circle at 34% 30%,#fff 0,#bfe0ff 10%,#4aa3ff 38%,#1546c9 72%,#0a1f66 100%);box-shadow:0 0 0 2px rgba(255,255,255,.18),0 8px 24px rgba(30,100,255,.45),0 0 28px rgba(80,160,255,.35);animation:rvOrbB 3.2s ease-in-out infinite}#rvOrb:active{transform:scale(.94)}@keyframes rvOrbB{50%{box-shadow:0 0 0 2px rgba(255,255,255,.22),0 8px 28px rgba(30,100,255,.6),0 0 40px rgba(80,160,255,.5)}}@media (prefers-reduced-motion:reduce){#rvOrb{animation:none}}
+#lpad{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#050507;color:#fff;opacity:0;pointer-events:none;transition:opacity .18s}#lpad.on{opacity:1;pointer-events:auto}#lpad img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}#lpad b{position:relative;font:900 italic 46px/1 -apple-system,sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 0 30px var(--ac)}#lpad span{position:relative;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.24em;color:var(--ac)}#lpad.on b{animation:lpIn .5s cubic-bezier(.2,1.4,.4,1)}@keyframes lpIn{from{transform:scale(.6);opacity:0}}
+
+.coach{display:flex;flex-direction:column;gap:10px}.corb{align-self:center;width:120px;height:120px;margin:6px 0 2px;border-radius:50%;cursor:pointer;background:radial-gradient(circle at 34% 30%,#fff 0,#bfe0ff 10%,#4aa3ff 38%,#1546c9 72%,#0a1f66 100%);box-shadow:0 0 0 2px rgba(255,255,255,.18),0 10px 34px rgba(30,100,255,.5),0 0 50px rgba(80,160,255,.35);transition:transform .25s}
+.corb.listening{animation:coL 1.1s ease-in-out infinite}.corb.thinking{animation:coT 1.6s linear infinite}.corb.speaking{animation:coS .5s ease-in-out infinite alternate}
+@keyframes coL{50%{transform:scale(1.12);box-shadow:0 0 0 6px rgba(120,190,255,.35),0 10px 40px rgba(30,100,255,.6),0 0 70px rgba(80,160,255,.55)}}@keyframes coT{to{filter:hue-rotate(360deg)}}@keyframes coS{from{transform:scale(.96)}to{transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.corb{animation:none!important}}
+.cost{text-align:center;font:900 11px/1.3 -apple-system,sans-serif;letter-spacing:.16em;color:var(--mut,#9aa)}
+.clog{max-height:34vh;overflow:auto;display:flex;flex-direction:column;gap:8px}.cm{max-width:86%;padding:10px 12px;border-radius:16px;font-size:15px;line-height:1.35}.cm.a{align-self:flex-start;background:rgba(74,163,255,.12);border:1px solid rgba(74,163,255,.35)}.cm.u{align-self:flex-end;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)}.cm.dim{opacity:.6}
+html[data-theme="light"] .cm.u{background:#f1f3f6;border-color:#dde2e8}
+.cprop{padding:10px 12px;border-radius:14px;border:1.5px solid #4aa3ff}.cprop span{display:block;font-weight:700;margin-bottom:8px}.cprop div{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cprop .go{margin:0}
+.cchips{display:flex;flex-wrap:wrap;gap:6px}.ch2{min-height:36px;padding:0 12px;border-radius:99px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font:800 12px/1 -apple-system,sans-serif;cursor:pointer}
+.cin{display:flex;gap:8px}.cin input{flex:1;min-height:46px;padding:0 12px;border-radius:14px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font-size:16px}.cin button{width:52px;border-radius:14px;border:0;background:#2f7bff;color:#fff;font-size:18px;cursor:pointer}
+body:has(#sh.on .coach) #rvOrb{display:none}
+</style><script>/* CR029 theme: AUTO follows the phone; LIGHT / DARK from ACCOUNT. Runs before the page paints, so no flash. */
+(function(){function pref(){try{return localStorage.getItem('cr_theme')||'auto'}catch(e){return 'auto'}}var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: light)');
+ window.crTheme=function(p){if(p){try{localStorage.setItem('cr_theme',p)}catch(e){}}p=pref();var t=p==='auto'?(mq&&mq.matches?'light':'dark'):p;document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f3f3f6':'#050506');return p};
+ window.crTheme();if(mq&&mq.addEventListener)mq.addEventListener('change',function(){window.crTheme()})})();</script>
+</head>
+<body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="navg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset=".7" stop-color="#ffd21a"/><stop offset="1" stop-color="#34c759"/></linearGradient></defs></svg><div id="sbar"></div>
+<!-- CR024 - "while it's thinking we need a dynamic image": the CR ring lights up piece by piece, round and round, until the club is ready -->
+<div id="boot" role="status" aria-label="Loading your club"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="rotate(-90 100 100)" fill="none" stroke-width="20"><circle cx="100" cy="100" r="78" stroke="#ff1a33" stroke-dasharray="63.01 427.08" stroke-dashoffset="-3.50" style="animation-delay:0.00s"/><circle cx="100" cy="100" r="78" stroke="#ff4d14" stroke-dasharray="63.01 427.08" stroke-dashoffset="-73.51" style="animation-delay:0.16s"/><circle cx="100" cy="100" r="78" stroke="#ff8a0a" stroke-dasharray="63.01 427.08" stroke-dashoffset="-143.53" style="animation-delay:0.32s"/><circle cx="100" cy="100" r="78" stroke="#ffb000" stroke-dasharray="63.01 427.08" stroke-dashoffset="-213.54" style="animation-delay:0.48s"/><circle cx="100" cy="100" r="78" stroke="#ffee00" stroke-dasharray="63.01 427.08" stroke-dashoffset="-283.55" style="animation-delay:0.64s"/><circle cx="100" cy="100" r="78" stroke="#9ff022" stroke-dasharray="63.01 427.08" stroke-dashoffset="-353.56" style="animation-delay:0.80s"/><circle cx="100" cy="100" r="78" stroke="#00e05a" stroke-dasharray="63.01 427.08" stroke-dashoffset="-423.58" style="animation-delay:0.96s"/></g><text x="100" y="121" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Inter,sans-serif" font-style="italic" font-weight="900" font-size="60" fill="#fff" letter-spacing="-2">CR</text></svg><div class="bt">LOADING YOUR CLUB<i>.</i><i>.</i><i>.</i></div></div><div id="busy" aria-hidden="true"><svg viewBox="0 0 40 40"><g fill="none" stroke-width="5"><circle cx="20" cy="20" r="15" stroke="#ff1a33" stroke-dasharray="11.26 82.98" stroke-dashoffset="-0.00"/><circle cx="20" cy="20" r="15" stroke="#ff4d14" stroke-dasharray="11.26 82.98" stroke-dashoffset="-13.46"/><circle cx="20" cy="20" r="15" stroke="#ff8a0a" stroke-dasharray="11.26 82.98" stroke-dashoffset="-26.93"/><circle cx="20" cy="20" r="15" stroke="#ffb000" stroke-dasharray="11.26 82.98" stroke-dashoffset="-40.39"/><circle cx="20" cy="20" r="15" stroke="#ffee00" stroke-dasharray="11.26 82.98" stroke-dashoffset="-53.86"/><circle cx="20" cy="20" r="15" stroke="#9ff022" stroke-dasharray="11.26 82.98" stroke-dashoffset="-67.32"/><circle cx="20" cy="20" r="15" stroke="#00e05a" stroke-dasharray="11.26 82.98" stroke-dashoffset="-80.78"/></g></svg></div><main id="m"></main><div id="sh"><div id="shC"></div></div><div id="toast"></div>
+<script src="lib/supabase.js"></script><script src="lib/rest-core.js"></script>
+<script>
+/* CLUB RIVAL · CR014 · the club and launcher for every Rival app (Coach E's spec, 14 Nov 2026).
+   One screen, four categories, your week of activity and your shared XP. It opens each app at its own address; it does not rebuild them.
+
+   ===== SETTINGS (the only part that changes when an app moves, launches or gets a price) =====
+   state:  'open'  = anyone can open it        'paid' = needs access (a row in club_access) to show OPEN
+           'soon'  = not out yet: shown, never opened.
+   url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
+   art:    the thumbnail. Swap the file in /art with the same name to change it. */
+const BUILD='CR036';
+const APPS=[
+ {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
+ {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
+ {id:'rankup',ac:'#ff2a3d',cat:'FITNESS',       name:'RankUp Boxing',  line:'Train. Compete. Climb the ranks.',        art:'art/rankup.jpg', url:'https://rankuprival.netlify.app', state:'open'},
+ {id:'mind',ac:'#ff3b3b',  cat:'GAMES',         name:'Cube Rival',     line:'Challenge your mind and reactions.',      art:'art/mind.jpg',   url:'https://reflexrival.netlify.app', state:'open'},
+ {id:'bmx',ac:'#ff6a2a',   cat:'EXTREME SPORTS',name:'Ride Flow BMX',  line:'Ride it. Fix it. Beat it.',               art:'art/bmx.jpg',    url:'https://rideflowbmx.com',         state:'paid'},
+ {id:'trail',ac:'#3ddc6a', cat:'EXTREME SPORTS',name:'Trail Rival',    line:'Race the trail. Chase your best.',        art:'art/trail.jpg',  url:'https://rideflowmtb.com',         state:'open'},
+ {id:'rest',ac:'#5aa2ff',  cat:'RECOVERY',      name:'Rest Rival',     line:'Track your sleep. Build your recovery.',  art:'art/rest.jpg',   url:'https://restrival.netlify.app',   state:'open'},
+ {id:'money',ac:'#2fd27a', cat:'MONEY',         name:'Money Rival',    line:'Save 1% more. Watch it stack.',           art:'art/money.jpg',  url:'https://moneyrival.netlify.app',  state:'open'},
+ {id:'rise',ac:'#ff9a3d',  cat:'RECOVERY',      name:'Rise Rival',     line:'Win the morning. Prove you’re up.',        art:'art/rise.jpg',   url:'https://riserival.netlify.app',   state:'open'},
+ {id:'mindrival',ac:'#8b6cff',cat:'MIND',       name:'Mind Rival',     line:'Focus. Calm. Mental toughness.',           art:'art/mindrival.jpg',url:'https://mindrival2.netlify.app',  state:'open'},
+ {id:'biz',ac:'#3d8bff',   cat:'BUSINESS',      name:'Biz Rival',      line:'Leads answered. Sessions booked.',         art:'art/biz.jpg',    url:'https://mybizrival.netlify.app',  state:'open'}
+];
+const CATS=['FITNESS','MIND','GAMES','EXTREME SPORTS','RECOVERY','MONEY','BUSINESS'];
+/* Bundles: not switched on. Prices and the billing interval are not final (the ~$29 all-app figure is provisional), so nothing is sold or shown. */
+const BUNDLES={on:false,all:{name:'All apps',price:null,every:null},extreme:{name:'Extreme Sports · BMX + Trail',price:null,every:null}};
+const XP_LEVEL=500,MAX_LEVEL=100;
+/* CR032 - Coach E, 19 Nov: same points every time (10 a session, 100 a PR, 500 when you level up inside an app), but each Club level
+   costs a bit more as you climb, so Level 100 still means something. Levels 1-10 stay 500 each (nobody drops a level), then +3% a level. */
+const LVCOST=n=>n<=10?XP_LEVEL:Math.round(XP_LEVEL*Math.pow(1.03,n-10)/50)*50;
+const SB_URL='https://glmyzwxinguqcqtgodts.supabase.co',SB_KEY='sb_publishable_DuBWJ2pLLgaQNkoFqiuOfA_WSYzunwW';
+
+const $=id=>document.getElementById(id),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),com=n=>Math.round(n||0).toLocaleString('en-US');
+let SB=null;try{SB=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}})}catch(e){}
+const S={user:null,rows:null,access:new Set(),err:'',sums:{},sched:null,evs:[],res:[],rest:null,pk:'week'};const R=window.REST,MIN=60000;
+function toast(t){const e=$('toast');e.textContent=t;e.className='on';clearTimeout(e._t);e._t=setTimeout(()=>e.className='',2200)}
+/* the club week: Sunday 00:00 to Saturday, on this phone's clock */
+function weekStart(now){const d=new Date(now||Date.now());d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.getTime()}
+function levelOf(total){let lv=1,left=Math.max(0,total||0);while(lv<MAX_LEVEL&&left>=LVCOST(lv)){left-=LVCOST(lv);lv++}const need=LVCOST(lv);return {lv,into:lv>=MAX_LEVEL?need:left,need,max:lv>=MAX_LEVEL}}
+function stats(rows,now){const w0=weekStart(now),A={};let total=0,week=0;for(const r of rows||[]){const t=new Date(r.at).getTime(),x=+r.xp||0;total+=x;if(t>=w0){week+=x;const a=A[r.app]=A[r.app]||{app:r.app,sessions:0,xp:0,last:0};a.xp+=x;if(r.kind==='session')a.sessions++;a.last=Math.max(a.last,t)}}
+ return {total,week,act:Object.values(A).sort((a,b)=>b.last-a.last).slice(0,5)}}
+function stateOf(a){if(a.state==='soon'||!a.url)return 'soon';if(a.state==='paid'&&!S.access.has(a.id))return 'need';return 'open'}
+const STN={open:'OPEN',need:'REQUIRES ACCESS',soon:'COMING SOON'};
+function draw(){const st=stats(S.rows),L=levelOf(st.total),nx=Math.min(MAX_LEVEL,L.lv+1);
+ $('m').innerHTML='<div class="top"><div class="brand"><img src="art/club.jpg" alt=""><div><div class="logo">CLUB <b>RIVAL</b></div><div class="ver">ONE CLUB · '+BUILD+'</div></div></div><button class="pill" id="acct">'+(S.user?'✓ ACCOUNT':'SIGN IN')+'</button></div>'
+  +(S.view==='pts'?ptsPage(st,L):S.view==='apps'?appsPage():S.view==='boss'?goalCardHTML()+bossHTML()+planCardHTML()+percHTML():/* CR019 - Coach E: "drop the XP from the top" - the big XP block is gone from home. One thin strip instead; tap it for your points. */'<button class="lvs" id="toPts" aria-label="Your points"><span class="lvn"><b>'+L.lv+'</b>LEVEL</span><span class="lvm">'+(S.user?(L.max?'<em>LEVEL 100 · TOP OF THE CLUB</em>':'<em>'+com(L.into)+' / '+com(L.need)+' to level '+nx+'</em>'):'<em>Sign in to start your level</em>')+'<i class="bar"><i style="width:'+(S.user?Math.max(2,Math.round(L.into*100/L.need)):0)+'%"></i></i></span><span class="lvw"><b>'+com(S.user?st.week:0)+'</b>THIS WEEK</span><i class="lvgo2">›</i></button>'+((goalNow()||{}).ranked?'':planCardHTML())+schedHTML())
+  +(S.view!=='boss'?'':'<div class="cat">YOUR ACTIVITY THIS WEEK</div><div class="card"><div class="ah"><b>SUN – SAT</b><span>'+(S.user?com(st.week)+' XP':'')+'</span></div>'
+  +(!S.user?'<div class="small">Sign in to see your sessions and XP from every Rival app in one place.</div><button class="go" id="act1">SIGN IN</button>'
+    :S.err?'<div class="small">'+esc(S.err)+'</div>'
+    :!st.act.length?'<div class="small">Nothing yet this week. Finish a session in any Rival app and it shows up here.</div>'
+    :(()=>{const mx=Math.max(1,...st.act.map(a=>a.sessions));return st.act.map(a=>{const p=APPS.find(x=>x.id===a.app)||{name:a.app,art:''};return '<div class="row" style="--ac:'+(p.ac||'#34c759')+'"><img src="'+p.art+'" alt=""><div><div class="nm"><span>'+esc(p.name).toUpperCase()+'</span><em>'+a.sessions+' SESSION'+(a.sessions===1?'':'S')+'</em></div><div class="ub"><i style="width:'+Math.max(4,Math.round(a.sessions*100/mx))+'%"></i></div></div><div class="x">'+com(a.xp)+'<small>XP</small></div></div>'}).join('')})())
+  +'</div><div class="small" style="margin:14px 4px 0">A finished session is 10 XP. Beating your rival is 100 XP. Every 500 XP is a Club Rival level.</div>');
+ $('m').insertAdjacentHTML('beforeend',navHTML());document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{if(S.view===b.dataset.nav){scrollTo({top:0,behavior:'smooth'});return}S.view=b.dataset.nav;draw();scrollTo(0,0)});
+ $('acct').onclick=acctSheet;['gAimEdit','gAimAdd'].forEach(id=>{if($(id))$(id).onclick=()=>goalSheet(false,true)});if($('toPts'))$('toPts').onclick=()=>{S.view='pts';draw();scrollTo(0,0)};document.querySelectorAll('.toHome').forEach(b=>b.onclick=()=>{S.view='home';draw();scrollTo(0,0)});if($('toApps'))$('toApps').onclick=()=>{S.view='apps';draw();scrollTo(0,0)};if($('toHome'))$('toHome').onclick=()=>{S.view='home';draw();scrollTo(0,0)};if($('act1'))$('act1').onclick=acctSheet;wire4();bossAnim();{const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};on('obGo',()=>goalSheet());on('obEd',()=>goalSheet());on('obAdd',()=>goalSheet(true));on('plB2',planSheet)}
+ document.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
+function openApp(id,direct,extra){const a=APPS.find(x=>x.id===id);if(!a)return;const s=stateOf(a);if(id==='rest'&&!direct&&S.user&&s==='open')return restPanel();
+ if(s==='soon'){toast(a.name.toUpperCase()+' · COMING SOON');return}
+ const go=()=>{try{localStorage.setItem('club_last',JSON.stringify({id,at:Date.now()}))}catch(e){}location.href=a.url+(a.url.indexOf('?')<0?'?':'&')+'from=club&club='+encodeURIComponent(location.origin+location.pathname)+(extra||'&go=resume')};
+ if(s==='need'){sheet('<div class="ey">REQUIRES ACCESS</div><div class="big">'+esc(a.name)+'</div><div class="small">This one has its own membership. Open it to see what it includes and start there.</div><button class="go" id="nGo">OPEN '+esc(a.name).toUpperCase()+'</button><button class="go ghost" id="nX">NOT NOW</button>');$('nGo').onclick=go;$('nX').onclick=shut;return}
+ launchGo(a,go)}
+
+/* ===== CR034 · ONE COACH. ONE LAUNCH EXPERIENCE. EVERY RIVAL. (Coach E, 20 Nov)
+   THE ORB: the same glowing orb, same corner, in every Rival app. Tap it anywhere and you land here, with the one coach:
+   where you are today, what's next, what needs you - every line says which app it came from. Opened from an app, it shows the way back.
+   THE LAUNCH: hit an app and it says what you're about to do - LET'S LIFT, LET'S FIGHT, LET'S SAVE - then you're in. ===== */
+const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',money:'LET’S SAVE',biz:'LET’S WORK'};
+function launchGo(a,go){const w=LAUNCH[a.id];if(!w)return go();let o=$('lpad');if(!o){o=document.createElement('div');o.id='lpad';document.body.appendChild(o)}
+ o.style.setProperty('--ac',a.ac);o.innerHTML='<img src="'+a.art+'" alt=""><b>'+w+'</b><span>'+esc(a.name)+'</span>';o.className='on';try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}setTimeout(go,650);setTimeout(()=>{o.className=''},2500)}
+let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'){CBACK={app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};history.replaceState(null,'',location.pathname)}}catch(e){}
+/* ===== CR036 · THE COACH YOU TALK TO. Coach E, 20 Nov: "the orb ... just goes to some static page ... you can't ask it questions".
+   Tap the Orb: it listens. Talk. It answers out loud from YOUR day (every app), knows which app you came from, and can propose
+   changes - move, skip, add, open an app. Nothing changes until you tap YES. Type if you'd rather. The brain is /api/coach. ===== */
+let CO={msgs:[],busy:false,rec:null,listening:false,speaking:false,pending:[]};
+function hhmm(t){const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function coachCtx(){const t=R.dayStr(Date.now()),now=Date.now(),e=S.user?events():{list:[]},it=x=>({id:x.id,day:x.day||R.dayStr(x.t),time:hhmm(x.t),name:x.name,app:x.app,repeats:!!x.rep,done:x.act?isDone(x):undefined,late:x.act?(!isDone(x)&&x.t1<now):undefined,movable:!!x.act});
+ const today=e.list.filter(x=>R.dayStr(x.t)===t).map(it),week=[];for(let i=1;i<=7;i++){const d=R.addDays(t,i);occOn(d).forEach(x=>week.push(it(x)))}
+ const st=S.user?stats(S.rows,now):null,L=st?levelOf(st.total):null,apps=APPS.filter(a=>a.state==='open').map(a=>{const x=appStats(a.id,now);return {app:a.id,name:a.name,sessions_this_week:x.ses,sessions_same_point_last_week:x.pSes,personal_bests_this_week:x.riv}}).filter(a=>a.sessions_this_week||a.sessions_same_point_last_week);
+ let brief=[],read=[];try{brief=briefLines().map(x=>x.k+': '+x.v)}catch(err){}try{read=coachRead()}catch(err){}
+ return {now:new Date().toString(),time_zone:tzName(),today,next_7_days:week.slice(0,40),work:myDay()||null,sleep:S.sched&&S.sched.data?{bed:S.sched.data.bed,wake:S.sched.data.wake}:null,club_level:L?{level:L.lv,xp_into_level:L.into,xp_needed:L.need}:null,apps_this_week:apps,coach_notes:brief.concat(read).slice(0,16)}}
+function coachSheet(fromTap){const from=CBACK&&APPS.find(a=>a.id===CBACK.app),t=R.dayStr(Date.now()),now=Date.now();
+ let first='';if(S.user){const td=events().list.filter(x=>x.act&&R.dayStr(x.t)===t),nx=td.find(x=>!isDone(x)&&x.t1>now),late=td.filter(x=>!isDone(x)&&x.t1<now);first=(td.length?td.length+' on your schedule today'+(nx?', next is '+nx.name+' at '+fT(nx.t):'')+(late.length?', and '+late.length+' still open from earlier':'')+'.':'Nothing on your schedule today.')+' What do you need?'}else first='Sign in and I can see your whole day across every app.';
+ if(!CO.msgs.length)CO.msgs.push({role:'assistant',content:(from?'You came from '+from.name+'. ':'')+first});
+ sheet('<div class="coach"><div class="corb" id="corb" aria-hidden="true"></div><div class="cost" id="cost">'+(S.user?'TAP THE ORB AND TALK':'SIGN IN TO TALK')+'</div><div class="clog" id="clog"></div><div class="cact" id="cact"></div>'
+  +'<div class="cchips">'+['What’s next?','How’d I do this week?','Move my next thing','Plan tomorrow'].map(q=>'<button class="ch2" data-cq="'+esc(q)+'">'+esc(q)+'</button>').join('')+'</div>'
+  +'<div class="cin"><input id="cTxt" placeholder="Or type here" autocomplete="off"><button id="cSend" aria-label="Send">➤</button></div>'
+  +(from&&CBACK.url?'<button class="go ghost" id="coBack">‹ BACK TO '+esc(from.name).toUpperCase()+'</button>':'')+'<button class="go ghost" id="coX">CLOSE</button></div>');
+ paintLog();const orb=$('corb');orb.onclick=()=>{if(!S.user)return acctSheet();CO.listening?stopListen():listen()};
+ $('cSend').onclick=()=>{const v=$('cTxt').value.trim();if(v){$('cTxt').value='';ask(v)}};$('cTxt').onkeydown=e=>{if(e.key==='Enter')$('cSend').click()};
+ document.querySelectorAll('[data-cq]').forEach(b=>b.onclick=()=>{unlockVoice();ask(b.dataset.cq)});
+ if($('coBack'))$('coBack').onclick=()=>{location.href=CBACK.url};$('coX').onclick=()=>{stopListen();try{speechSynthesis.cancel()}catch(e){}shut()};
+ if(fromTap&&S.user){unlockVoice();listen()}}
+function paintLog(){const L=$('clog');if(!L)return;L.innerHTML=CO.msgs.slice(-8).map(m=>'<div class="cm '+(m.role==='user'?'u':'a')+'">'+esc(m.content)+'</div>').join('')+(CO.busy?'<div class="cm a dim">…</div>':'');L.scrollTop=1e6;
+ const A=$('cact');if(A)A.innerHTML=CO.pending.map((a,i)=>'<div class="cprop"><span>'+esc(actText(a))+'</span><div><button class="go" data-cy="'+i+'">YES</button><button class="go ghost" data-cn="'+i+'">NO</button></div></div>').join('');
+ document.querySelectorAll('[data-cy]').forEach(b=>b.onclick=()=>doAct(+b.dataset.cy));document.querySelectorAll('[data-cn]').forEach(b=>b.onclick=()=>{CO.pending.splice(+b.dataset.cn,1);paintLog()})}
+function orbState(s){const o=$('corb'),c=$('cost');if(o)o.className='corb '+s;if(c)c.textContent={listening:'LISTENING…',thinking:'THINKING…',speaking:'TALKING · TAP THE ORB TO ANSWER',idle:'TAP THE ORB AND TALK'}[s]||''}
+function unlockVoice(){try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){orbState('idle');toast('THIS BROWSER CAN’T LISTEN · TYPE INSTEAD');$('cTxt')&&$('cTxt').focus();return}
+ try{speechSynthesis.cancel()}catch(e){}const r=new SR();CO.rec=r;r.lang='en-US';r.interimResults=true;r.continuous=false;let said='';
+ r.onresult=ev=>{said=Array.from(ev.results).map(x=>x[0].transcript).join(' ');const c=$('cost');if(c)c.textContent='“'+said+'”'};
+ r.onerror=()=>{CO.listening=false;orbState('idle')};r.onend=()=>{CO.listening=false;if(said.trim())ask(said.trim());else orbState('idle')};
+ try{r.start();CO.listening=true;orbState('listening')}catch(e){orbState('idle')}}
+function stopListen(){try{CO.rec&&CO.rec.stop()}catch(e){}CO.listening=false}
+async function ask(q){if(CO.busy)return;if(!S.user)return acctSheet();CO.msgs.push({role:'user',content:q});CO.busy=true;CO.pending=[];paintLog();orbState('thinking');
+ let res;try{const ss=(await SB.auth.getSession()).data.session;const r=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+(ss&&ss.access_token)},body:JSON.stringify({messages:CO.msgs.slice(-14),context:coachCtx(),from:CBACK?CBACK.app:'club'})});res=await r.json().catch(()=>({}));if(!r.ok&&!res.say)res={say:r.status===401?'Sign in again and I’m back.':'I can’t reach my brain right now. Try again in a minute.'}}catch(e){res={say:'No connection right now. Try again when you’re back online.'}}
+ CO.busy=false;CO.msgs.push({role:'assistant',content:res.say});CO.pending=(res.actions||[]).filter(okAct);paintLog();talk(res.say)}
+function talk(text){try{const y=speechSynthesis;y.cancel();const u=new SpeechSynthesisUtterance(text);const v=y.getVoices().find(v=>/en-US/.test(v.lang)&&/Samantha|Aaron|Nicky|Google US|Natural/i.test(v.name))||y.getVoices().find(v=>/en/.test(v.lang));if(v)u.voice=v;u.rate=1.02;u.onend=()=>orbState('idle');orbState('speaking');y.speak(u)}catch(e){orbState('idle')}}
+const rowOf=id=>S.evs.find(r=>r.id===id);
+function okAct(a){const i=a.input||{};if(a.type==='move_item')return !!rowOf(i.item_id)&&/^\d\d:\d\d$/.test(i.new_time||'')&&/^\d{4}-\d\d-\d\d$/.test(i.day||'');if(a.type==='skip_item')return !!rowOf(i.item_id)&&/^\d{4}-\d\d-\d\d$/.test(i.day||'');if(a.type==='add_item')return /^\d{4}-\d\d-\d\d$/.test(i.date||'')&&/^\d\d:\d\d$/.test(i.time||'')&&!!i.title;if(a.type==='open_app')return !!APPS.find(x=>x.id===i.app&&x.state==='open');return false}
+function actText(a){const i=a.input||{},row=rowOf(i.item_id),n=row?(row.data.title||(KIND.find(k=>k[0]===row.app)||[,'Activity'])[1]):'';
+ if(a.type==='move_item')return 'Move '+n+' on '+fD(i.day)+' to '+fT(R.at(i.day,i.new_time))+(i.scope==='future'?' (and every one after)':' (just that day)')+'?';
+ if(a.type==='skip_item')return 'Skip '+n+' on '+fD(i.day)+'?';if(a.type==='add_item')return 'Add '+i.title+' on '+fD(i.date)+' at '+fT(R.at(i.date,i.time))+' ('+(i.minutes||30)+' min)?';
+ if(a.type==='open_app')return 'Open '+(APPS.find(x=>x.id===i.app)||{}).name+'?';return ''}
+async function doAct(k){const a=CO.pending[k];if(!a)return;const i=a.input||{};let r='ok';
+ if(a.type==='open_app'){CO.pending=[];return openApp(i.app,true)}
+ if(a.type==='move_item'){const row=rowOf(i.item_id),d=JSON.parse(JSON.stringify(row.data));if(i.scope==='future'&&Array.isArray(d.days)&&d.days.length){d.time=i.new_time;if(d.times)Object.keys(d.times).forEach(q=>d.times[q]=i.new_time);d.move=Object.fromEntries(Object.entries(d.move||{}).filter(([q])=>q<i.day));r=await evSplit(row,i.day,{data:d})}else{d.move=Object.assign({},d.move||{},{[i.day]:i.new_time});if(!(Array.isArray(d.days)&&d.days.length)){d.time=i.new_time;d.move={}}r=await evWrite(row,{data:d})}}
+ if(a.type==='skip_item'){const row=rowOf(i.item_id),d=JSON.parse(JSON.stringify(row.data));d.skip=Object.assign({},d.skip||{},{[i.day]:1});r=await evWrite(row,{data:d})}
+ if(a.type==='add_item'){const app=APPS.find(x=>x.id===i.app)?i.app:'stride';r=await evWrite(null,{app,data:{title:String(i.title).slice(0,60),time:i.time,durMin:Math.max(5,Math.min(240,+i.minutes||30)),days:null,date:i.date,from:i.date}})}
+ CO.pending.splice(k,1);const ok=r==='ok'||r==='stale';CO.msgs.push({role:'assistant',content:ok?'Done. '+actText(a).replace(/\?$/,'.').replace(/^(Move|Skip|Add)/,m=>({Move:'Moved',Skip:'Skipped',Add:'Added'})[m]):'That didn’t save - '+SCHERR(r)});paintLog();if(ok){draw4keep();talk(ok?'Done.':'')}else talk('That didn’t save.')}
+function orbPut(){if($('rvOrb'))return;const b=document.createElement('button');b.id='rvOrb';b.type='button';b.setAttribute('aria-label','Your coach');b.onclick=()=>coachSheet(true);document.body.appendChild(b)}
+function sheet(h){const was=$('sh').className==='on';$('shC').innerHTML=h;$('sh').className='on';if(!was)$('shC').scrollTop=0}function shut(){$('sh').className=''}
+$('sh').addEventListener('click',e=>{if(e.target.id==='sh')shut()});
+/* CR029: the look switch. AUTO = whatever the phone is set to. */
+function thmHTML(){let p='auto';try{p=localStorage.getItem('cr_theme')||'auto'}catch(e){}return '<label>LOOK</label><div class="thm" id="thm">'+[['auto','AUTO'],['light','LIGHT'],['dark','DARK']].map(x=>'<button type="button" data-thm="'+x[0]+'" class="'+(p===x[0]?'on':'')+'" aria-pressed="'+(p===x[0])+'">'+x[1]+'</button>').join('')+'</div><div class="small" style="margin-top:6px">AUTO follows your phone: light in Light Mode, dark in Dark Mode.</div>'}
+function wireThm(){document.querySelectorAll('[data-thm]').forEach(b=>b.onclick=()=>{window.crTheme(b.dataset.thm);document.querySelectorAll('[data-thm]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)})})}
+function acctSheet(){if(S.user){sheet('<div class="ey">YOUR CLUB RIVAL ACCOUNT</div><div class="big">'+esc(S.user.email||'')+'</div><div class="small">The same sign-in works in every Rival app. Use this email in each app so your sessions count here.</div>'+thmHTML()+'<button class="go ghost" id="aOut">SIGN OUT</button><button class="go ghost" id="aX">CLOSE</button>');$('aX').onclick=shut;wireThm();$('aOut').onclick=async()=>{try{await SB.auth.signOut()}catch(e){}S.user=null;S.rows=null;S.access=new Set();S.sums={};S.sched=null;S.evs=[];S.goal=null;S.res=[];S.rest=null;shut();draw()};return}
+ sheet('<div class="ey">CLUB RIVAL</div><div class="big">SIGN IN</div><div class="small">One sign-in for every Rival app. We email you a 6-digit code.</div><input id="em" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com"><button class="go" id="eGo">SEND MY CODE</button><div class="err" id="eErr"></div>');
+ $('eGo').onclick=async()=>{const em=String($('em').value||'').trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('eErr').textContent='Type your email first.';return}const b=$('eGo');b.disabled=true;b.textContent='SENDING…';
+  try{const {error}=await SB.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname}});if(error)throw error}catch(e){b.disabled=false;b.textContent='SEND MY CODE';$('eErr').textContent='Could not send the code. Check the email and try again.';return}
+  sheet('<div class="ey">CHECK YOUR EMAIL</div><div class="big">TYPE THE CODE</div><div class="small">We sent it to '+esc(em)+'. If the email only has a link, tap the link on this phone.</div><input id="cd" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"><button class="go" id="cGo">SIGN IN</button><div class="err" id="cErr"></div>');
+  $('cGo').onclick=async()=>{const c=String($('cd').value||'').replace(/\D/g,'');if(c.length<6){$('cErr').textContent='That is only '+c.length+' numbers. The code has 6.';return}const g=$('cGo');g.disabled=true;g.textContent='CHECKING…';
+   try{const {data,error}=await SB.auth.verifyOtp({email:em,token:c,type:'email'});if(error)throw error;S.user=data.user||(data.session&&data.session.user);shut();await load();toast('SIGNED IN')}catch(e){g.disabled=false;g.textContent='SIGN IN';$('cErr').textContent='That code did not work. Check it, or send a new one.'}}}}
+/* CR024 loader: the big ring the first time, a little ring in the corner when it refreshes */
+const BOOT={t0:Date.now(),done:false};
+function bootDone(){if(BOOT.done)return;BOOT.done=true;try{orbPut();if(CBACK)setTimeout(coachSheet,1000)}catch(e){}const w=Math.max(0,700-(Date.now()-BOOT.t0));setTimeout(()=>{const b=document.getElementById('boot');if(b){b.classList.add('gone');setTimeout(()=>b.remove(),600)}},w)}
+setTimeout(bootDone,8000);
+function busy(on){const e=document.getElementById('busy');if(e)e.classList.toggle('on',!!on&&BOOT.done)}
+async function load(){if(!SB||!S.user){draw();bootDone();return}busy(true);try{await load0()}finally{busy(false);bootDone()}}
+async function load0(){S.err='';
+ try{const {data,error}=await SB.from('club_xp').select('app,kind,xp,at').eq('user_id',S.user.id).order('at',{ascending:false}).limit(20000);if(error)throw error;S.rows=data||[]}
+ catch(e){S.rows=[];S.err=/club_xp|schema cache|does not exist/i.test(String(e&&e.message))?'Activity switches on once CR001-CLUB.sql is run in Supabase.':'Could not reach the club right now. Your apps still open.'}
+ try{const {data}=await SB.from('club_access').select('app').eq('user_id',S.user.id);S.access=new Set((data||[]).map(r=>r.app))}catch(e){}
+ await load4();draw()}
+
+/* ===== CR014 · THE MASTER SCHEDULE + THE PRO PANEL (Rest Rival spec sections 9 and 10) =====
+   Schedule: the sleep schedule is ONE row (club_schedule, id 'rest-sleep'). Rest Rival and Club Rival both edit that same row, so there is
+   never a second event. Every edit names the revision it started from; if the row moved on, the edit is refused and the newest is shown.
+   Pro Panel: the numbers come from the member's own nights, worked out with the SAME rules file Rest Rival uses (lib/rest-core.js). */
+const fT=ms=>new Date(ms).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),fDur=m=>m==null?'—':Math.floor(m/60)+'h '+String(Math.round(m%60)).padStart(2,'0')+'m';
+const fD=d=>R.dayDate(d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+function schedP(){const d=S.sched&&S.sched.data;if(!d||!d.bed||!d.wake)return null;return {versions:[{v:d.planV||1,from:'2000-01-01',L:420,U:540,bed:d.bed,wake:d.wake,sched:d.sched||null,windMin:d.windMin||30,items:[]}],overrides:d.overrides||{}}}
+function tonight(P){const t=R.dayStr(Date.now());for(const d of [t,R.addDays(t,1)]){const pl=R.planFor(P,d);if(pl&&R.planned(pl,d).wake>Date.now())return d}return R.addDays(t,1)}
+/* Mind Rival's Frenzy Live runs at 12, 3 and 8 PM Eastern. Shown here read-only so a sleep change that lands on one is visible. */
+function etToday(h){const now=new Date(),p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(now).reduce((a,x)=>(a[x.type]=+x.value,a),{});const etNow=(p.hour%24)*60+p.minute;return now.getTime()+(h*60-etNow)*MIN-now.getSeconds()*1000-now.getMilliseconds()}
+
+/* CR028 - "you gotta make all that shit removable": Frenzy Live and the sleep lines (wind-down, bedtime, wake up) aren't schedule items
+   you made, so they can't be deleted - but they can be HIDDEN: just today, or every day. One row, club_schedule id 'club-hide'. */
+function hideKey(x){return String(x.id).replace(/-\d{4}-\d{2}-\d{2}$/,'')}   /* 'mind-frenzy-12', 'rest-bed' ... */
+function isHidden(x){const h=S.hide&&S.hide.data||{},k=hideKey(x),day=R.dayStr(x.t);return !!((h.always||{})[k]||(h.days||{})[k+'|'+day])}
+async function hideWrite(fn){const row=S.hide,d=JSON.parse(JSON.stringify((row&&row.data)||{always:{},days:{}}));d.always=d.always||{};d.days=d.days||{};fn(d);
+ const t=R.dayStr(Date.now());Object.keys(d.days).forEach(k=>{if(k.split('|')[1]<R.addDays(t,-7))delete d.days[k]});
+ try{if(!row){const r={user_id:S.user.id,id:'club-hide',app:'club',type:'hide',rev:1,origin:'club',data:d};const {error}=await SB.from('club_schedule').insert(r);if(error)throw error}
+  else{const {error}=await SB.from('club_schedule').update({rev:row.rev+1,origin:'club',data:d,updated_at:new Date().toISOString()}).eq('user_id',S.user.id).eq('id','club-hide');if(error)throw error}
+  await loadSched();return 'ok'}catch(e){return String(e&&e.message||'error')}}
+function hideSheet(id){const e=events(),all=e.list.concat([]);const x=all.find(q=>q.id===id);if(!x)return;const k=hideKey(x),day=R.dayStr(x.t);
+ sheet('<div class="ey">REMOVE FROM YOUR SCHEDULE</div><div class="big">'+esc(x.name).toUpperCase()+'?</div><div class="small">'+(x.app==='mind'?'Frenzy Live is Mind Rival’s live event. It still runs; it just won’t show on your schedule.':'Your sleep times stay set in Rest Rival; this only hides the line here.')+'</div>'
+  +'<button class="go" id="hdOne">JUST TODAY</button><button class="go ghost" id="hdAll" style="color:#ff8a94">EVERY DAY</button><div class="err" id="hdE"></div><button class="go ghost" id="hdX">KEEP IT</button>');
+ $('hdX').onclick=shut;const fin=r=>{if(r==='ok'){shut();draw();toast('REMOVED FROM YOUR SCHEDULE')}else $('hdE').textContent=SCHERR(r)};
+ $('hdOne').onclick=async()=>fin(await hideWrite(d=>{d.days[k+'|'+day]=1}));$('hdAll').onclick=async()=>fin(await hideWrite(d=>{d.always[k]=1}))}
+function unhideAll(){hideWrite(d=>{d.always={};d.days={}}).then(r=>{draw();toast(r==='ok'?'EVERYTHING IS BACK ON YOUR SCHEDULE':'COULD NOT SAVE · TRY AGAIN')})}
+function events(){const P=schedP(),out=[];let td=null,sl=null;const t0=R.dayStr(Date.now());if(P){td=tonight(P);const pl=R.planFor(P,td),p=R.planned(pl,td),o=(P.overrides[td]||{}),wm=o.windMin||pl.windMin;sl=[p.bed-wm*MIN,p.wake];
+  out.push({id:'rest-wind-'+td,t:p.bed-wm*MIN,name:'Wind-down',sub:wm+' min · Rest Rival',app:'rest',edit:true},{id:'rest-bed-'+td,t:p.bed,name:'Bedtime',sub:(pl.override?'Changed for tonight':'Every night')+' · Rest Rival',app:'rest',edit:true},{id:'rest-wake-'+td,t:p.wake,name:'Wake up',sub:fDur((p.wake-p.bed)/MIN)+' in bed · Rest Rival',app:'rest',edit:true});
+  [12,15,20].forEach(h=>{const t=etToday(h);if(t>Date.now()-30*MIN)out.push({id:'mind-frenzy-'+h,t,name:'Frenzy Live',sub:'Cube Rival · fixed time',app:'mind',clash:t>=p.bed-wm*MIN&&t<p.wake})})}
+ const horizon=sl?sl[1]:R.at(R.addDays(t0,1),'00:00');[t0,R.addDays(t0,1)].forEach(d=>occOn(d).forEach(x=>{if((d===t0||x.t1>Date.now()-30*MIN)&&x.t<horizon)out.push(Object.assign(x,{clash:!!sl&&x.t1>sl[0]&&x.t<sl[1]}))}));
+ if(!P)[12,15,20].forEach(h=>{const t=etToday(h);if(t>Date.now()-30*MIN)out.push({id:'mind-frenzy-'+h,t,name:'Frenzy Live',sub:'Cube Rival · fixed time',app:'mind'})});
+ const acts=out.filter(x=>x.act);acts.forEach(a=>{if(acts.some(b=>b!==a&&a.t<b.t1&&b.t<a.t1))a.over=true});
+ const shown=out.filter(x=>x.act||!isHidden(x));
+ return {P,td,list:shown.sort((a,b)=>a.t-b.t),hidden:out.length-shown.length}}
+/* CR014 - "the main page summarizes all these notes and points". Built from the same record as the panels. */
+function briefLines(){const t=R.dayStr(Date.now()),L=[],e=events(),acts=occOn(t),dn=acts.filter(isDone).length,now=Date.now();
+ const nx=e.list.find(x=>x.t>now&&(!x.act||!isDone(x)));if(nx)L.push({k:'NEXT',v:nx.name+' at '+fT(nx.t)+(nx.act?'':'')});
+ if(acts.length)L.push({k:'TODAY',v:dn+' of '+acts.length+' done'+(dn===acts.length?'. Clean day.':acts.some(x=>!isDone(x)&&x.t1<now)?'. '+acts.filter(x=>!isDone(x)&&x.t1<now).length+' past their time.':'.')});
+ const xt=(S.rows||[]).filter(r=>dayOf(r)===t),xs=xt.reduce((a,r)=>a+(+r.xp||0),0);if(xs)L.push({k:'XP TODAY',v:'+'+xs+' · '+xt.filter(r=>r.kind==='session').length+' session'+(xt.filter(r=>r.kind==='session').length===1?'':'s')+(xt.some(r=>r.kind==='rival')?' · '+xt.filter(r=>r.kind==='rival').length+' rival win'+(xt.filter(r=>r.kind==='rival').length===1?'':'s'):'')});
+ const w0=R.dayStr(weekStart()),prs=[];S.res.filter(r=>dayOf(r)>=w0).forEach(r=>((r.data&&r.data.metrics)||[]).forEach(m=>{if(m.pr)prs.push(m.k+' '+m.v+(m.u?' '+m.u:''))}));if(prs.length)L.push({k:'NEW BESTS THIS WEEK',v:prs.slice(0,4).join(' · ')});
+ const rx=restExtra();if(rx.debt&&rx.debt.debtMin>=30)L.push({k:'SLEEP DEBT',v:fH(rx.debt.debtMin)+' owed over 14 nights ('+rx.debt.logged+' logged)'});if(rx.energy&&rx.energy.day===t){const b=['peak1','dip','peak2'].map(k=>rx.energy[k]?({peak1:'high',dip:'dip',peak2:'high'})[k]+' '+fT(R.at(t,rx.energy[k][0]))+'–'+fT(R.at(t,rx.energy[k][1])):null).filter(Boolean);if(b.length)L.push({k:'ENERGY TODAY',v:b.join(' · ')})}
+ const cs=clubScore();if(cs.pct!=null)L.push({k:'CLUB SCORE',v:R.fmtPct(cs.pct)+' of your rival week'});
+ const y=R.addDays(t,-1),ym=occOn(y).filter(x=>!isDone(x));if(ym.length)L.push({k:'YESTERDAY',v:ym.length+' planned, not done: '+ym.map(x=>x.name).slice(0,3).join(', ')});
+ let note=null;S.evs.forEach(r=>Object.keys(r.data.notes||{}).forEach(k=>{if(!note||k>note.k)note={k,v:r.data.notes[k],n:r.data.title||(progOf(r.app,r.data.prog)||[])[1]||(KIND.find(q=>q[0]===r.app)||[])[1]||'Note'}}));if(note&&note.k>=R.addDays(t,-7))L.push({k:'LAST NOTE · '+fD(note.k).toUpperCase(),v:note.n+': “'+note.v+'”'});
+ return L}
+/* CR014 - "main page will provide overall coaching". The whole picture across every app, written from the record. Facts only. */
+function coachRead(){const t=R.dayStr(Date.now()),L=[],now=Date.now(),st=APPS.map(a=>{const m=appStats(a.id);if(a.id==='rest'){const c=restCmp('week');if(c&&c.primaryRivalPct!=null)m.pct=c.primaryRivalPct}return {a,m}});
+ const act=st.filter(x=>x.m.ses>0),rep=st.filter(x=>x.m.total>0);
+ if(!rep.length){L.push('No app has reported to Club Rival yet. Sign in inside each app with this same email and finish one session. Then this fills in.');}
+ else{L.push(act.length?'Active this week: '+act.map(x=>x.a.name).join(', ')+' ('+act.length+' of '+APPS.length+').':'Nothing recorded yet this week.');
+  const sc=st.filter(x=>x.m.pct!=null).sort((x,y)=>y.m.pct-x.m.pct);if(sc.length){const up=sc[0],dn=sc[sc.length-1];if(up.m.pct>100)L.push('Strongest against last week: '+up.a.name+' at '+R.fmtPct(up.m.pct)+'.');if(dn!==up&&dn.m.pct<100)L.push('Furthest behind last week: '+dn.a.name+' at '+R.fmtPct(dn.m.pct)+'.')}
+  const quiet=rep.filter(x=>x.m.last&&now-x.m.last>7*864e5);if(quiet.length)L.push('Gone quiet for a week or more: '+quiet.map(x=>x.a.name).join(', ')+'.')}
+ let pl=0,dn=0;const miss={};for(let i=1;i<=7;i++){const d=R.addDays(t,-i);occOn(d).forEach(x=>{pl++;if(isDone(x))dn++;else if(i<=2)miss[x.id]=(miss[x.id]||0)+1})}
+ if(pl)L.push('Your plan, last 7 days: '+dn+' of '+pl+' done ('+Math.round(dn*100/pl)+'%).');
+ const two=Object.keys(miss).filter(k=>miss[k]>=2).map(k=>{const o=occOn(R.addDays(t,-1)).find(x=>x.id===k);return o&&o.name}).filter(Boolean);if(two.length)L.push('Missed two days running: '+two.join(', ')+'.');
+ if(S.rest){const N=S.rest.N,k=Object.keys(N).filter(x=>R.isReal(N[x])&&x>=R.addDays(t,-1)).sort().pop();if(k){const p2=R.planFor(S.rest.P,k),c=R.nightCalc(N[k],p2);if(c.sleepMin!=null)L.push('Sleep last night: '+fDur(c.sleepMin)+(c.sleepMin<p2.L?', under your target.':c.inRange?', inside your target.':'.'))}}
+ {const rx=restExtra();if(rx.debt&&rx.debt.debtMin>=180)L.push('You are carrying '+fH(rx.debt.debtMin)+' of sleep debt. Rest Rival has the plan to pay it down.')}
+ const todo=occOn(t).filter(x=>!isDone(x)).sort((a,b)=>a.t-b.t),nx=todo.find(x=>x.t1>now)||todo[0];if(nx)L.push('Focus now: '+nx.name+' at '+fT(nx.t)+(two.includes(nx.name)?'. Getting this one done breaks the miss streak.':'.'));else if(occOn(t).length)L.push('Everything planned for today is done.');else L.push('Nothing is planned for today. Add one thing to your schedule.');
+ return L}
+function briefHTML(){if(!S.user)return '';const L=briefLines(),C=coachRead();return '<div class="cat">COACH’S BRIEF</div><div class="card" id="bf"><div class="pan" id="bfC" style="margin-top:0;margin-bottom:6px"><span>COACH’S READ · THE WHOLE PICTURE</span>'+C.map(x=>'<p>'+esc(x)+'</p>').join('')+'</div>'+L.map(x=>'<div class="hr" style="align-items:flex-start"><div><span style="font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.16em;color:var(--org);margin-bottom:5px">'+esc(x.k)+'</span><b style="font-size:14px">'+esc(x.v)+'</b></div></div>').join('').replace('border-top','border-top')+'<button class="go ghost" id="bfL">▶ LISTEN</button></div>'}
+/* ===== CR014 · THE PLANNER. Coach E: "a major planner within the club ... can see all ... the balance of them all based on your
+   overarching goal ... the club tells the pro level apps what it needs lined up for you ... based on your previous performance and plans".
+   1. The member picks ONE goal, the days they train, and a time of day.
+   2. The goal sets how many sessions each app gets in a week (the balance).
+   3. Last week's record moves each number: did everything planned -> one more; missed two or more -> one fewer; otherwise hold.
+   4. Each app is asked for what the goal needs (power, speed, conditioning ...) and the next program of that kind is lined up,
+      skipping the one done last. What is already on the schedule by hand counts toward the number, so nothing is doubled.
+   5. The week is laid on the calendar, outside the sleep window, hard sessions spread out. The member sees it before anything is saved.
+   Rules, not a model: every line it writes is a count from the member's own record. */
+const GOALS=[['strong','GET STRONGER','Lifting leads. Enough conditioning to recover well.',{rep:4,stride:2,rankup:1,mind:2}],
+ ['lean','GET LEAN + FIT','Conditioning leads. Lifting holds the muscle.',{stride:4,rankup:3,rep:2,mind:2}],
+ ['all','ALL-ROUND SHAPE','A bit of everything, evenly.',{rep:3,stride:3,rankup:2,mind:3}],
+ ['sharp','SHARPER MIND','Mind work most days. Movement to back it up.',{mind:5,stride:3,rep:2,rankup:1}],
+ ['recover','RECOVER + REBUILD','Easy movement, steady sleep, light work.',{stride:3,mind:3,rep:2,rankup:0}]];
+const NEED={strong:{rankup:['power','tech'],stride:['walk'],mind:['solo']},lean:{rankup:['cond','speed','power'],stride:['run','walk'],mind:['solo','daily']},all:{rankup:['power','speed','cond','tech'],stride:['walk','run'],mind:['solo','daily']},sharp:{rankup:['tech'],stride:['walk'],mind:['daily','solo']},recover:{rankup:['tech'],stride:['walk'],mind:['solo','daily']}};
+const RU_KIND={power:['power','precision'],speed:['fasthands','combos'],cond:['endurance','boxfit'],tech:['shadow','mechanics']};
+const SLOTS={am:['06:30','MORNING'],mid:['12:00','MIDDAY'],pm:['17:30','EVENING']};
+const HARD={rep:1,rankup:1};
+function restExtra(){const d=S.sums.rest&&S.sums.rest.data;if(!d)return {};const fresh=d.energy&&d.energy.day>=R.addDays(R.dayStr(Date.now()),-3);return {debt:d.debt&&d.debt.ok?d.debt:null,energy:fresh?d.energy:null}}
+const fH=m=>{m=Math.round(m);return m<60?m+' min':Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m'};
+function goalNow(){const d=S.goal&&S.goal.data;return d&&GOALS.find(g=>g[0]===d.goal)?d:null}
+function planWeek(){/* CR028: "plans start today" - the 7 days from today (was: from tomorrow) */const t=R.dayStr(Date.now()),start=t,days=[];for(let i=0;i<7;i++)days.push(R.addDays(start,i));return {start,days,end:days[6]}}
+function lastUsed(app){const r=S.res.filter(x=>x.app===app&&x.data&&x.data.program).sort((a,b)=>new Date(b.at)-new Date(a.at))[0];return r?r.data.program:''}
+/* what the goal asks of one app, turned into that app's own programs, in rotation */
+function lineUp(app,goal,n){const need=(NEED[goal]||{})[app]||[],out=[],last=lastUsed(app);if(!PROGS[app]||!need.length)return Array(n).fill(null);
+ let pool=[];if(app==='rankup')need.forEach(k=>RU_KIND[k].forEach(id=>pool.push([id,k])));else need.forEach(k=>pool.push([k,k]));
+ pool=pool.filter(x=>progOf(app,x[0]));if(!pool.length)return Array(n).fill(null);let i=Math.max(0,pool.findIndex(x=>x[0]===last)+1);
+ if(app==='rankup'){/* one of each kind first, in the order the goal names them */const seen={},first=[];need.forEach(k=>{const opts=RU_KIND[k].filter(id=>id!==last&&progOf(app,id));const id=opts[0]||RU_KIND[k][0];if(!seen[id]){seen[id]=1;first.push([id,k])}});for(let j=0;j<n;j++)out.push(first[j%first.length]);return out}
+ for(let j=0;j<n;j++)out.push(pool[(i+j)%pool.length]);return out}
+function buildPlan(G){const goal=GOALS.find(g=>g[0]===G.goal),wk=planWeek(),t=R.dayStr(Date.now()),why=[],items=[],apps=G.ranked?G.ranked.filter(a=>a!=='rest'&&APPS.some(x=>x.id===a)):(G.apps&&G.apps.length?G.apps:Object.keys(goal[3])).filter(a=>goal[3][a]>0),tdays=wk.days.filter(d=>(G.days||[1,2,3,4,5,6]).includes(R.dayDate(d).getDay()));
+ if(!tdays.length)return {wk,items:[],why:['Pick at least one training day.'],targets:{}};
+ const P=schedP(),sleepOf=d=>{if(!P)return null;const a=R.planned(R.planFor(P,d),d),b=R.planned(R.planFor(P,R.addDays(d,1)),R.addDays(d,1));return [a.wake,b.bed-(R.planFor(P,R.addDays(d,1)).windMin||30)*MIN]};
+ const targets={},load={};tdays.forEach(d=>load[d]={n:0,hard:0,slots:{}});
+ apps.forEach(app=>{const a=APPS.find(x=>x.id===app),base=G.ranked?rankDays(G,app):goal[3][app];if(G.ranked){const n=Math.min(base,tdays.length*(HARD[app]?1:2));targets[app]=n;why.push('#'+(G.ranked.indexOf(app)+1)+' '+a.name+': '+n+' day'+(n===1?'':'s')+' this week · '+pctFor(n)+'% a session.');return}let pl=0,dn=0;for(let i=1;i<=7;i++){const d=R.addDays(wk.start,-i);occOn(d).filter(x=>x.app===app).forEach(x=>{pl++;if(isDone(x))dn++})}const ses=(S.rows||[]).filter(r=>r.app===app&&r.kind==='session'&&dayOf(r)>=R.addDays(wk.start,-7)&&dayOf(r)<wk.start).length;
+  let n=base,note='the goal’s starting number';if(pl>=2){if(dn>=pl){n=Math.min(base+2,pl+1);note='did all '+pl+' planned last week, so one more'}else if(pl-dn>=2){n=Math.max(1,pl-1);note='did '+dn+' of '+pl+' planned last week, so one fewer'}else{n=Math.max(1,Math.min(base+2,pl));note='did '+dn+' of '+pl+' planned last week, so hold at '+pl}}else if(ses){note=ses+' session'+(ses===1?'':'s')+' last week with no plan; starting at the goal’s number'}
+  n=Math.min(n,tdays.length*(HARD[app]?1:2));targets[app]=n;why.push(a.name+': '+n+' this week. '+note.charAt(0).toUpperCase()+note.slice(1)+'.')});
+ /* what is already on the calendar by hand counts */
+ const have={};wk.days.forEach(d=>occOn(d).forEach(x=>{const row=S.evs.find(r=>r.id===x.id);if(row&&row.data.byPlanner)return;have[x.app]=(have[x.app]||0)+1;if(load[d]){load[d].n++;if(HARD[x.app])load[d].hard++}}));
+ const slotOrder=G.slot==='am'?['am','pm','mid']:G.slot==='mid'?['mid','pm','am']:['pm','am','mid'];
+ /* Rest Rival's energy day: the morning and evening highs replace the stock 6:30 AM / 5:30 PM, rounded to the quarter hour */
+ const EN=restExtra().energy,q15=c=>{const m=Math.round(R.hm(c)/15)*15;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')},ST={am:EN&&EN.peak1?q15(EN.peak1[0]):SLOTS.am[0],mid:SLOTS.mid[0],pm:EN&&EN.peak2?q15(EN.peak2[0]):SLOTS.pm[0]};
+ /* CR032 - "a default 6:30 workout time persisted while wake/sleep times changed". Each day's times now come from THAT day: never before you're up
+    (wake + 30 min), never into wind-down, never inside work (leave time minus get-ready time, until you're home). If nothing fits, it says so - it does not squeeze sleep. */
+ const WK=myDay(),hhmm=ms=>{const x=new Date(ms),m=Math.ceil((x.getHours()*60+x.getMinutes())/15)*15;return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')},
+  workOn=d=>WK&&WK.leave&&(WK.days||[1,2,3,4,5]).includes(R.dayDate(d).getDay())?[R.at(d,WK.leave)-(+WK.prep||0)*MIN,WK.home?R.at(d,WK.home):R.at(d,WK.leave)+9*60*MIN]:null,
+  STd=(d,sk)=>{const sl=sleepOf(d),w=workOn(d);if(sk==='pm2')return hhmm(R.at(d,STd(d,'pm'))+75*MIN);if(sk==='am2')return hhmm(R.at(d,STd(d,'am'))+75*MIN);let tt=R.at(d,ST[sk]);if(sk==='am'&&sl&&tt<sl[0]+30*MIN)tt=sl[0]+30*MIN;if(sk==='pm'&&w&&tt<w[1]+30*MIN)tt=w[1]+30*MIN;if(sk==='mid'&&w&&tt>=w[0]&&tt<w[1])tt=w[1]+30*MIN;return hhmm(tt)},
+  fits=(d,sk,dur)=>{const tt=R.at(d,STd(d,sk)),t1=tt+dur*MIN,sl=sleepOf(d),w=workOn(d);if(sl&&(tt<sl[0]||t1>sl[1]))return false;if(w&&tt<w[1]&&t1>w[0])return false;
+   /* never on top of something already there: what you put on by hand, another app's own plan (Rep's week), or what this plan just placed */
+   if(occOn(d).some(o=>{const row=S.evs.find(r=>r.id===o.id);return !(row&&row.data.byPlanner)&&tt<o.t1&&o.t<t1}))return false;
+   if(items.some(it=>it.day===d&&(()=>{const a=R.at(d,it.time);return tt<a+it.durMin*MIN&&a<t1})()))return false;return true};
+ if(WK&&WK.leave)why.push('Work: you leave at '+fT(R.at(wk.start,WK.leave))+(WK.prep?' ('+WK.prep+' min to get ready)':'')+(WK.home?', home by '+fT(R.at(wk.start,WK.home)):'')+'. Nothing is planned in that window.');if(EN&&(EN.peak1||EN.peak2))why.push('Times are set to your energy highs from Rest Rival'+(EN.peak1?' (morning '+fT(R.at(wk.start,ST.am))+')':'')+(EN.peak2?' (evening '+fT(R.at(wk.start,ST.pm))+')':'')+'.');
+ apps.slice().sort((a,b)=>(HARD[b]||0)-(HARD[a]||0)).forEach(app=>{const need=Math.max(0,targets[app]-(have[app]||0));if(have[app])why.push('  '+(have[app]>=targets[app]?'Already covered by what is on your schedule.':have[app]+' already on your schedule, adding '+need+'.'));if(!need)return;
+  const picks=lineUp(app,G.goal,need),k=KIND.find(x=>x[0]===app);
+  for(let j=0;j<need;j++){/* the lightest day that does not already have this app; a hard session never shares a day with another hard one if it can be helped */
+   const cand=tdays.filter(d=>!items.some(it=>it.day===d&&it.app===app)&&(d!==t||slotOrder.some(sk=>!load[d].slots[sk]&&R.at(d,STd(d,sk))>Date.now()+20*MIN))).sort((a,b)=>(load[a].hard*(HARD[app]?10:0)+load[a].n)-(load[b].hard*(HARD[app]?10:0)+load[b].n)||(tdays.indexOf(a)*7919+j*31)%7-(tdays.indexOf(b)*7919+j*31)%7||a.localeCompare(b));
+   const pk=picks[j],pg=pk?progOf(app,pk[0]):null,dur=pg?pg[2]:app==='rep'?45:30;
+   const fut=(d,sk)=>d!==t||R.at(d,STd(d,sk))>Date.now()+20*MIN;/* today: only a time that hasn't passed */
+   const slotOn=d=>slotOrder.concat(['pm2','am2']).find(sk=>!load[d].slots[sk]&&fut(d,sk)&&fits(d,sk,dur));
+   /* the lightest day first; if nothing fits that day, the next lightest - never a time that breaks sleep or work */
+   const d=(cand.length?cand:[tdays[j%tdays.length]]).find(x=>slotOn(x))||null,slot=d?slotOn(d):null;
+   if(!slot){why.push('Could not fit one more '+((APPS.find(x=>x.id===app)||{name:app}).name)+' this week around your sleep'+(WK&&WK.leave?' and work':'')+' and what is already on your schedule. Add it by hand at a time that works.');continue}
+   load[d].slots[slot]=1;load[d].n++;if(HARD[app])load[d].hard++;
+   items.push({day:d,app,time:STd(d,slot),durMin:dur,prog:pg?pg[0]:null,title:pg?'':(k?k[1]:'Session'),plan:pg?pg[3]:(app==='rep'?'Your next Rep Rival training day. Beat last time by one rep or more weight.':''),ask:pk?pk[1]:''})}});
+ const asks={};items.forEach(it=>{if(it.ask){asks[it.app]=asks[it.app]||{};asks[it.app][it.ask]=(asks[it.app][it.ask]||0)+1}});const NM={power:'power',speed:'speed',cond:'conditioning',tech:'technique',walk:'walk',run:'run',solo:'The Cube',lines:'Lines',strength:'Strength',daily:'Daily Cube'};
+ Object.keys(asks).forEach(app=>why.push('Asked '+APPS.find(a=>a.id===app).name+' for: '+Object.keys(asks[app]).map(k=>asks[app][k]+' '+(NM[k]||k)).join(', ')+'.'));
+ if(S.rest){const N=S.rest.N,ks=Object.keys(N).filter(x=>R.isReal(N[x])&&x>=R.addDays(t,-3));const short=ks.filter(k=>{const c=R.nightCalc(N[k],R.planFor(S.rest.P,k));return c.sleepMin!=null&&c.sleepMin<R.planFor(S.rest.P,k).L}).length;if(short>=2)why.push(short+' of your last '+ks.length+' nights were under your sleep target. Hard sessions are spread out; move one if you need to.')}
+ items.sort((a,b)=>a.day.localeCompare(b.day)||a.time.localeCompare(b.time));return {wk,items,why,targets,goal}}
+async function savePlan(plan){/* clear the planner's own items for those days (never anything made by hand), then write the new ones */
+ try{const old=S.evs.filter(r=>r.data.byPlanner&&r.data.date&&((r.data.date>=plan.wk.start&&r.data.date<=plan.wk.end&&!(r.data.done&&r.data.done[r.data.date])&&!sesOn(r.app,r.data.date))||r.data.date<R.addDays(plan.wk.start,-35)));
+  for(const r of old){const {error}=await SB.from('club_schedule').delete().eq('user_id',S.user.id).eq('id',r.id);if(error)throw error}
+  const keep=S.evs.filter(r=>r.data.byPlanner&&r.data.date>=plan.wk.start&&r.data.date<=plan.wk.end&&!old.includes(r)),rows=plan.items.filter(it=>!keep.some(r=>r.app===it.app&&r.data.date===it.day)).map(it=>({user_id:S.user.id,id:rid(),app:it.app,type:'activity',rev:1,origin:'club',data:{title:it.title,prog:it.prog,plan:it.plan,time:it.time,durMin:it.durMin,days:null,date:it.day,from:it.day,byPlanner:plan.wk.start}}));
+  if(rows.length){const {error}=await SB.from('club_schedule').insert(rows);if(error)throw error}await loadSched();return rows.length}catch(e){return String(e&&e.message||'error')}}
+async function saveGoal(d){try{const row=S.goal;if(!row){const {error}=await SB.from('club_schedule').insert({user_id:S.user.id,id:'club-goal',app:'club',type:'goal',rev:1,origin:'club',data:d});if(error)throw error}else{const {data,error}=await SB.from('club_schedule').update({rev:row.rev+1,origin:'club',data:d,updated_at:new Date().toISOString()}).eq('user_id',S.user.id).eq('id','club-goal').eq('rev',row.rev).select('rev');if(error)throw error;if(!data||!data.length){await loadSched();return 'stale'}}await loadSched();return 'ok'}catch(e){return String(e&&e.message||'error')}}
+/* ======================================================================
+   CR026 - CLUB ONBOARDING · "how do I go boss?" (Coach E, 17 Nov). Built INTO the planner (same goal row, same buildPlan, same
+   savePlan) - not a second planner.
+   1. The menu: every app says what it's good for. Training + combat carry RECOMMENDED. Anyone can pick anything (money, games too).
+   2. Pick your three, in order. #1 gets the most days: days for #1 = D (3-6), #2 = D-1, #3 = D-2 (never under 1).
+      (Rest Rival is nightly.) Percent follows days: every day 1% · 3 days 2.5% · 2 or fewer 3% (the most).
+   3. Hit all three for 4 straight weeks and a new app slot opens. Keep stacking to Level 10 Club Boss.
+   ====================================================================== */
+const GOOD={rankup:'Combat. Confidence, grit and power.',rep:'Strength. Muscle, bones and metabolism.',stride:'Cardio. Heart, lungs and endurance.',mind:'Focus. Reactions and problem solving.',bmx:'Speed and skill on a bike.',trail:'Adventure. Balance, nerve and legs.',rest:'Recovery. The sleep that makes the rest work.',money:'Money. Save 1% more and stop the leaks.',rise:'Mornings. Up on time, proved, a short routine.'};
+const RECO=new Set(['rankup','rep','stride']);
+function rankDays(G,app){if(!G||!G.ranked)return 0;const i=G.ranked.indexOf(app);if(i<0)return 0;if(app==='rest')return 7;const D=Math.max(3,Math.min(6,G.top||4));return Math.max(1,Math.min(D-i,(G.days||[1,2,3,4,5,6]).length||7))}
+function slotInfo(now){const G=goalNow();if(!G||!G.ranked||!G.start)return {slots:3,streak:0,earned:0,weeks:[]};now=now||Date.now();
+ const w=t=>{const d=new Date(t);d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.getTime()},cur=w(now);let a=w(G.start),streak=0,earned=0;const weeks=[];
+ while(a<cur&&weeks.length<200){const b=new Date(a);b.setDate(b.getDate()+7);const bt=b.getTime();
+  const ok=G.ranked.every(app=>{const days=new Set((S.rows||[]).filter(r=>r.app===app&&r.kind==='session'&&+new Date(r.at)>=a&&+new Date(r.at)<bt).map(r=>new Date(r.at).toDateString()));return days.size>=rankDays(G,app)});
+  weeks.push(ok);if(ok){streak++;if(streak===4){earned++;streak=0}}else streak=0;a=bt}
+ return {slots:3+earned,streak,earned,weeks}}
+function goalSheet(addMode,startAim){const old=goalNow();const g=old||{goal:'all',days:[1,2,3,4,5,6],slot:'am'};let step=addMode?1:(old&&old.ranked?2:1),pick=g.goal,days=new Set(g.days||[1,2,3,4,5,6]),slot=g.slot||'am',top=g.top||4;
+ let ranked=(old&&old.ranked?old.ranked.slice():[]);const SI=slotInfo(),max=Math.max(3,SI.slots);
+ /* CR031 - Coach E: "they never asked me what my goal was ... I have a six month goal." Step 0 asks what and by when; the plan builds toward that date. */
+ let aim=(old&&old.aim)||'',by=(old&&old.by)||ymdLocal(addMonths(new Date(),6));if(startAim||(!addMode&&!(old&&old.aim)))step=0;
+ const pool=APPS.filter(a=>stateOf(a)!=='soon');
+ const row=(app,i)=>{const a=APPS.find(x=>x.id===app),d=rankDays({ranked,top,days:[...days]},app);return '<div class="obr" style="--ac:'+a.ac+'"><b class="obn">'+(i+1)+'</b><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+(app==='rest'?'every night':d+' day'+(d===1?'':'s')+' a week')+' · '+pctFor(app==='rest'?7:d)+'% a session</span></div>'+(i?'<button type="button" class="obup" data-up="'+i+'" aria-label="Move '+esc(a.name)+' up">↑</button>':'<span></span>')+'</div>'};
+ const paint=()=>{
+  if(step===0){const B=[[3,'3 MONTHS'],[6,'6 MONTHS'],[12,'1 YEAR']];sheet('<div class="ey">BECOME A CLUB BOSS · STEP 1 OF 3</div><div class="big">WHAT’S YOUR GOAL?</div><div class="small">Say it your way. Everything the Club plans works back from it.</div>'
+   +'<label for="gAim">MY GOAL</label><input id="gAim" maxlength="120" placeholder="e.g. Look great, fight sharp, explosive on the bike" value="'+esc(aim)+'">'
+   +'<label>BY WHEN?</label><div class="chips" id="gBy">'+B.map(x=>{const d=ymdLocal(addMonths(new Date(),x[0]));return '<button type="button" data-by="'+d+'" class="'+(by===d?'on':'')+'" aria-pressed="'+(by===d)+'">'+x[1]+'</button>'}).join('')+'</div><input id="gDate" type="date" value="'+by+'" aria-label="Or pick the date" style="margin-top:8px">'
+   +'<div class="err" id="g0E"></div><button class="go" id="g0N">NEXT · PICK YOUR APPS</button><button class="go ghost" id="g0X">NOT NOW</button>');
+   const keep=()=>{aim=($('gAim').value||'').trim();by=$('gDate').value||by};
+   $('gBy').querySelectorAll('button').forEach(b=>b.onclick=()=>{keep();by=b.dataset.by;paint()});
+   $('g0X').onclick=shut;$('g0N').onclick=()=>{keep();if(!aim){$('g0E').textContent='Type your goal first. A few words is plenty.';return}if(!(by>ymdLocal(new Date()))){$('g0E').textContent='Pick a date in the future.';return}step=1;paint()};return}
+  if(step===1){sheet('<div class="ey">'+(addMode?'A NEW SLOT IS OPEN':'BECOME A CLUB BOSS · STEP 2 OF 3')+'</div><div class="big">'+(addMode?'ADD YOUR NEXT APP':'PICK YOUR THREE')+'</div><div class="small">'+(addMode?'You held your percent 4 weeks straight. Pick one more.':'Tap them in order: your #1 gets the most days. Training and combat are where we’d start, but it’s your call.')+'</div>'
+   +'<div class="obg">'+pool.map(a=>{const i=ranked.indexOf(a.id);return '<button type="button" class="obt'+(i>=0?' on':'')+'" data-pk="'+a.id+'" aria-pressed="'+(i>=0)+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+esc(GOOD[a.id]||a.line)+'</span>'+(RECO.has(a.id)?'<em>RECOMMENDED</em>':'')+'</div>'+(i>=0?'<i class="obn">'+(i+1)+'</i>':'<i class="obe"></i>')+'</button>'}).join('')+'</div>'
+   +'<div class="err" id="obE"></div><button class="go" id="obN"'+(ranked.length?'':' disabled')+'>'+(ranked.length?'NEXT · '+ranked.length+' OF '+max+' PICKED':'PICK AT LEAST ONE')+'</button><button class="go ghost" id="obX">NOT NOW</button>');
+   $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk,i=ranked.indexOf(id);if(i>=0)ranked.splice(i,1);else if(ranked.length<max)ranked.push(id);else{$('obE').textContent='That’s '+max+'. Hit your percent in all of them 4 weeks straight to open another slot.';return}paint()});
+   $('obX').onclick=shut;$('obN').onclick=()=>{if(!ranked.length)return;step=2;paint()};return}
+  sheet('<div class="ey">BECOME A CLUB BOSS · STEP 3 OF 3</div><div class="big">YOUR WEEK</div>'
+   +'<label>DAYS A WEEK FOR YOUR #1</label><div class="chips" id="obT">'+[3,4,5,6].map(n=>'<button type="button" data-top="'+n+'" class="'+(top===n?'on':'')+'" aria-pressed="'+(top===n)+'">'+n+'</button>').join('')+'</div>'
+   +'<div class="obl">'+ranked.map(row).join('')+'</div><div class="small" style="margin:6px 2px 0">Every day = 1% a session · 3 days = 2.5% · 2 or fewer = 3%, the most. Show up more and each day asks less of you.</div>'
+   +'<label>WHAT YOU WANT MOST</label><div class="chips" id="obG" style="flex-wrap:wrap">'+GOALS.map(x=>'<button type="button" data-g="'+x[0]+'" class="'+(pick===x[0]?'on':'')+'" style="flex:1 1 30%;font-size:9.5px;letter-spacing:.06em" aria-pressed="'+(pick===x[0])+'">'+x[1]+'</button>').join('')+'</div>'
+   +'<label>DAYS YOU CAN TRAIN</label><div class="chips" id="gD">'+['S','M','T','W','T','F','S'].map((c,i)=>'<button type="button" data-wd="'+i+'" class="'+(days.has(i)?'on':'')+'" aria-pressed="'+days.has(i)+'">'+c+'</button>').join('')+'</div>'
+   +'<label>BEST TIME OF DAY</label><div class="chips" id="gS">'+Object.keys(SLOTS).map(k=>'<button type="button" data-sl="'+k+'" class="'+(slot===k?'on':'')+'" style="font-size:10px;letter-spacing:.1em" aria-pressed="'+(slot===k)+'">'+SLOTS[k][1]+'</button>').join('')+'</div>'
+   +'<div class="err" id="gE"></div><button class="go" id="gGo">BUILD MY WEEK</button><button class="go ghost" id="obB">‹ CHANGE MY APPS</button><button class="go ghost" id="gX">CANCEL</button>');
+  $('obT').querySelectorAll('button').forEach(b=>b.onclick=()=>{top=+b.dataset.top;paint()});
+  $('shC').querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const i=+b.dataset.up;[ranked[i-1],ranked[i]]=[ranked[i],ranked[i-1]];paint()});
+  $('obG').querySelectorAll('button').forEach(b=>b.onclick=()=>{pick=b.dataset.g;paint()});
+  $('gD').querySelectorAll('button').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;days.has(i)?days.delete(i):days.add(i);paint()});$('gS').querySelectorAll('button').forEach(b=>b.onclick=()=>{slot=b.dataset.sl;paint()});
+  $('obB').onclick=()=>{step=1;paint()};$('gX').onclick=shut;
+  $('gGo').onclick=async()=>{if(!days.size){$('gE').textContent='Pick at least one day.';return}$('gGo').disabled=true;
+   const r=await saveGoal({goal:pick,days:[...days].sort(),slot,apps:ranked.slice(),ranked:ranked.slice(),top,start:(old&&old.start)||Date.now(),aim:aim||(old&&old.aim)||'',by:by||(old&&old.by)||''});
+   if(r==='ok'||r==='stale')planSheet();else{$('gGo').disabled=false;$('gE').textContent=SCHERR(r)}}};
+ paint()}
+/* the plan card on BOSS, and the start card on TODAY */
+function planCardHTML(){if(!S.user)return '';const G=goalNow();
+ if(!G||!G.ranked)return '<div class="card obstart"><div class="ey">BECOME A CLUB BOSS</div><div class="big" style="font-size:24px;margin:6px 0 4px">PICK YOUR THREE.</div><div class="small">Choose three apps, put them in order, and Club Rival builds your week: the days, the programs and your percent in each.</div><button class="go" id="obGo">START</button></div>';
+ const SI=slotInfo(),open=SI.slots>G.ranked.length;
+ return '<div class="cat">YOUR PLAN</div><div class="card"><div class="obl">'+G.ranked.map((app,i)=>{const a=APPS.find(x=>x.id===app);if(!a)return '';const d=rankDays(G,app);return '<div class="obr" style="--ac:'+a.ac+'"><b class="obn">'+(i+1)+'</b><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+(app==='rest'?'every night':d+' day'+(d===1?'':'s')+' a week')+' · '+pctFor(app==='rest'?7:d)+'% a session</span></div><span></span></div>'}).join('')+'</div>'
+  +(open?'<div class="obslot on"><b>A NEW SLOT IS OPEN.</b> You held your percent 4 weeks straight.</div><button class="go" id="obAdd">ADD APP #'+(G.ranked.length+1)+'</button>'
+   :'<div class="obslot"><span>NEXT APP SLOT</span><i>'+[0,1,2,3].map(k=>'<u class="'+(k<SI.streak?'on':'')+'"></u>').join('')+'</i><b>'+SI.streak+' of 4 weeks</b></div><div class="small">Hit your days in all '+G.ranked.length+' for 4 weeks in a row and another app opens up.</div>')
+  +'<div class="row2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="go ghost" id="obEd">CHANGE MY PLAN</button><button class="go" id="plB2">PLAN THIS WEEK</button></div></div>'}
+function planSheet(){const G=goalNow();if(!G)return goalSheet();const P=buildPlan(G),g=P.goal,byDay={};P.items.forEach(it=>(byDay[it.day]=byDay[it.day]||[]).push(it));
+ sheet('<div class="ey">THE PLANNER · '+fD(P.wk.start).toUpperCase()+' – '+fD(P.wk.end).toUpperCase()+'</div><div class="big">'+g[1]+'</div><div class="small">'+g[2]+'</div>'
+ +'<div class="pan" id="plW"><span>HOW THE WEEK WAS BALANCED</span>'+P.why.map(x=>'<p'+(x.startsWith('  ')?' style="color:var(--mut);margin-top:-4px;font-size:12.5px"':'')+'>'+esc(x.trim())+'</p>').join('')+'</div>'
+ +(P.items.length?P.wk.days.map(d=>{const L=byDay[d]||[],hand=occOn(d).filter(x=>{const r=S.evs.find(q=>q.id===x.id);return !(r&&r.data.byPlanner)});return '<div class="dayh">'+fD(d).toUpperCase()+'</div>'+(L.length||hand.length?hand.map(x=>'<div class="ev"><time>'+fT(x.t)+'</time><div><b>'+esc(x.name)+'</b><span>'+esc(x.sub)+'</span></div><span class="tg">YOURS</span></div>').join('')+L.map(it=>{const a=APPS.find(x=>x.id===it.app),pg=progOf(it.app,it.prog);return '<div class="ev" style="--ac:'+a.ac+'"><time>'+fT(R.at(d,it.time))+'</time><div><b><i class="dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;background:'+a.ac+'"></i>'+esc(pg?pg[1]:it.title)+'</b><span>'+it.durMin+' min · '+esc(a.name)+'</span></div><span class="tg g">NEW</span></div>'}).join(''):'<div class="small" style="padding:8px 0">Rest day</div>')}).join(''):'<div class="small" style="margin-top:12px">Your schedule already covers this week. Nothing to add.</div>')
+ +'<div class="err" id="plE"></div>'+(P.items.length?'<button class="go" id="plGo">PUT IT ON MY SCHEDULE</button>':'')+'<button class="go ghost" id="plG">CHANGE MY GOAL</button><button class="go ghost" id="plX">NOT NOW</button>');
+ $('plX').onclick=shut;$('plG').onclick=goalSheet;if($('plGo'))$('plGo').onclick=async()=>{$('plGo').disabled=true;const r=await savePlan(P);if(typeof r==='number'){shut();draw();toast(r+' ITEMS ON YOUR SCHEDULE')}else{$('plGo').disabled=false;$('plE').textContent=SCHERR(r)}}}
+function plannerHTML(){if(!S.user)return '';const G=goalNow(),g=G&&GOALS.find(x=>x[0]===G.goal),wk=planWeek(),t=R.dayStr(Date.now());let pl=0,dn=0;for(let i=0;i<7;i++){const d=R.addDays(t,-i);occOn(d).forEach(x=>{pl++;if(isDone(x))dn++})}
+ const made=S.evs.some(r=>r.data.byPlanner===wk.start);
+ return '<div class="cat">THE PLANNER</div><div class="card" id="pl"><div class="ah"><b>'+(g?g[1]:'NO GOAL SET')+'</b><span>'+(pl?dn+' OF '+pl+' DONE · 7 DAYS':'')+'</span></div><div class="small">'+(g?esc(g[2])+(made?' This week is planned.':' This week is not planned yet.'):'Pick one goal. Club Rival balances every app around it and lines up your week from how the last one went.')+'</div><button class="go'+(made?' ghost':'')+'" id="plB">'+(g?(made?'RE-PLAN THIS WEEK':'PLAN MY WEEK'):'SET MY GOAL')+'</button></div>'}
+/* CR015 - Coach E, 17 Nov: "schedule first, then all the apps neatly underneath ... smaller, regular-size thumbnails. And anytime the schedule
+   shows the app's name, it's a link that takes you to the app for that scheduled deal." */
+/* CR015 - "another page for the apps, keep them like they are - it looks pretty cool. It wouldn't be dominating." */
+/* CR015 - "keep that XP at the top ... when you tap it, it takes you to your points. This is the master league." */
+function ptsPage(st,L){if(!S.user)return '<button class="back toHome">‹ BACK</button><div class="card"><div class="small">Sign in to see your Club Rival points.</div></div>';
+ const nx=Math.min(MAX_LEVEL,L.lv+1),rows=(S.rows||[]).slice().sort((a,b)=>new Date(b.at)-new Date(a.at)),byApp={};rows.forEach(r=>{const k=r.app;byApp[k]=byApp[k]||{xp:0,n:0,w:0};byApp[k].xp+=r.xp;byApp[k].n++;if(new Date(r.at).getTime()>=weekStart())byApp[k].w+=r.xp});
+ let h='<div class="cat">YOUR POINTS</div><div class="lv"><div class="ring" style="--p:'+Math.round(L.into*100/L.need)+'"><div><div><b>'+L.lv+'</b><span>LEVEL</span></div></div></div><div><div class="lvt">'+(L.max?'<b>LEVEL 100 · TOP OF THE CLUB</b>':'<b>'+com(L.into)+' / '+com(L.need)+' XP</b> TO LEVEL '+nx)+'</div><div class="bar"><i style="width:'+Math.max(2,Math.round(L.into*100/L.need))+'%"></i></div><div class="xp2"><div><span>XP THIS WEEK</span><b>'+com(st.week)+'</b></div><div><span>TOTAL XP</span><b>'+com(st.total)+'</b></div></div></div></div>';
+ h+='<div class="cat">XP BY APP</div><div class="card">'+(Object.keys(byApp).length?Object.keys(byApp).sort((a,b)=>byApp[b].xp-byApp[a].xp).map(k=>{const a=APPS.find(x=>x.id===k)||{name:k,art:'',ac:'#888'};return '<div class="row" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div><div class="nm"><span>'+esc(a.name).toUpperCase()+'</span><em>'+byApp[k].n+' SESSION'+(byApp[k].n===1?'':'S')+' · '+com(byApp[k].w)+' THIS WEEK</em></div></div><div class="x">'+com(byApp[k].xp)+'<small>XP</small></div></div>'}).join(''):'<div class="small">No XP yet. Finish a session in any Rival app.</div>')+'</div>';
+ h+='<div class="cat">EVERY XP · BY DAY</div><div class="card pled">'+(rows.length?(()=>{/* CR020 - nine "Mind Rival · session +10" lines in a row said nothing new. One line per app per day: "Mind · 9 sessions +90". */const g=[],ix={};rows.forEach(r=>{const d=new Date(r.at),dk=d.toDateString()+'|'+r.app;let x=ix[dk];if(!x){x=ix[dk]={d,app:r.app,n:0,rv:0,xp:0};g.push(x)}if(r.kind==='rival')x.rv++;else if(r.kind==='levelup')x.lu=(x.lu||0)+1;else x.n++;x.xp+=(+r.xp||0)});return g.slice(0,40).map(x=>{const a=APPS.find(q=>q.id===x.app)||{id:x.app,name:x.app,ac:'#888'};const what=[x.n?x.n+' session'+(x.n===1?'':'s'):'',x.rv?x.rv+' rival win'+(x.rv===1?'':'s'):'',x.lu?'leveled up'+(x.lu>1?' × '+x.lu:''):''].filter(Boolean).join(' · ');return '<div class="pl"><span class="pd">'+x.d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+'</span><span class="pw"><i style="background:'+a.ac+'"></i>'+esc(a.art?shortApp(a):a.name)+' · '+what+'</span><b>+'+com(x.xp)+'</b></div>'}).join('')})():'<div class="small">Nothing yet.</div>')+'</div>';
+ h+='<div class="cat">HOW POINTS WORK</div><div class="card"><div class="small">A finished session in any Rival app: <b>10 XP</b>.<br>Beating your rival or personal best: <b>100 XP</b>.<br>Leveling up inside an app (like RankUp): <b>500 XP</b>, once per level.<br>Levels 1 to 10 cost <b>500 XP</b> each. After that each level costs a little more (level 20 = '+com(LVCOST(20))+', level 50 = '+com(LVCOST(50))+', level 99 = '+com(LVCOST(99))+'). You never earn less; the climb just gets steeper, up to Level '+MAX_LEVEL+'.<br>Leveling up in the Club itself pays nothing extra, so points never double up.<br>The week runs Sunday to Saturday. The server sets the XP, so it’s the same for everyone.</div></div>'+clubScoreHTML();
+ return h}
+function appsPage(){return ''+CATS.map(c=>{const L2=APPS.filter(a=>a.cat===c);if(!L2.length)return '';return '<div class="cat">'+c+'</div><div class="grid">'+L2.map(a=>{const s=stateOf(a);return '<button class="app '+s+'" data-app="'+a.id+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt="" loading="lazy"><span class="st '+s+'"><i></i>'+STN[s]+'</span><div class="tx"><u></u><b>'+esc(a.name)+'</b><span>'+esc(a.line)+'</span></div></button>'}).join('')+'</div>'}).join('')}
+function appsHTML(){return '<div class="cat">YOUR APPS</div><div class="agrid">'+CATS.map(c=>APPS.filter(a=>a.cat===c)).flat().map(a=>{const s=stateOf(a);return '<button class="ai '+s+'" data-app="'+a.id+'" style="--ac:'+a.ac+'" aria-label="'+esc(a.name)+(s==='soon'?' (coming soon)':'')+'"><img src="'+a.art+'" alt="" loading="lazy"><b>'+esc(a.name)+'</b>'+(s!=='open'?'<i class="as">'+STN[s]+'</i>':'')+'</button>'}).join('')+'</div>'}
+/* CR017 - Coach E, 17 Nov: "you don't have to put rival for everything ... stride, rep, mind, rest, rank up. Those pills should all be
+   same size ... the time slot in the same line as run or walk ... just the app thumbnail under repeats ... thin those out but fully informative."
+   One row: [5:00 AM  Run or walk / 15 min · pick which one]  [REPEATS / (thumb) Stride ›]. The app's name is no longer repeated in the
+   line under. The glowing dot is gone (it only meant the app's colour). */
+function shortApp(a){return ({rankup:'RankUp',bmx:'BMX',trail:'Trail'})[a.id]||String(a.name).replace(/\s*Rival$/i,'')}
+function evLink(x){const a=APPS.find(q=>q.id===x.app);if(!a||x.plain||stateOf(a)==='soon')return '';const row=x.act?S.evs.find(r=>r.id===x.id):null,pg=row&&row.data&&row.data.prog||'';
+ return '<button class="evgo" data-goapp="'+a.id+'" data-item="'+(row?esc(row.id):'')+'" data-prog="'+esc(pg)+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><span>'+esc(shortApp(a))+'</span>›</button>'}
+function evTag(x){return isDone(x)?'<span class="tg g">✓ DONE</span>':x.clash?'<span class="tg w">IN SLEEP HOURS</span>':x.over?'<span class="tg w">OVERLAPS</span>':x.edit?'<span class="tg">SLEEP</span>':x.act?'<span class="tg">'+(x.rep?'REPEATS':(S.evs.find(r=>r.id===x.id)||{data:{}}).data.byPlanner?'PLANNED':'ONCE')+'</span>':'<span class="tg g">LIVE</span>'}
+function evSub(x){let t=String(x.sub||'');APPS.forEach(a=>{const n=String(a.name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');t=t.replace(new RegExp('\\s*·\\s*'+n+'(?=\\s*(·|$))','g'),'').replace(new RegExp('^'+n+'\\s*·\\s*'),'')});return t.trim()}
+function evRow(x){const a=APPS.find(q=>q.id===x.app),at=x.plain?'disabled':x.act?'data-act="'+x.id+'" data-day="'+x.day+'"':x.edit?'data-sleep="1"':'data-fixed="'+x.app+'"',sb=evSub(x);
+ return '<div class="evw" style="--ac:'+(a?a.ac:'#8d8d98')+'"><button class="ev" '+at+'><b><time>'+fT(x.t)+'</time>'+esc(x.name)+'</b>'+(sb?'<span>'+esc(sb)+'</span>':'')+'</button><div class="evr">'+evTag(x)+(S.schedEdit?(x.act?'<button type="button" class="evdel" data-del="'+esc(x.id)+'" data-day="'+esc(x.day)+'" aria-label="Remove '+esc(x.name)+'">✕ REMOVE</button>':'<button type="button" class="evdel" data-hide="'+esc(x.id)+'" aria-label="Remove '+esc(x.name)+'">✕ REMOVE</button>'):evLink(x))+'</div></div>'}
+function schedHTML(){if(!S.user)return '';const e=events();if(!e.list.length)S.schedEdit=false;
+ return '<div class="cat">YOUR SCHEDULE</div><div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP REMOVE TO TAKE ONE OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b>'+(e.list.length?'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button>':'<span>'+e.list.length+' ITEM'+(e.list.length===1?'':'S')+'</span>')+'</div>'
+ +(e.list.length?e.list.map(evRow).join(''):'<div class="small">Nothing on the schedule yet.</div>')
+ +'<button class="go" id="scAdd">+ ADD TO MY SCHEDULE</button><div class="two"><button class="go ghost" id="scWk">SEE THE WEEK</button>'+(e.P?'<button class="go ghost" id="scT">CHANGE SLEEP</button>':'<button class="go ghost" id="scNew">SET BEDTIME + WAKE</button>')+'</div>'
+ +'<button class="go ghost" id="scDay">'+(myDay()&&myDay().leave?'MY DAY · LEAVE '+esc(fT(R.at(R.dayStr(Date.now()),myDay().leave)))+(myDay().home?' · HOME '+esc(fT(R.at(R.dayStr(Date.now()),myDay().home))):''):'MY DAY · SET WORK TIMES')+'</button>'+(e.hidden?'<button class="go ghost" id="scUnh">SHOW '+e.hidden+' HIDDEN</button>':'')+'<div class="small" style="margin-top:10px">Times shown in '+esc(tzName())+'. One schedule for every Rival app. Tap EDIT to take anything off. Changing one thing never moves another.</div></div>'}
+/* ---- the member's own schedule items (a run, a lift, boxing, a ride ...). One row each in club_schedule, type 'activity'.
+   data: {title, time:'17:30', durMin, days:[0-6] | null, date:'YYYY-MM-DD' (one time), from, skip:{day:1}, move:{day:'HH:MM'}} ---- */
+/* CR014 - Coach E: "should say which rank up and how long". The real programs each app has, with the app's own lengths.
+   RankUp's list and minutes are copied from RankUp's own program table. Apps not listed here have no fixed programs yet: you name the item. */
+const PROGS={
+ rankup:[['shadow','SHADOW FIGHT',7,'Technique. Phone on the bag, facing you. The camera grades hand, path, elbow and return.'],['precision','PRECISION POWER',11,'One punch at a time, measured against your own cross.'],['power','PURE POWER',7,'Both hands, hit hard. Average power, hardest shot, and how well you hold it to the bell.'],['fasthands','FAST HANDS',5,'Speed. Punch count against your pace target.'],['endurance','PUNCH ENDURANCE',11,'Three long rounds. How much your output drops from first to last.'],['mechanics','PUNCH MECHANICS',7,'The warm-up. One minute on each punch, 1 through 6.'],['combos','COMBO MECHANICS',7,'One combo a minute, clean, then sit down on it.'],['boxfit','BOX FIT',12,'Conditioning. Bag and bodyweight in equal parts.']],
+ mind:[['solo','THE CUBE',10,'Clear your next level. From level 20 you move 2 blocks at once, 3 at 30 ... 10 at 100: pick them in order, then GO.'],['daily','DAILY CUBE',5,'Today’s cube. Three stages.'],['frenzy','FRENZY LIVE',10,'Everybody on one cube. Noon, 3 PM and 8 PM Eastern.']],
+ stride:[['walk','WALK',30,''],['run','RUN',30,'']]
+};
+const progOf=(app,id)=>(PROGS[app]||[]).find(x=>x[0]===id)||null;
+const KIND=[['money','Money check-in','Money Rival'],['stride','Run or walk','Stride Rival'],['rep','Lift','Rep Rival'],['rankup','Boxing','RankUp Boxing'],['mind','Cube games','Cube Rival'],['mindrival','Mind training','Mind Rival'],['bmx','BMX session','Ride Flow BMX'],['trail','Trail ride','Trail Rival'],['rest','Wind-down or nap','Rest Rival'],['meal','Meal',''],['club','Something else','']];
+function occOn(day){const wd=R.dayDate(day).getDay(),out=[];S.evs.forEach(r=>{const d=r.data,rep=Array.isArray(d.days)&&d.days.length>0;if(rep?!(d.days.includes(wd)&&day>=(d.from||'2000-01-01')&&!(d.until&&day>d.until)):d.date!==day)return;if(d.skip&&d.skip[day])return;
+  const tm=(d.move&&d.move[day])||(d.times&&d.times[wd])||d.time,t=R.at(day,tm),dur=+d.durMin||30,k=KIND.find(x=>x[0]===r.app);const pg=progOf(r.app,d.prog);out.push({id:r.id,day,t,t1:t+dur*MIN,name:d.title||(pg?pg[1]:(k?k[1]:'Activity')),sub:dur+' min'+(k&&k[2]?' · '+k[2]:'')+(pg&&d.title?' · '+pg[1]:'')+(!pg&&PROGS[r.app]?' · pick which one':'')+(d.move&&d.move[day]?' · moved today':''),app:r.app,act:true,rep})});return out.sort((a,b)=>a.t-b.t)}
+function sesOn(app,day){return (S.rows||[]).filter(r=>r.app===app&&r.kind==='session'&&R.dayStr(new Date(r.at).getTime())===day).length}
+function isDone(x){if(!x.act)return false;const row=S.evs.find(r=>r.id===x.id);return !!(row&&row.data.done&&row.data.done[x.day])||sesOn(x.app,x.day)>0}
+const rid=()=>'ev-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const SCHERR=m=>/club_schedule|schema cache|does not exist/i.test(m)?'The schedule switches on once RS001-REST.sql is run in Supabase.':'Could not save. Check your connection and try again.';
+/* CR032 - "a save failed with a connection error" + "preserve edits when saving fails". One quiet retry on a dropped connection; if it
+   still fails the change is kept on this phone (cr_draft) and the form stays open with TRY AGAIN. Nothing says SAVED unless the server said so. */
+const netErr=m=>/fetch|network|load failed|timeout|offline|connection|503|502|504/i.test(String(m||''));
+function draftPut(k,v){try{const D=JSON.parse(localStorage.getItem('cr_draft')||'{}');if(v==null)delete D[k];else D[k]=Object.assign({at:Date.now()},v);localStorage.setItem('cr_draft',JSON.stringify(D))}catch(e){}}
+function draftGet(k){try{const x=JSON.parse(localStorage.getItem('cr_draft')||'{}')[k];return x&&Date.now()-x.at<7*864e5?x:null}catch(e){return null}}
+async function evWrite(row,data){let r=await evWrite0(row,data);if(r!=='ok'&&r!=='stale'&&netErr(r)){await new Promise(z=>setTimeout(z,1500));r=await evWrite0(row,data)}return r}
+async function evWrite0(row,data){/* row=null: new. Otherwise an edit that names the revision it started from. */try{
+  if(!row){const r={user_id:S.user.id,id:rid(),app:data.app,type:'activity',rev:1,origin:'club',data:data.data};const {error}=await SB.from('club_schedule').insert(r);if(error)throw error;S.evs.push(r);return 'ok'}
+  const {data:out,error}=await SB.from('club_schedule').update({rev:row.rev+1,origin:'club',app:data.app||row.app,data:data.data,updated_at:new Date().toISOString()}).eq('user_id',S.user.id).eq('id',row.id).eq('rev',row.rev).select('rev');if(error)throw error;
+  if(!out||!out.length){await loadSched();return 'stale'}row.rev++;row.data=data.data;if(data.app)row.app=data.app;return 'ok'}catch(e){return String(e&&e.message||'error')}}
+async function evDelete(row){try{const {error}=await SB.from('club_schedule').delete().eq('user_id',S.user.id).eq('id',row.id).eq('rev',row.rev);if(error)throw error;await loadSched();return 'ok'}catch(e){return String(e&&e.message||'error')}}
+function addSheet(row,fromDay){const t=R.dayStr(Date.now()),dk=row?row.id:'new',dr=draftGet(dk),d=dr?dr.data:row?row.data:{};let days=new Set(Array.isArray(d.days)?d.days:[]),app=dr?dr.app:row?row.app:'stride',dupOk=false;const rep0=row&&Array.isArray(row.data.days)&&row.data.days.length>0,fd=fromDay&&fromDay>t?fromDay:t;
+ sheet('<div class="ey">'+(row?(rep0?'CHANGE FROM '+fD(fd).toUpperCase()+' ON · EARLIER DAYS STAY AS THEY WERE':'CHANGE IT'):'ADD TO MY SCHEDULE')+'</div><div class="big">'+(row?'EDIT':'WHAT + WHEN')+'</div>'+(dr?'<div class="small" style="color:var(--wa,#ffd45a)">Your last change didn’t save. It’s filled in below - tap SAVE to try again.</div>':'')
+ +'<label for="aK">WHAT</label><select id="aK">'+KIND.map(k=>'<option value="'+k[0]+'"'+(k[0]===app?' selected':'')+'>'+k[1]+(k[2]?' · '+k[2]:'')+'</option>').join('')+'</select>'
+ +'<div id="aPgW"><label for="aPg">WHICH ONE</label><select id="aPg"></select></div>'
+ +'<label for="aN">NAME IT (OPTIONAL)</label><input id="aN" maxlength="40" value="'+esc(d.title||'')+'" placeholder="e.g. 5 mile loop">'
+ +'<div class="small" id="aRep" style="display:none;margin-top:10px">Rep Rival picks the workout. Club just holds the time.</div><div id="aPW"><label for="aP">THE PLAN · WHAT TO DO (OPTIONAL)</label><textarea id="aP" maxlength="600" placeholder="e.g. Squat 5 x 5. Then 3 rounds of lunges.">'+esc(d.plan||'')+'</textarea></div>'
+ +'<div class="two"><div><label for="aT">TIME</label><input id="aT" type="time" value="'+(d.time||'17:30')+'"></div><div><label for="aD">MINUTES</label><input id="aD" type="number" inputmode="numeric" min="5" max="600" value="'+(d.durMin||45)+'"></div></div>'
+ +'<label>REPEAT ON (LEAVE EMPTY FOR ONE TIME)</label><div class="chips" id="aW">'+['S','M','T','W','T','F','S'].map((c,i)=>'<button type="button" data-wd="'+i+'" class="'+(days.has(i)?'on':'')+'" aria-pressed="'+days.has(i)+'" aria-label="'+['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]+'">'+c+'</button>').join('')+'</div>'
+ +'<div id="aOne"><label for="aDt">WHICH DAY</label><input id="aDt" type="date" min="'+t+'" value="'+(d.date||t)+'"></div>'
+ +'<div class="err" id="aE"></div><button class="go" id="aGo">SAVE</button><button class="go ghost" id="aX">CANCEL</button>');
+ const sync=()=>{$('aOne').style.display=days.size?'none':'';const isRep=$('aK').value==='rep';$('aRep').style.display=isRep?'':'none';$('aPW').style.display=isRep?'none':''};sync();
+ const pgFill=(keep)=>{const L=PROGS[$('aK').value]||[];$('aPgW').style.display=L.length?'':'none';$('aPg').innerHTML=L.map(x=>'<option value="'+x[0]+'"'+(keep===x[0]?' selected':'')+'>'+x[1]+' · '+x[2]+' min</option>').join('')},pgUse=()=>{const g=progOf($('aK').value,$('aPg').value);if(!g)return;$('aD').value=g[2];const cur=$('aP').value.trim();if(!cur||Object.values(PROGS).some(L=>L.some(x=>x[3]===cur)))$('aP').value=g[3]};
+ pgFill(d.prog);if(!row||!d.prog)pgUse();$('aK').onchange=()=>{pgFill();pgUse();sync();dupOk=false};$('aPg').onchange=pgUse;$('aW').querySelectorAll('button').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;days.has(i)?days.delete(i):days.add(i);b.classList.toggle('on',days.has(i));b.setAttribute('aria-pressed',days.has(i));sync()});
+ $('aX').onclick=shut;$('aGo').onclick=async()=>{const tm=$('aT').value,dur=Math.max(5,Math.min(600,+$('aD').value||30)),dt=$('aDt').value;if(!tm){$('aE').textContent='Set a time.';return}if(!days.size&&!dt){$('aE').textContent='Pick the day, or pick days to repeat on.';return}
+  const K=$('aK').value,nd=Object.assign({},d,{title:$('aN').value.trim(),prog:(PROGS[K]||[]).length?$('aPg').value:null,plan:K==='rep'?(d.plan||''):$('aP').value.trim(),time:tm,durMin:dur,days:days.size?[...days].sort():null,date:days.size?null:dt,from:d.from||t});
+  if(row&&tm!==row.data.time){nd.move={};if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm)}
+  /* CR032 - "manually adding replacements risked duplicate activities": say so before adding a second one of the same thing */
+  if(!row&&!dupOk){const look=days.size?Array.from({length:7},(_,i)=>R.addDays(t,i)).filter(x=>days.has(R.dayDate(x).getDay())):[dt],hit=look.map(x=>occOn(x).find(o=>o.app===K)).find(Boolean);
+   if(hit){dupOk=true;$('aE').textContent='You already have '+hit.name+' on '+fD(hit.day)+' at '+fT(hit.t)+'. To change that one, close this and tap it. Tap SAVE again to add another anyway.';return}}
+  $('aGo').disabled=true;$('aGo').textContent='SAVING…';const r=rep0?await evSplit(row,fd,{app:K,data:nd}):await evWrite(row,{app:K,data:nd});$('aGo').textContent='SAVE';
+  if(r==='ok'){draftPut(dk,null);shut();draw4keep();toast(row?'CHANGED':'ON YOUR SCHEDULE')}else if(r==='stale'){draftPut(dk,null);shut();draw4keep();toast('IT CHANGED SOMEWHERE ELSE · SHOWING THE NEWEST')}else{draftPut(dk,{app:K,data:nd});$('aGo').disabled=false;$('aGo').textContent='TRY AGAIN';$('aE').textContent='NOT SAVED YET. '+SCHERR(r)+' Your changes are still here.'}}}
+/* CR032 - "this occurrence" or "this and future", and past completions stay put. Changing a repeating item from a day on ends the old one
+   the day before and starts the new one that day, so every earlier day keeps its time, its ticks and its notes. 'rep-week' is Rep Rival's
+   own row and keeps its id (Rep reads it back), so it is changed in place. */
+async function evSplit(row,day,ch){const d=row.data;if(row.id==='rep-week'||!(Array.isArray(d.days)&&d.days.length)||day<=(d.from||'2000-01-01'))return evWrite(row,ch);
+ const pick=(o,keep)=>{const x={};Object.keys(o||{}).forEach(k=>{if(keep(k))x[k]=o[k]});return x},nd=Object.assign({},ch.data,{from:day,until:d.until||null});['done','notes','skip','move'].forEach(k=>nd[k]=pick(d[k],x=>x>=day));
+ const r1=await evWrite(null,{app:ch.app||row.app,data:nd});if(r1!=='ok')return r1;
+ const od=JSON.parse(JSON.stringify(d));od.until=R.addDays(day,-1);const r2=await evWrite(row,{data:od});if(r2!=='ok'){toast('NEW TIMES SAVED · THE OLD ONE STILL SHOWS, TAP IT TO END IT')}await loadSched();return 'ok'}
+/* ===== CR014 · THE PANEL. Coach E: "this should be the coaching notes preview and the notes following the completion ... it's essentially
+   the coaching panel for the app ... can listen and hear all". One screen per item: BEFORE (plan + coach's notes) -> ARM IT -> AFTER (marked done
+   by the app, the results, the XP line by line, the coach's read, your note). Results come from club_session, which each app writes when a
+   session ends. The coach's notes are written by rules from the member's own record - every line is a fact that is on file. ===== */
+const REPORTS={stride:1,mind:1,rest:1,rankup:1,rep:1};   /* apps that tell Club Rival when a session happened (these mark themselves done) */
+const dayOf=r=>R.dayStr(new Date(r.at).getTime());
+function resOn(app,day){return S.res.filter(r=>r.app===app&&dayOf(r)===day).sort((a,b)=>new Date(a.at)-new Date(b.at))}
+function resBefore(app,day,prog){return S.res.filter(r=>r.app===app&&dayOf(r)<day&&(!prog||!r.data||!r.data.program||r.data.program===prog)).sort((a,b)=>new Date(b.at)-new Date(a.at))[0]||null}
+const mFmt=m=>esc(String(m.v))+(m.u?' '+esc(m.u):'');
+function lastDone(row,day){let best=null;const d=row.data;Object.keys(d.done||{}).forEach(k=>{if(k<day&&(!best||k>best))best=k});(S.rows||[]).forEach(r=>{if(r.app===row.app&&r.kind==='session'){const k=dayOf(r);if(k<day&&(!best||k>best))best=k}});return best}
+function coachBefore(row,day){const d=row.data,L=[],a=APPS.find(x=>x.id===row.app),pg=progOf(row.app,d.prog),t=R.dayStr(Date.now());
+ const ld=lastDone(row,day);L.push(ld?'Last time you did this: '+fD(ld)+(R.diffDays(ld,day)>1?', '+R.diffDays(ld,day)+' days ago.':', yesterday.'):'This is your first one on record. Set the mark today.');
+ const pr=resBefore(row.app,day,d.prog);if(pr&&pr.data&&Array.isArray(pr.data.metrics)&&pr.data.metrics.length)L.push('Numbers to beat from '+fD(dayOf(pr))+': '+pr.data.metrics.slice(0,4).map(m=>m.k+' '+String(m.v)+(m.u?' '+m.u:'')).join(', ')+'.');
+ const nk=Object.keys(d.notes||{}).filter(k=>k<day).sort().pop();if(nk)L.push('Your note from '+fD(nk)+': “'+d.notes[nk]+'”');
+ if(a&&row.app!=='club'&&row.app!=='meal'){const m=appStats(row.app);if(m.total)L.push(a.name+' this week: '+m.ses+' session'+(m.ses===1?'':'s')+(m.pSes?', against '+m.pSes+' by this point last week.':'.'))}
+ const wk=[];for(let i=1;i<=7;i++){const dd=R.addDays(day,-i);occOn(dd).filter(x=>x.id===row.id).forEach(x=>wk.push(isDone(x)))}if(wk.length>=2){const dn=wk.filter(Boolean).length;L.push('Last 7 days: '+dn+' of '+wk.length+' of these done.'+(dn===wk.length?' Keep the run going.':wk[0]===false&&wk[1]===false?' The last two were missed. Today gets you back on.':''))}
+ if(S.rest&&day===t){const N=S.rest.N,k=Object.keys(N).filter(x=>R.isReal(N[x])&&x>=R.addDays(t,-1)).sort().pop();if(k){const pl=R.planFor(S.rest.P,k),c=R.nightCalc(N[k],pl);if(c.sleepMin!=null)L.push('Sleep on file for last night: '+fDur(c.sleepMin)+(c.sleepMin<pl.L?', under your own target.':c.inRange?', inside your target.':'.'))}}
+ if(pg&&pg[3]&&pg[3]!==d.plan)L.push(pg[1]+': '+pg[3]);
+ return L}
+function coachAfter(row,day){const L=[],rs=resOn(row.app,day),pv=resBefore(row.app,day,row.data.prog);
+ rs.forEach(r=>{const M=(r.data&&r.data.metrics)||[];const prs=M.filter(m=>m.pr);if(prs.length)L.push('New best: '+prs.map(m=>m.k+' '+String(m.v)+(m.u?' '+m.u:'')).join(', ')+'.');
+  if(pv&&pv.data&&pv.data.metrics)M.forEach(m=>{const o=pv.data.metrics.find(x=>x.k===m.k);if(o&&typeof m.v==='number'&&typeof o.v==='number'&&m.v!==o.v){const df=Math.round((m.v-o.v)*100)/100;L.push(m.k+': '+(df>0?'+':'−')+Math.abs(df)+(m.u?' '+m.u:'')+' against '+fD(dayOf(pv))+'.')}})});
+ const riv=(S.rows||[]).filter(r=>r.app===row.app&&r.kind==='rival'&&dayOf(r)===day).length;if(riv)L.push('You beat your rival.');
+ return L}
+function bigPic(row,day){const L=[],a=APPS.find(x=>x.id===row.app),t=R.dayStr(Date.now());let pl=0,dn=0;for(let i=1;i<=28;i++){const dd=R.addDays(t,-i);occOn(dd).filter(x=>x.id===row.id).forEach(x=>{pl++;if(isDone(x))dn++})}
+ if(pl)L.push('Last 4 weeks: '+dn+' of '+pl+' of these done ('+Math.round(dn*100/pl)+'%).');
+ if(a&&S.rows){const m=appStats(row.app);if(m.total){const w=m.weeks;L.push(a.name+' sessions by week, oldest first: '+[w[3],w[2],w[1],w[0]].join(', ')+'.'+(w[0]>w[1]&&w[1]>=w[2]?' Trending up.':w[0]<w[1]&&w[1]<=w[2]&&w[1]>0?' Trending down.':''))}}
+ const rs=S.res.filter(r=>r.app===row.app&&(!row.data.prog||!r.data||!r.data.program||r.data.program===row.data.prog)).sort((x,y)=>new Date(x.at)-new Date(y.at));if(rs.length>=2){const f=rs[0],l=rs[rs.length-1];((l.data&&l.data.metrics)||[]).slice(0,3).forEach(m=>{const o=((f.data&&f.data.metrics)||[]).find(x=>x.k===m.k);if(o&&typeof m.v==='number'&&typeof o.v==='number'&&m.v!==o.v)L.push(m.k+': '+o.v+' → '+m.v+(m.u?' '+m.u:'')+' since '+fD(dayOf(f))+'.')})}
+ for(let i=1;i<=14;i++){const dd=R.addDays(day,i),x=occOn(dd).find(q=>q.id===row.id);if(x){L.push('Next one: '+fD(dd)+' at '+fT(x.t)+'.');break}}
+ return L}
+let SPK=false;function speak(text){try{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(SPK){y.cancel();SPK=false;if($('xL'))$('xL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance(text);u.rate=1;u.onend=u.onerror=()=>{SPK=false;if($('xL'))$('xL').textContent='▶ LISTEN'};y.cancel();y.speak(u);SPK=true;if($('xL'))$('xL').textContent='■ STOP'}catch(e){}}
+
+/* CR027 - Coach E: "I want to take some stuff off ... when I click it, it goes to the app itself." Delete was buried under CHANGE THIS ITEM.
+   Now: EDIT on the schedule puts a REMOVE button on every item; the item's own box has REMOVE right at the top too. */
+function remSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;const d=row.data,rep=Array.isArray(d.days)&&d.days.length>0,o=occOn(day).find(x=>x.id===id),nm=o?o.name:(d.title||'This one');
+ sheet('<div class="ey">REMOVE</div><div class="big">'+esc(nm).toUpperCase()+'?</div><div class="small">'+(rep?'This one repeats ('+d.days.map(i=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][i]).join(', ')+'). Take off just this one, or every one?':'It comes off your schedule.')+' Sessions you already did keep their XP.</div>'
+  +(rep?'<button class="go" id="rmOne">JUST THIS ONE ('+fD(day).toUpperCase()+')</button><button class="go ghost" id="rmAll" style="color:#ff8a94">EVERY ONE</button>':'<button class="go" id="rmAll">YES, REMOVE IT</button>')+'<div class="err" id="rmE"></div><button class="go ghost" id="rmX">KEEP IT</button>');
+ $('rmX').onclick=shut;
+ const fin=(r,msg)=>{if(r==='ok'||r==='stale'){shut();draw4keep();toast(msg)}else $('rmE').textContent=SCHERR(r)};
+ if($('rmOne'))$('rmOne').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.skip=nd.skip||{};nd.skip[day]=1;fin(await evWrite(row,{data:nd}),'REMOVED · THE REST STAY')};
+ $('rmAll').onclick=async()=>{const t=R.dayStr(Date.now()),at=day>t?day:t;if(rep&&at>(d.from||t)){const nd=JSON.parse(JSON.stringify(d));nd.until=R.addDays(at,-1);fin(await evWrite(row,{data:nd}),'STOPPED · YOUR HISTORY STAYS')}else fin(await evDelete(row),'REMOVED')}}
+function actSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;const d=row.data,rep=Array.isArray(d.days)&&d.days.length>0,o=occOn(day).find(x=>x.id===id),a=APPS.find(x=>x.id===row.app),can=a&&stateOf(a)!=='soon';if(!o)return;
+ const t=R.dayStr(Date.now()),auto=sesOn(row.app,day)>0,hand=!!(d.done&&d.done[day]),fin=auto||hand,rs=resOn(row.app,day),before=coachBefore(row,day),after=fin?coachAfter(row,day):[];
+ const xp=(S.rows||[]).filter(r=>r.app===row.app&&dayOf(r)===day),xpT=xp.reduce((x,r)=>x+(+r.xp||0),0),nSes=xp.filter(r=>r.kind==='session').length,nRiv=xp.filter(r=>r.kind==='rival').length;
+ const say=[o.name+'.',d.plan?'The plan. '+d.plan:''].concat(fin?['Done.'].concat(rs.flatMap(r=>((r.data&&r.data.metrics)||[]).map(m=>m.k+', '+m.v+(m.u?' '+m.u:'')+(m.pr?', a new best':'')+'.')),xpT?[xpT+' X P earned.']:[],after):['Coach’s notes.'].concat(before)).filter(Boolean).join(' ');
+ sheet('<div class="ey">'+fD(day).toUpperCase()+' · '+fT(o.t)+(fin?' · ✓ DONE':'')+'</div><div class="big">'+esc(o.name).toUpperCase()+'</div><div class="small">'+esc(o.sub)+(progOf(row.app,d.prog)&&d.title?' · '+progOf(row.app,d.prog)[1]:'')+(rep?' · repeats '+d.days.map(i=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][i]).join(', '):' · one time')+'</div>'
+ +'<div class="two" style="margin-top:12px"><button class="go ghost" id="xL" style="margin:0">▶ LISTEN</button><button class="go ghost" id="xRm" style="margin:0;color:#ff8a94">✕ REMOVE</button></div>'
+ +(d.plan?'<div class="pan"><span>THE PLAN</span><p style="white-space:pre-wrap">'+esc(d.plan)+'</p></div>':'')
+ +(fin?'<div class="pan ok" id="xRes"><span>✓ DONE'+(auto?' · RECORDED BY '+esc(a?a.name:'THE APP').toUpperCase():' · MARKED BY YOU')+'</span>'
+    +(rs.length?rs.map(r=>(r.title?'<p style="font-weight:900">'+esc(r.title)+' · '+fT(new Date(r.at).getTime())+'</p>':'')+'<div class="mt">'+((r.data&&r.data.metrics)||[]).slice(0,12).map(m=>'<div><span>'+esc(String(m.k)).toUpperCase()+'</span><b>'+mFmt(m)+'</b>'+(m.pr?'<em>NEW BEST</em>':'')+'</div>').join('')+'</div>').join('<div style="height:10px"></div>')
+      :'<p class="small" style="font-size:12.5px">'+(auto?esc(a.name)+' recorded the session. It does not send its numbers to Club Rival yet, so the detail is still inside the app.':'No numbers on file for this one.')+'</p>')
+    +(xp.length?'<div style="margin-top:10px;border-top:1px solid var(--ln);padding-top:8px">'+(nSes?'<div class="xpl"><span>'+nSes+' session'+(nSes===1?'':'s')+' finished</span><b>+'+nSes*10+' XP</b></div>':'')+(nRiv?'<div class="xpl"><span>Beat your rival'+(nRiv>1?' × '+nRiv:'')+'</span><b>+'+nRiv*100+' XP</b></div>':'')+'<div class="xpl" style="border-top:1px solid var(--ln);margin-top:4px;padding-top:8px"><span>TOTAL</span><b>+'+xpT+' XP</b></div></div>':'')
+    +'</div>'+(after.length?'<div class="pan" id="xAf"><span>COACH’S NOTES · AFTER</span>'+after.map(x=>'<p>'+esc(x)+'</p>').join('')+'</div>':'')
+   :'<div class="pan" id="xBf"><span>COACH’S NOTES · BEFORE YOU START</span>'+before.map(x=>'<p>'+esc(x)+'</p>').join('')+'</div>')
+ +(()=>{const B=bigPic(row,day);return B.length?'<div class="pan" id="xBp"><span>THE BIGGER PICTURE</span>'+B.map(x=>'<p>'+esc(x)+'</p>').join('')+'</div>':''})()
+ +(can&&!fin?'<button class="go" id="xO">ARM IT · OPEN '+esc(a.name).toUpperCase()+'</button>':'')
+ +(day<=t&&!auto?(REPORTS[row.app]&&!hand?'<div class="small" style="margin-top:10px">This marks itself done when '+esc(a.name)+' records the session.</div>':'<button class="go ghost" id="xDn">'+(hand?'UNDO · NOT DONE':'✓ MARK IT DONE')+'</button>'+(REPORTS[row.app]||hand?'':'<div class="small" style="margin-top:6px">'+(a?esc(a.name)+' does not report to Club Rival yet, so this one is marked by hand for now.':'Marked by hand.')+'</div>')):'')
+ +'<label for="xN">'+(fin?'YOUR NOTE · HOW IT WENT':'YOUR NOTE FOR THIS ONE')+'</label><textarea id="xN" maxlength="600" placeholder="'+(fin?'How it went. What to change next time.':'Anything to remember going in.')+'">'+esc((d.notes&&d.notes[day])||'')+'</textarea><button class="go ghost" id="xNs">SAVE NOTE</button>'
+ +(can&&fin?'<button class="go ghost" id="xO">OPEN '+esc(a.name).toUpperCase()+'</button>':'')
+ +'<button class="go ghost" id="xCh" aria-expanded="false">CHANGE THE TIME OR DETAILS</button><div id="xChB" style="display:none">'
+ +'<label for="xT">NEW TIME</label><input id="xT" type="time" value="'+((d.move&&d.move[day])||(d.times&&d.times[R.dayDate(day).getDay()])||d.time)+'">'
+ +(rep?'<div class="two"><button class="go ghost" id="xM">JUST '+esc(fD(day).toUpperCase())+'</button><button class="go ghost" id="xF">THIS + EVERY ONE AFTER</button></div>':'<button class="go ghost" id="xM">SAVE THE NEW TIME</button>')
+ +(rep?'<div class="two"><button class="go ghost" id="xS">SKIP THIS ONE</button><button class="go ghost" id="xE">MORE CHANGES</button></div>':'<button class="go ghost" id="xE">MORE CHANGES</button>')
+ +'<button class="go ghost" id="xD" style="color:#ff8a94">'+(rep?(day>(d.from||t)||t>(d.from||t)?'STOP IT FROM '+esc(fD(day>t?day:t).toUpperCase()):'DELETE EVERY ONE'):'DELETE IT')+'</button></div><div class="err" id="xErr"></div><button class="go ghost" id="xX">CLOSE</button>');
+ if($('xRm'))$('xRm').onclick=()=>remSheet(id,day);
+ const done=(r,msg)=>{if(r==='ok'){shut();draw4keep();toast(msg)}else if(r==='stale'){shut();draw4keep();toast('IT CHANGED SOMEWHERE ELSE · SHOWING THE NEWEST')}else $('xErr').textContent=SCHERR(r)};
+ $('xX').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}SPK=false;shut()};$('xL').onclick=()=>speak(say);$('xCh').onclick=()=>{const b=$('xChB'),on=b.style.display==='none';b.style.display=on?'':'none';$('xCh').setAttribute('aria-expanded',on)};
+ if($('xO'))$('xO').onclick=()=>openApp(row.app,true,'&go=resume&item='+encodeURIComponent(row.id)+(d.prog?'&program='+encodeURIComponent(d.prog):''));$('xE').onclick=()=>addSheet(row,day);
+ $('xNs').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.notes=nd.notes||{};const v=$('xN').value.trim();if(v)nd.notes[day]=v;else delete nd.notes[day];done(await evWrite(row,{data:nd}),'NOTE SAVED')};
+ if($('xDn'))$('xDn').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.done=nd.done||{};const was=nd.done[day];if(was)delete nd.done[day];else nd.done[day]=Date.now();done(await evWrite(row,{data:nd}),was?'NOT DONE':'DONE ✓')};
+ $('xM').onclick=async()=>{const tm=$('xT').value;if(!tm)return;const nd=JSON.parse(JSON.stringify(d));if(rep){nd.move=nd.move||{};nd.move[day]=tm}else nd.time=tm;done(await evWrite(row,{data:nd}),rep?'MOVED · ONLY THIS ONE':'NEW TIME SAVED')};
+ if($('xF'))$('xF').onclick=async()=>{const tm=$('xT').value;if(!tm)return;const nd=JSON.parse(JSON.stringify(d));nd.time=tm;if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm);nd.move=Object.fromEntries(Object.entries(nd.move||{}).filter(([k])=>k<day));$('xF').disabled=true;done(await evSplit(row,day,{data:nd}),'NEW TIME FROM '+fD(day).toUpperCase()+' ON')};
+ if($('xS'))$('xS').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.skip=nd.skip||{};nd.skip[day]=1;done(await evWrite(row,{data:nd}),'SKIPPED · THE REST STAY')};
+ /* CR032 - "preserve past completions and change history": a repeating item with days behind it is ENDED, not wiped */
+ const stopAt=day>t?day:t,stop=rep&&stopAt>(d.from||t);
+ $('xD').onclick=()=>{sheet('<div class="ey">'+(stop?'STOP IT':'DELETE')+'</div><div class="big">'+esc(o.name).toUpperCase()+'?</div><div class="small">'+(stop?'It comes off your schedule from '+fD(stopAt)+' on. Every earlier day stays in your history.':rep?'Every one of these comes off your schedule.':'This comes off your schedule.')+' Sessions you already did keep their XP.</div><button class="go" id="dY">'+(stop?'YES, STOP IT':'YES, DELETE')+'</button><div class="err" id="dE"></div><button class="go ghost" id="dN">KEEP IT</button>');$('dN').onclick=shut;
+  $('dY').onclick=async()=>{let r;if(stop){const nd=JSON.parse(JSON.stringify(d));nd.until=R.addDays(stopAt,-1);r=await evWrite(row,{data:nd})}else r=await evDelete(row);if(r==='ok'||r==='stale'){shut();draw4keep();toast(stop?'STOPPED · YOUR HISTORY STAYS':'DELETED')}else $('dE').textContent='NOT DONE YET. '+SCHERR(r)}}}
+/* CR014 - Coach E: "instead of checks ... just put sessions on the right and just put that number ... all of them can be green lit, they
+   don't have to be red ... red, orange, yellow, green in terms of readiness ... green when I'm on ... overdue yellow or orange ... really
+   past due red ... show on the right 2 of 3 or 3 of 3, because it knows the plan." The dot is no longer the app's colour: it is how you
+   stand against the plan. No plan for that app = just the number, green. */
+const RDY={green:'#3ddc84',yellow:'#ffd45a',orange:'#ff8a1e',red:'#ff3b4e'};
+function rdy(done,plan){if(!plan)return 'green';const short=plan-done;return short<=0?'green':short===1?'yellow':short===2?'orange':'red'}
+function rdyDay(done,plan){if(!plan)return 'green';return done>=plan?'green':done===0?'red':'orange'}
+function numHTML(done,plan,lvl){return '<i style="color:'+RDY[lvl]+';text-align:right;white-space:nowrap">'+(plan?done+' of '+plan:done)+'<small>'+(plan?'PLANNED':'SESSION'+(done===1?'':'S'))+'</small></i>'}
+/* this week, per app: sessions done, items planned so far (up to today), items planned for the whole week */
+function weekPlan(app){const t=R.dayStr(Date.now()),w0=R.dayStr(weekStart());let all=0,soFar=0;for(let i=0;i<7;i++){const d=R.addDays(w0,i),c=occOn(d).filter(x=>x.app===app).length;all+=c;if(d<=t)soFar+=c}return {all,soFar}}
+function doneDays(n){const t=R.dayStr(Date.now()),out=[];for(let i=0;i<n;i++){const d=R.addDays(t,-i),items=[];const occ0=occOn(d);APPS.forEach(a=>{const c=sesOn(a.id,d),pl=occ0.filter(x=>x.app===a.id).length,hand=occ0.filter(x=>x.app===a.id&&isDone(x)).length,dn=Math.max(c,hand);if(c||pl){const lvl=d===t&&dn<pl?(dn?'yellow':'orange'):rdyDay(dn,pl);items.push({app:a.id,name:a.name,sub:c?c+' session'+(c===1?'':'s')+' recorded':pl&&!dn?(d===t?'Still to do today':'Planned, not done'):'Marked done by you',done:dn,plan:pl,lvl})}});
+  const occ=occOn(d);occ.forEach(x=>{const row=S.evs.find(r=>r.id===x.id),nt=row&&row.data.notes&&row.data.notes[d];if(!APPS.find(a=>a.id===x.app)){const dn=isDone(x)?1:0;items.push({name:x.name,sub:dn?'ticked by you · '+fT(x.t):(d===t?'Still to do today':'Planned, not done'),note:nt,done:dn,plan:1,lvl:d===t&&!dn?'orange':rdyDay(dn,1)})}else if(nt){const it=items.find(i=>i.name===(APPS.find(a=>a.id===x.app)||{}).name);if(it)it.note=nt;else items.push({name:x.name,sub:'note only · not marked done',note:nt,open:true,ac:'#8d8d98'})}});
+  const missed=d<t?occ.filter(x=>!isDone(x)).length:0;items.sort((a,b)=>({red:0,orange:1,yellow:2,green:3}[a.lvl||'green'])-({red:0,orange:1,yellow:2,green:3}[b.lvl||'green']));out.push({d,items,planned:occ.length,missed})}return out}
+function doneHTML(){if(!S.user)return '';const L=doneDays(7),tot=L.reduce((a,x)=>a+x.items.length,0);
+ return '<div class="cat">WHAT YOU’VE DONE</div><div class="card" id="dn"><div class="ah"><b>LAST 7 DAYS</b><span>'+L.filter(x=>x.items.some(it=>(it.done||0)>0)).length+' OF 7 DAYS ACTIVE</span></div>'
+  +(tot?L.filter(x=>x.items.length||x.missed).map((x,i)=>'<div class="dayh" style="margin-top:'+(i?14:6)+'px">'+(x.d===R.dayStr(Date.now())?'TODAY · ':'')+fD(x.d).toUpperCase()+(x.missed?' · '+x.missed+' PLANNED, NOT DONE':'')+'</div>'+x.items.map(it=>'<div class="hr" style="border-top:0;padding:7px 0"><div><b><i class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:'+RDY[it.lvl||'green']+';box-shadow:0 0 8px '+RDY[it.lvl||'green']+'"></i>'+esc(it.name)+'</b><span>'+esc(it.sub)+'</span>'+(it.note?'<span style="color:var(--tx);margin-top:5px;white-space:pre-wrap">“'+esc(it.note)+'”</span>':'')+'</div>'+(it.open?'':numHTML(it.done||0,it.plan||0,it.lvl||'green'))+'</div>').join('')).join(''):'<div class="small">Nothing recorded in the last 7 days. Finish a session in any Rival app, or tick an item on your schedule, and it lands here.</div>')
+  +'</div>'}
+function tzName(){try{return Intl.DateTimeFormat('en-US',{timeZoneName:'long'}).formatToParts(new Date()).find(p=>p.type==='timeZoneName').value}catch(e){return 'your phone’s time'}}
+/* CR032 - "I leave for work at seven. Fit my Monday, Wednesday, Friday workout around that." Work times live in one row, 'club-day'.
+   The planner never puts anything between (leave - get-ready time) and home, and never before you're up or into wind-down. */
+function daySheet(){const w=myDay()||{},on=new Set(w.days||[1,2,3,4,5]);
+ sheet('<div class="ey">MY DAY</div><div class="big">WORK TIMES</div><div class="small">The planner fits workouts around these. It never plans inside work time or cuts into sleep. Leave it empty if you don’t go out to work.</div>'
+ +'<div class="two"><div><label for="dL">LEAVE FOR WORK</label><input id="dL" type="time" value="'+esc(w.leave||'')+'"></div><div><label for="dP">GET READY (MIN)</label><input id="dP" type="number" inputmode="numeric" min="0" max="180" value="'+(w.prep!=null?w.prep:30)+'"></div></div>'
+ +'<label for="dH">HOME BY</label><input id="dH" type="time" value="'+esc(w.home||'')+'">'
+ +'<label>WORK DAYS</label><div class="chips" id="dW">'+['S','M','T','W','T','F','S'].map((c,i)=>'<button type="button" data-wd="'+i+'" class="'+(on.has(i)?'on':'')+'" aria-pressed="'+on.has(i)+'" aria-label="'+['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]+'">'+c+'</button>').join('')+'</div>'
+ +'<div class="err" id="dE"></div><button class="go" id="dGo">SAVE</button>'+(w.leave?'<button class="go ghost" id="dClr">I DON’T GO OUT TO WORK</button>':'')+'<button class="go ghost" id="dX">CANCEL</button>');
+ $('dW').querySelectorAll('button').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;on.has(i)?on.delete(i):on.add(i);b.classList.toggle('on',on.has(i));b.setAttribute('aria-pressed',on.has(i))});$('dX').onclick=shut;
+ const save=async v=>{$('dGo').disabled=true;$('dGo').textContent='SAVING…';const r=await dayWrite(v);$('dGo').disabled=false;$('dGo').textContent='SAVE';if(r==='ok'){shut();draw4keep();toast('MY DAY SAVED · RE-RUN YOUR PLAN TO USE IT')}else $('dE').textContent='NOT SAVED YET. '+SCHERR(r)};
+ $('dGo').onclick=()=>{const L=$('dL').value,H=$('dH').value;if(H&&!L){$('dE').textContent='Set when you leave too.';return}if(L&&H&&H<=L){$('dE').textContent='Home time has to be after you leave.';return}save({leave:L||null,home:H||null,prep:Math.max(0,Math.min(180,+$('dP').value||0)),days:[...on].sort()})};
+ if($('dClr'))$('dClr').onclick=()=>save({leave:null,home:null,prep:30,days:[...on].sort()})}
+async function dayWrite(v){const go=async()=>{try{const row=S.day;if(!row){const {error}=await SB.from('club_schedule').insert({user_id:S.user.id,id:'club-day',app:'club',type:'day',rev:1,origin:'club',data:v});if(error)throw error}
+  else{const {data,error}=await SB.from('club_schedule').update({rev:row.rev+1,origin:'club',data:v,updated_at:new Date().toISOString()}).eq('user_id',S.user.id).eq('id','club-day').eq('rev',row.rev).select('rev');if(error)throw error;if(!data||!data.length){await loadSched();return 'stale'}}
+  await loadSched();return 'ok'}catch(e){return String(e&&e.message||'error')}};let r=await go();if(r!=='ok'&&r!=='stale'&&netErr(r)){await new Promise(z=>setTimeout(z,1500));r=await go()}return r}
+function weekSheet(){const t=R.dayStr(Date.now()),P=schedP();let h='<div class="ey">YOUR SCHEDULE · '+esc(tzName()).toUpperCase()+'</div><div class="big">NEXT 7 DAYS</div>';
+ for(let i=0;i<7;i++){const d=R.addDays(t,i),rows=occOn(d).map(x=>Object.assign(x,{}));if(P){const pl=R.planFor(P,R.addDays(d,1)),p=R.planned(pl,R.addDays(d,1));if(R.dayStr(p.bed)===d)rows.push({t:p.bed,name:'Bedtime',sub:'Wake '+fT(p.wake)+' · Rest Rival',app:'rest',edit:true,plain:i>0})}
+  rows.sort((a,b)=>a.t-b.t);h+='<div class="dayh">'+(i===0?'TODAY · ':i===1?'TOMORROW · ':'')+fD(d).toUpperCase()+'</div>'+(rows.length?rows.map(evRow).join(''):'<div class="small" style="padding:8px 0">Open</div>')}
+ h+='<button class="go" id="wA">+ ADD TO MY SCHEDULE</button><button class="go ghost" id="wX">CLOSE</button>';sheet(h);$('wX').onclick=shut;$('wA').onclick=()=>addSheet(null);wireEv($('shC'))}
+function wireEv(root){root.querySelectorAll('[data-goapp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const it=b.dataset.item,pg=b.dataset.prog;openApp(b.dataset.goapp,true,'&go=resume'+(it?'&item='+encodeURIComponent(it):'')+(pg?'&program='+encodeURIComponent(pg):''))});root.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>actSheet(b.dataset.act,b.dataset.day));root.querySelectorAll('[data-sleep]').forEach(b=>b.onclick=()=>schedSheet('tonight'));root.querySelectorAll('[data-fixed]').forEach(b=>b.onclick=()=>openApp(b.dataset.fixed,true));root.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();remSheet(b.dataset.del,b.dataset.day)});root.querySelectorAll('[data-hide]').forEach(b=>b.onclick=e=>{e.stopPropagation();hideSheet(b.dataset.hide)});if(root.querySelector('#scUnh'))root.querySelector('#scUnh').onclick=unhideAll;if(root.querySelector('#scEd'))root.querySelector('#scEd').onclick=()=>{S.schedEdit=!S.schedEdit;draw()}}
+function schedSheet(mode){const e=events(),d=S.sched?S.sched.data:null,pl=e.P?R.planFor(e.P,e.td):null,td=e.td||R.addDays(R.dayStr(Date.now()),1);
+ sheet('<div class="ey">'+(mode==='tonight'?'TONIGHT ONLY · '+fD(td).toUpperCase():mode==='new'?'YOUR SLEEP SCHEDULE':'EVERY NIGHT FROM NOW ON')+'</div><div class="big">'+(mode==='tonight'?'CHANGE TONIGHT':'BEDTIME + WAKE')+'</div><div class="small">'+(mode==='tonight'?'Only tonight changes. Your regular schedule and every past night stay as they are.':'Starts tonight. Past nights keep the plan they were scored with.'+(d&&d.sched?' Your weekend times stay as they are.':''))+'</div>'
+ +'<div class="two"><div><label for="ssB">BEDTIME</label><input id="ssB" type="time" value="'+(pl?(mode==='tonight'?pl.bed:d.bed):'22:30')+'"></div><div><label for="ssW">WAKE TIME</label><input id="ssW" type="time" value="'+(pl?(mode==='tonight'?pl.wake:d.wake):'06:30')+'"></div></div><div class="err" id="ssE"></div><button class="go" id="ssGo">SAVE</button>'+(mode==='tonight'?'<button class="go ghost" id="ssAll">CHANGE EVERY NIGHT INSTEAD</button>':'')+'<button class="go ghost" id="ssX">CANCEL</button>');
+ $('ssX').onclick=shut;if($('ssAll'))$('ssAll').onclick=()=>schedSheet('series');$('ssGo').onclick=async()=>{const b=$('ssB').value,w=$('ssW').value;if(!b||!w){$('ssE').textContent='Set both times.';return}$('ssGo').disabled=true;const r=await schedSave(mode,td,b,w);
+  if(r==='ok'){shut();draw();toast('SCHEDULE SAVED')}else if(r==='stale'){shut();draw();toast('IT CHANGED IN REST RIVAL · SHOWING THE NEWEST')}else{$('ssGo').disabled=false;$('ssE').textContent=/club_schedule|schema cache|does not exist/i.test(r)?'The schedule switches on once RS001-REST.sql is run in Supabase.':'Could not save. Check your connection and try again.'}}}
+async function schedSave(mode,td,bed,wake){try{const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if(!S.sched){const doc={planV:1,bed,wake,sched:null,windMin:30,overrides:{},notifyOwner:'rest',tz};const {error}=await SB.from('club_schedule').insert({user_id:S.user.id,id:'rest-sleep',app:'rest',type:'sleep_schedule',rev:1,origin:'club',data:doc});if(error){if(/duplicate|23505/i.test(String(error.message)+error.code)){await loadSched();return 'stale'}throw error}S.sched={rev:1,origin:'club',data:doc};return 'ok'}
+  const base=S.sched.rev,doc=JSON.parse(JSON.stringify(S.sched.data));doc.overrides=doc.overrides||{};
+  if(mode==='tonight')doc.overrides[td]=Object.assign({},doc.overrides[td]||{},{bed,wake});
+  else{if(doc.sched)Object.keys(doc.sched).forEach(k=>{const x=doc.sched[k];if(x.bed===doc.bed&&x.wake===doc.wake){x.bed=bed;x.wake=wake}});doc.bed=bed;doc.wake=wake}
+  const today=R.dayStr(Date.now());Object.keys(doc.overrides).forEach(k=>{if(k<R.addDays(today,-60))delete doc.overrides[k]});
+  const {data,error}=await SB.from('club_schedule').update({rev:base+1,origin:'club',data:doc,updated_at:new Date().toISOString()}).eq('user_id',S.user.id).eq('id','rest-sleep').eq('rev',base).select('rev');if(error)throw error;
+  if(!data||!data.length){await loadSched();return 'stale'}S.sched={rev:base+1,origin:'club',data:doc};return 'ok'}catch(e){return String(e&&e.message||'error')}}
+async function loadSched(){try{const {data,error}=await SB.from('club_schedule').select('id,app,type,rev,origin,data').eq('user_id',S.user.id).limit(500);if(error)throw error;S.sched=(data||[]).find(r=>r.id==='rest-sleep')||null;S.evs=(data||[]).filter(r=>r.type==='activity'&&r.data&&r.data.time);S.goal=(data||[]).find(r=>r.id==='club-goal')||null;S.hide=(data||[]).find(r=>r.id==='club-hide')||null;S.day=(data||[]).find(r=>r.id==='club-day')||null;S.schedOk=true}catch(e){S.schedOk=false}}
+const myDay=()=>S.day&&S.day.data||null;
+async function load4(){if(!SB||!S.user)return;await loadSched();
+ try{const {data,error}=await SB.from('club_session').select('id,app,at,title,data').eq('user_id',S.user.id).gte('at',new Date(Date.now()-90*864e5).toISOString()).limit(2000);S.res=error?[]:(data||[])}catch(e){S.res=[]}
+ try{const {data}=await SB.from('club_summary').select('app,data,updated_at').eq('user_id',S.user.id);S.sums={};(data||[]).forEach(r=>S.sums[r.app]=r)}catch(e){}
+ try{const [n,p]=await Promise.all([SB.from('rest_nights').select('day,kind,deleted,data').eq('user_id',S.user.id).limit(2000),SB.from('rest_profile').select('plan,ledger').eq('user_id',S.user.id).limit(1)]);
+  if(n.error||p.error)throw 0;const N={};(n.data||[]).forEach(r=>{const x=r.data;if(x&&x.kind!=='nap'&&!x.demo)N[x.day]=x});const pr=p.data&&p.data[0];S.rest=pr&&pr.plan&&pr.plan.versions&&pr.plan.versions.length?{N,P:pr.plan,ledger:pr.ledger||[]}:null}catch(e){S.rest=null}}
+/* Rest's numbers for a period: live from the nights when we have them, else the last summary Rest Rival sent, else nothing. */
+function restCmp(kind){const t=R.dayStr(Date.now());if(S.rest){let ref=t;if(kind==='day'){const ks=Object.keys(S.rest.N).filter(k=>R.isReal(S.rest.N[k])).sort();ref=ks.length?ks[ks.length-1]:t}return Object.assign(R.compare(kind,ref,S.rest.N,S.rest.P,t),{live:true})}
+ const sm=S.sums.rest&&S.sums.rest.data;if(sm&&sm.period&&sm.period.kind===kind)return {primaryRivalPct:sm.primaryRivalPct,relativeDeltaPct:sm.relativeDeltaPct,status:sm.status,eligibleDays:sm.coverage.eligibleDays,pairedDays:sm.coverage.pairedDays,live:false,why:''};return null}
+const STAT={baseline_needed:'Baseline needed',sparse:'Not enough nights yet',from_zero:'Improved from zero',both_zero:'No score',in_progress:'',ok:''};
+function pctHTML(c){if(!c)return '<div class="pn" style="font-size:20px">No data yet</div>';if(c.primaryRivalPct==null)return '<div class="pn" style="font-size:20px">'+(STAT[c.status]||'No score')+'</div>';const d=c.relativeDeltaPct;return '<div class="pn '+(d>0?'up':d<0?'dn':'')+'">'+R.fmtPct(c.primaryRivalPct)+'<small>OF RIVAL</small></div>'}
+/* CR014 · every app's numbers. Comes from the shared XP record each app already writes: sessions and rival wins, this week against the
+   same days of last week. An app with nothing last week has no percentage (never a made-up one). */
+function appStats(id,now){now=now||Date.now();const w0=weekStart(now),span=now-w0,p0=w0-7*864e5,o={id,ses:0,riv:0,xp:0,pSes:0,pRiv:0,last:0,weeks:[0,0,0,0],total:0};
+ for(const r of S.rows||[]){if(r.app!==id)continue;const t=new Date(r.at).getTime();o.total++;if(t>o.last)o.last=t;const wi=Math.floor((w0+7*864e5-1-t)/(7*864e5));if(r.kind==='session'&&wi>=0&&wi<4)o.weeks[wi]++;
+  if(t>=w0){o.xp+=+r.xp||0;r.kind==='rival'?o.riv++:r.kind==='session'?o.ses++:0}else if(t>=p0&&t<p0+span){r.kind==='rival'?o.pRiv++:r.kind==='session'?o.pSes++:0}}
+ o.pct=o.pSes>0?100*o.ses/o.pSes:null;return o}
+function appPanel(id){if(id==='rest')return restPanel();const a=APPS.find(x=>x.id===id),m=appStats(id),mx=Math.max(1,...m.weeks),can=stateOf(a)!=='soon';
+ sheet('<div class="ey" style="color:'+a.ac+'">PRO PANEL</div><div class="big">'+esc(a.name).toUpperCase()+'</div>'
+ +(m.pct==null?'<div class="pn" style="font-size:20px">'+(m.ses?'First week on record':'No sessions this week')+'</div>':'<div class="pn '+(m.pct>100?'up':m.pct<100?'dn':'')+'">'+R.fmtPct(m.pct)+'<small>OF LAST WEEK</small></div>')
+ +'<div class="small" style="margin-top:6px">'+m.ses+' session'+(m.ses===1?'':'s')+' so far this week · '+m.pSes+' by this point last week</div>'
+ +'<div class="kv"><div><span>SESSIONS</span><b>'+m.ses+'</b><em>this week</em></div><div><span>RIVAL WINS</span><b>'+m.riv+'</b><em>'+m.pRiv+' by now last week</em></div><div><span>XP</span><b>'+com(m.xp)+'</b><em>this week</em></div><div><span>LAST SESSION</span><b>'+(m.last?new Date(m.last).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—')+'</b><em>'+(m.last?fT(m.last):'none yet')+'</em></div></div>'
+ +(()=>{const L=S.res.filter(r=>r.app===id).sort((x,y)=>new Date(y.at)-new Date(x.at)).slice(0,3);return L.length?'<h3>LATEST RESULTS</h3>'+L.map(r=>'<div class="pan"><span>'+fD(dayOf(r)).toUpperCase()+(r.title?' · '+esc(r.title).toUpperCase():'')+'</span><div class="mt">'+((r.data&&r.data.metrics)||[]).slice(0,8).map(m=>'<div><span>'+esc(String(m.k)).toUpperCase()+'</span><b>'+mFmt(m)+'</b>'+(m.pr?'<em>NEW BEST</em>':'')+'</div>').join('')+'</div></div>').join(''):''})()
+ +'<h3>LAST 4 WEEKS · SESSIONS</h3><div class="wk" style="--ac:'+a.ac+'">'+[3,2,1,0].map(i=>'<div><b>'+m.weeks[i]+'</b><u style="height:'+Math.round(m.weeks[i]*56/mx)+'px"></u>'+(i===0?'THIS':i===1?'LAST':i+' AGO')+'</div>').join('')+'</div>'
+ +'<div class="small" style="margin-top:14px">'+(m.total?'':'Nothing from '+esc(a.name)+' on this account yet. Sign in inside the app with this same email and finish a session. ')+'Speed, distance, weight and the rest of the detail live inside the app.</div>'
+ +(can?'<button class="go" id="apO">OPEN '+esc(a.name).toUpperCase()+'</button>':'')+'<button class="go ghost" id="apA">+ PUT IT ON MY SCHEDULE</button><button class="go ghost" id="apX">BACK TO CLUB RIVAL</button>');
+ $('apX').onclick=()=>{shut();draw4keep()};if($('apO'))$('apO').onclick=()=>openApp(id,true);$('apA').onclick=()=>{addSheet(null);$('aK').value=id;$('aK').onchange()}}
+/* the club-wide score: an equal-weight average of the apps that have a valid rival % for this week. An app with no score adds nothing. */
+function clubScore(){const inn=[],out=[];APPS.forEach(a=>{let pct=null;if(a.id==='rest'){const c=restCmp('week');pct=c?c.primaryRivalPct:null}else pct=appStats(a.id).pct;
+  (pct!=null&&isFinite(pct)?inn:out).push({a,pct})});return {pct:inn.length?inn.reduce((x,y)=>x+y.pct,0)/inn.length:null,inn,out}}
+/* CR015 - "Club score this week, keep that." The score card alone, under the week's activity. */
+
+/* ======================================================================
+   CR021 - CLUB BOSS · THE 1% ENGINE. Coach E, 17 Nov: "make Club Rival all about moving it by 1% ... graph it out ... I don't want it
+   static, I want telemetry, a dot, you hit the button and see everything move." One rule for every app, set once here:
+     every day = 1% a session · 3 days a week = 2.5% · 2 days a week = 3% (the ceiling). The app does the math, people see one number.
+   YOUR LINE: each finished session moves you up by its percent (compounding). THE 1% PATH: 1% a day, every day, from your first day.
+   1% a day for a year = about 37x. Club Boss level = how many systems (apps) you ran this week.
+   "Most of your 1% is under the surface" - the line is the iceberg.
+   ====================================================================== */
+const PCT_RULE=[[7,1],[6,1],[5,1.5],[4,2],[3,2.5],[2,3],[1,3]];
+function pctFor(n){n=Math.max(1,Math.min(7,Math.round(n||3)));return PCT_RULE.find(r=>r[0]===n)[1]}
+function planDays(app){const d=new Set();(S.evs||[]).forEach(r=>{if(r&&r.app===app&&r.data&&Array.isArray(r.data.days))r.data.days.forEach(x=>d.add(+x))});return d.size}
+function seenDays(app,now){const t0=now-28*864e5,days=new Set();(S.rows||[]).forEach(r=>{if(r.app===app&&r.kind==='session'){const t=+new Date(r.at);if(t>t0)days.add(new Date(t).toDateString())}});return days.size/4}
+function perWeek(app,now){const G=goalNow(),rd=rankDays(G,app);if(rd)return rd;const p=planDays(app);return p||Math.max(1,Math.min(7,Math.round(seenDays(app,now))||3))}
+function bossData(now){now=now||Date.now();const rows=(S.rows||[]).filter(r=>r.kind==='session').map(r=>({app:r.app,t:+new Date(r.at)})).filter(r=>r.t<=now+6e4).sort((a,b)=>a.t-b.t);
+ if(!rows.length)return null;
+ const day=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
+ let start=day(rows[0].t);const minStart=day(now)-89*864e5;if(start<minStart)start=minStart;
+ const nDays=Math.round((day(now)-start)/864e5)+1,pct={};APPS.forEach(a=>pct[a.id]=pctFor(perWeek(a.id,now)));
+ const hit={};rows.forEach(r=>{if(r.t<start)return;const k=day(r.t)+'|'+r.app;hit[k]=r.app});
+ const byDay={};Object.keys(hit).forEach(k=>{const d=+k.split('|')[0];(byDay[d]=byDay[d]||[]).push(hit[k])});
+ /* each app keeps its own line (its sessions x its percent); YOU = the average of the apps you run. Hit your percent in every app
+    and you ride the 1% path exactly - running more systems is what makes you Club Boss, not a bigger number. */
+ const lines={};let you=1;const pts=[];
+ for(let i=0;i<nDays;i++){const dd=new Date(start);dd.setDate(dd.getDate()+i);const d=dd.getTime();/* calendar days (DST-safe) */
+  (byDay[d]||[]).forEach(a=>{lines[a]=(lines[a]||1)*(1+(pct[a]||1)/100)});
+  const ks=Object.keys(lines);you=ks.length?Math.pow(ks.reduce((t,k)=>t*lines[k],1),1/ks.length):1;pts.push({d,you,path:Math.pow(1.01,i+1)})}
+ const wk=day(now)-6*864e5,sys=new Set(rows.filter(r=>r.t>=wk).map(r=>r.app));
+ const prev=pts.length>1?pts[pts.length-2].you:1,todayPct=(you/prev-1)*100;
+ const back=Math.min(14,pts.length-1),g=back>0?Math.pow(you/pts[pts.length-1-back].you,1/back):1;
+ return {pts,you,path:pts[pts.length-1].path,days:nDays,sys:sys.size,sysApps:[...sys],year:Math.pow(Math.max(1,g),365),today:todayPct,pct}}
+
+/* CR025 - Coach E: "organize the CR with a nav bar, finally". Four tabs, always at the bottom, one tap to anything:
+   TODAY (your level strip + the schedule) · BOSS (the 1% graph, did you hit your percent, activity this week) · APPS · POINTS */
+const NAV=[['home','TODAY','<path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"/>'],
+ ['boss','BOSS','<path d="M3 17l5-5 4 3 8-8"/><path d="M15 7h5v5"/>'],
+ ['apps','APPS','<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>'],
+ ['pts','POINTS','<circle cx="12" cy="12" r="8"/><path d="M12 8v8M9 11l3-3 3 3"/>']];
+function navHTML(){const v=S.view||'home';return '<nav class="nav" aria-label="Club Rival">'+NAV.map(n=>'<button type="button" data-nav="'+n[0]+'" class="'+(v===n[0]?'on':'')+'"'+(v===n[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+n[2]+'</svg><span>'+n[1]+'</span></button>').join('')+'</nav>'}
+/* CR031 - YOUR GOAL: what, by when, and where 1% compounding gets you if you hit your plan every week. */
+function addMonths(d,n){const x=new Date(d.getFullYear(),d.getMonth()+n,d.getDate());return x}
+function ymdLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function goalProj(G){if(!G||!G.by||!G.ranked)return null;const end=new Date(G.by+'T12:00:00'),now=new Date(),wk=Math.max(0,(end-now)/6048e5);const L=G.ranked.map(app=>{const d=rankDays(G,app);return d*Math.log(1+pctFor(d)/100)});if(!L.length)return null;const per=L.reduce((a,b)=>a+b,0)/L.length;return {weeks:Math.round(wk),gain:Math.round((Math.exp(per*wk)-1)*100),end}}
+function goalCardHTML(){const G=goalNow();if(!G||!G.aim)return S.user&&G&&G.ranked?'<button class="card" id="gAimAdd" style="display:block;width:100%;text-align:left;margin-top:12px"><span class="ey">YOUR GOAL</span><div class="small" style="margin-top:6px">You haven’t said what it’s for. Tap to add your goal and the date.</div></button>':'';const P=goalProj(G);
+ return '<button class="card" id="gAimEdit" style="display:block;width:100%;text-align:left;margin-top:12px"><span class="ey">YOUR GOAL · BY '+esc(new Date(G.by+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}).toUpperCase())+'</span><div class="big" style="font-size:1.3rem;margin:6px 0 4px">'+esc(G.aim)+'</div>'
+  +(P?'<div class="small">'+(P.weeks?P.weeks+' weeks to go. Hit your plan every week and your 1% grows to <b>+'+P.gain+'%</b> by then.':'It’s goal day. Set the next one.')+'</div>':'')+'</button>'}
+function bossHTML(){if(!S.user)return '';const b=bossData();
+ if(!b)return '<div class="boss"><div class="bh"><b>CLUB BOSS</b><span>THE 1% ENGINE</span></div><div class="small">Finish a session in any app and your line starts. 1% a day for a year is about 37× better.</div></div>';
+ const W=340,H=96,P=8,n=b.pts.length,mx=Math.ceil(Math.max(b.you,b.path)*1.04*8)/8,/* the top snaps to the next half step, so a new session visibly lifts the dot */mn=1,x=i=>P+(n<2?W-2*P:(i*(W-2*P))/(n-1)),y=v=>H-P-((v-mn)/(mx-mn||1))*(H-2*P);
+ const line=k=>b.pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(p[k]).toFixed(1)).join(' ');
+ const ahead=b.you>=b.path,dx=x(n-1),dy=y(b.you);
+ BOSS.next={x:dx,y:dy,you:b.you};
+ return '<div class="boss" id="boss"><div class="bh"><b>CLUB BOSS · LEVEL '+b.sys+'</b><span>'+b.sys+' SYSTEM'+(b.sys===1?'':'S')+' THIS WEEK</span></div>'
+  +'<div class="bnums"><div><em id="bossYou">×'+b.you.toFixed(2)+'</em><small>YOU</small></div><div><em class="pth">×'+b.path.toFixed(2)+'</em><small>1% A DAY PATH</small></div><div><em class="'+(b.today>.005?'up':'')+'">'+(b.today>.005?'+'+b.today.toFixed(1)+'%':'0%')+'</em><small>TODAY</small></div></div>'
+  +'<svg class="bgr" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Your line '+b.you.toFixed(2)+' times, the 1 percent path '+b.path.toFixed(2)+' times"><defs><linearGradient id="bg1" x1="0" x2="1"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".4" stop-color="#ff8a1f"/><stop offset=".7" stop-color="#ffd21a"/><stop offset="1" stop-color="#34c759"/></linearGradient></defs>'
+  +'<path d="'+line('path')+'" class="bpath"/><path d="'+line('you')+'" class="byou" id="byou"/><g id="bdot" style="transform:translate('+(BOSS.last?BOSS.last.x:dx).toFixed(1)+'px,'+(BOSS.last?BOSS.last.y:dy).toFixed(1)+'px)"><circle r="9" class="bring"/><circle r="4.5" class="bcore"/></g></svg>'
+  +'<div class="bfoot">'+(ahead?'You’re ahead of the 1% path.':'Every session closes the gap.')+' On this pace: <b>×'+(b.year>99?'99+':b.year.toFixed(1))+'</b> in a year. <span class="bice">Most of your 1% is under the surface.</span></div>'
+  +'<details class="brule"><summary>How the 1% works</summary><div>Every day: <b>1%</b> a session · 3 days a week: <b>2.5%</b> · 2 days a week: <b>3%</b> (the most). Your schedule sets which one. Show up more and each day asks less of you. 1% a day for a year ≈ <b>37×</b>.</div></details></div>'}
+const BOSS={last:null,next:null};
+function bossAnim(){const g=$('bdot'),p=$('byou');if(!g||!BOSS.next)return;const nx=BOSS.next;
+ if(p&&!BOSS.drawn){try{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.getBoundingClientRect();p.style.transition='stroke-dashoffset 1.1s ease-out';p.style.strokeDashoffset=0}catch(e){}BOSS.drawn=1}
+ const moved=!BOSS.last||Math.abs(BOSS.last.x-nx.x)>.5||Math.abs(BOSS.last.y-nx.y)>.5;
+ if(moved){requestAnimationFrame(()=>{g.style.transition='transform .9s cubic-bezier(.2,.8,.2,1)';g.style.transform='translate('+nx.x.toFixed(1)+'px,'+nx.y.toFixed(1)+'px)'});
+  const e=$('bossYou'),from=BOSS.last?BOSS.last.you:1,to=nx.you,t0=performance.now();if(e&&Math.abs(to-from)>.0001){const step=t=>{const k=Math.min(1,(t-t0)/900);e.textContent='×'+(from+(to-from)*(1-Math.pow(1-k,3))).toFixed(2);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}}
+ BOSS.last=nx}
+function percHTML(){if(!S.user)return '';const now=Date.now(),w0=weekStart(now);
+ const L=APPS.map(a=>{const pw=perWeek(a.id,now),pc=pctFor(pw),days=new Set();(S.rows||[]).forEach(r=>{if(r.app===a.id&&r.kind==='session'&&+new Date(r.at)>=w0)days.add(new Date(r.at).toDateString())});return {a,pw,pc,done:days.size,planned:planDays(a.id)>0}}).filter(x=>x.done||x.planned);
+ if(!L.length)return '';
+ const dayIdx=new Date(now).getDay()+1;
+ return '<div class="cat">DID YOU HIT YOUR PERCENT?</div><div class="card" id="pp"><div class="ah"><b>THIS WEEK</b><span>SUN – SAT</span></div>'
+  +L.map(x=>{const need=x.pw,ok=x.done>=need,onPace=x.done>=Math.floor(need*dayIdx/7);return '<div class="vsr" style="--ac:'+x.a.ac+'"><img src="'+x.a.art+'" alt=""><span>'+esc(shortApp(x.a))+'</span><b>'+x.done+'/'+need+'</b><small>'+x.pc+'% a session</small><em class="'+(ok?'up':onPace?'':'dn')+'">'+(ok?'✓ HIT':onPace?'ON PACE':'BEHIND')+'</em></div>'}).join('')
+  +'<div class="small" style="margin-top:8px">Each session you do moves your line up by its percent. Hit every one and you stay on the 1% path.</div></div>'}
+function clubScoreHTML(){if(!S.user)return '';
+ /* CR020 - Coach E: "it says 0.0% ... what is that versus your rival week?" It compared each app to the same days last week and
+    averaged them, so one quiet app read 0% and the rest didn't count. Now it says it plainly: your sessions so far this week next to
+    last week by this same day, every app on its own line, and no number at all until there is a last week to compare to. */
+ const L=APPS.map(a=>({a,m:appStats(a.id)})).filter(x=>x.m.ses||x.m.pSes||x.m.riv||x.m.pRiv);
+ const now=L.reduce((t,x)=>t+x.m.ses+x.m.riv,0),was=L.reduce((t,x)=>t+x.m.pSes+x.m.pRiv,0);
+ const day=new Date().toLocaleDateString('en-US',{weekday:'long'});
+ let head;if(!L.length)head='<div class="small">Nothing yet this week or last week. Finish a session in any app.</div>';
+ else if(!was)head='<div class="vsn"><b>'+now+'</b><span>session'+(now===1?'':'s')+' this week</span></div><div class="small">Nothing to compare yet. Last week had no sessions by '+day+'.</div>';
+ else{const d=now-was;head='<div class="vsn"><b>'+now+'</b><span>this week</span><em class="'+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'▲ '+d+' ahead':d<0?'▼ '+(-d)+' behind':'even')+'</em></div><div class="small">Last week by '+day+': '+was+' session'+(was===1?'':'s')+'.</div>'}
+ return '<div class="cat">THIS WEEK VS LAST WEEK</div><div class="card" id="pp"><div class="ah"><b>SESSIONS SO FAR</b><span>SUN – '+day.slice(0,3).toUpperCase()+'</span></div>'+head
+  +(L.length?'<div class="vsl">'+L.map(x=>{const n=x.m.ses+x.m.riv,w=x.m.pSes+x.m.pRiv,d=n-w;return '<div class="vsr" style="--ac:'+x.a.ac+'"><img src="'+x.a.art+'" alt=""><span>'+esc(shortApp(x.a))+'</span><b>'+n+'</b><small>last week '+w+'</small><em class="'+(d>0?'up':d<0?'dn':'')+'">'+(d>0?'▲'+d:d<0?'▼'+(-d):'=')+'</em></div>'}).join('')+'</div>':'')+'</div>'}
+function panelHTML(){if(!S.user)return '';const c=restCmp(S.pk),sm=S.sums.rest&&S.sums.rest.data,cs=clubScore(),rest=APPS.find(a=>a.id==='rest'),e=events(),nx=e.list.find(x=>x.app==='rest'&&x.t>Date.now());
+ let last=null,st=null,xp=null;if(S.rest){const ks=Object.keys(S.rest.N).filter(k=>R.isReal(S.rest.N[k])).sort(),k=ks[ks.length-1];if(k){const pl=R.planFor(S.rest.P,k);last={localDate:k,sleepMin:R.nightCalc(S.rest.N[k],pl).sleepMin}}const x=R.streaks(S.rest.N,S.rest.P,R.dayStr(Date.now()));st={logged:x.logged.cur};const tot=R.ledgerTotal(S.rest.ledger);xp={netTotal:tot,level:R.levelOf(tot).level}}else if(sm){last=sm.last;st=sm.streaks;xp=sm.xp}
+ return '<div class="cat">PRO PANEL</div><div class="card" id="pp"><div class="ah"><b>CLUB SCORE · THIS WEEK</b><span>'+cs.inn.length+' OF '+APPS.length+' APPS</span></div>'
+  +(cs.pct==null?'<div class="small">No club score yet. It needs one app with sessions this week AND the week before.</div>':'<div class="pn '+(cs.pct>100?'up':cs.pct<100?'dn':'')+'">'+R.fmtPct(cs.pct)+'<small>OF YOUR RIVAL WEEK</small></div><div class="small" style="margin-top:6px">From '+cs.inn.map(x=>esc(x.a.name)).join(', ')+'. Each app counts the same. Rest Rival uses its sleep score; the others use sessions against the same days last week.</div>')
+  +'<div class="small" style="margin-top:6px">Not in the score yet: '+cs.out.map(x=>esc(x.a.name)).join(', ')+'.</div></div>'
+  +'<div class="card" style="margin-top:12px" id="ppAll"><div class="ah"><b>EVERY APP · THIS WEEK</b><span>DONE · PLANNED</span></div>'+APPS.map(a=>{const m=appStats(a.id),wp=weekPlan(a.id),lvl=wp.soFar?rdy(m.ses,wp.soFar):'green',c=a.id==='rest'?restCmp('week'):null,pct=a.id==='rest'?(c&&c.primaryRivalPct!=null?c.primaryRivalPct:null):m.pct;
+   return {a,m,wp,lvl,pct,k:({red:0,orange:1,yellow:2,green:3}[lvl])*10+(m.ses||wp.all?0:5)}}).sort((x,y)=>x.k-y.k).map(({a,m,wp,lvl,pct})=>'<button class="mx" data-panel="'+a.id+'"><img src="'+a.art+'" alt=""><div><b><i style="display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:'+(m.ses||wp.all?RDY[lvl]:'#3a3a44')+';box-shadow:0 0 8px '+(m.ses||wp.all?RDY[lvl]:'transparent')+'"></i>'+esc(a.name)+'</b><span>'+(m.total||wp.all?(wp.all?m.ses+' of '+wp.all+' planned this week':m.ses+' '+(a.id==='rest'?'night':'session')+(m.ses===1?'':'s')+' this week')+(pct!=null?' · '+R.fmtPct(pct)+' of last week':'')+(m.xp?' · '+com(m.xp)+' XP':''):'Not reporting yet')+'</span></div>'+(m.total||wp.all?numHTML(m.ses,wp.all,lvl):'<i style="color:var(--mut)">—</i>')+'</button>').join('')+'</div>'}
+function restPanel(){const rest=APPS.find(a=>a.id==='rest'),c=restCmp(S.pk),e=events(),t=R.dayStr(Date.now());let h='<div class="ey" style="color:#5aa2ff">PRO PANEL</div><div class="big">REST RIVAL</div>'
+  +'<div class="seg" role="tablist">'+[['day','DAY'],['week','WEEK'],['2w','2 WKS'],['month','MONTH'],['quarter','QTR']].map(x=>'<button role="tab" aria-selected="'+(S.pk===x[0])+'" data-pk="'+x[0]+'" class="'+(S.pk===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>';
+ if(!S.rest)h+=pctHTML(c)+'<div class="small" style="margin-top:8px">'+(c?'This is the last report Rest Rival sent. Open Rest Rival to refresh it.':'No Rest Rival nights on this account yet. Open Rest Rival, sign in with this email and confirm a night.')+'</div>';
+ else{const N=S.rest.N,P=S.rest.P,ks=Object.keys(N).filter(k=>R.isReal(N[k])).sort().reverse(),st=R.streaks(N,P,t),v=P.versions[P.versions.length-1];
+  h+=pctHTML(c)+'<div class="small" style="margin-top:6px">'+(c.primaryRivalPct!=null?(c.relativeDeltaPct>=0?'+':'−')+Math.abs(Math.round(c.relativeDeltaPct*10)/10)+'% against '+fD(c.period.rivStart)+(c.period.rivStart!==c.period.rivEnd?' – '+fD(c.period.rivEnd):'')+' · ':esc(c.why||'')+' ')+c.pairedDays+' of '+c.eligibleDays+' nights matched'+(c.inProgress?' · in progress':'')+'</div>';
+  if(c.raw){const r=c.raw,row=(n,cur,riv,hi,f)=>{const m=R.metricPct(cur,riv,hi);return '<div class="hr"><div><b>'+n+'</b><span>Now '+f(cur)+' · rival '+f(riv)+'</span></div><i class="'+(m.pct>100?'up':m.pct!=null&&m.pct<100?'dn':'')+'">'+(m.pct==null?esc(m.label):R.fmtPct(m.pct))+'</i></div>'};
+   h+='<h3>THE NUMBERS</h3>'+row('Sleep time',r.sleepMin[0],r.sleepMin[1],true,fDur)+row('Bedtime off plan',r.bedDev[0],r.bedDev[1],false,x=>Math.round(x)+' min')+row('Wake off plan',r.wakeDev[0],r.wakeDev[1],false,x=>Math.round(x)+' min')+(r.rested?row('Rested',r.rested[0],r.rested[1],true,x=>(Math.round(x*10)/10)+' / 5'):'')}
+  h+='<h3>STREAKS</h3><div class="kv" style="margin-top:8px">'+[['NIGHTS LOGGED',st.logged],['IN RANGE',st.durMet],['ON SCHEDULE',st.sched],['WIND-DOWN',st.wind]].map(x=>'<div><span>'+x[0]+'</span><b>'+x[1].cur+'</b><em>best '+x[1].best+'</em></div>').join('')+'</div>';
+  h+='<h3>TONIGHT’S PLAN</h3><div class="small" style="margin-top:6px">'+(e.P?e.list.filter(x=>x.app==='rest').map(x=>x.name+' '+fT(x.t)).join(' · '):'No schedule set')+' · target '+fDur(v.L)+' to '+fDur(v.U)+'</div>'+(v.items&&v.items.length?'<div class="small" style="margin-top:6px">Wind-down: '+v.items.map(i=>esc(i.label)).join(' · ')+'</div>':'')
+   +'<div class="two"><button class="go ghost" id="rpT">CHANGE TONIGHT</button><button class="go ghost" id="rpS">CHANGE EVERY NIGHT</button></div>';
+  h+='<h3>HISTORY · '+ks.length+' NIGHT'+(ks.length===1?'':'S')+'</h3>'+(ks.length?ks.slice(0,14).map(k=>{const pl=R.planFor(P,k),cc=R.nightCalc(N[k],pl),sc=R.nightScore(N[k],pl);return '<div class="hr"><div><b>'+fD(k)+'</b><span>'+fDur(cc.sleepMin)+' asleep · '+(N[k].source==='tracked'?'tracked':'by hand')+'</span></div><i>'+(sc==null?'—':Math.round(sc))+'</i></div>'}).join(''):'<div class="small">No confirmed nights yet.</div>')}
+ h+='<div class="small" style="margin-top:14px">Starting a night, ticking the wind-down and playing back sounds happen inside Rest Rival. Recordings never leave the phone that made them.</div><button class="go" id="rpO" style="background:linear-gradient(135deg,#5aa2ff,#2f6fe0);color:#fff">OPEN REST RIVAL</button><button class="go ghost" id="rpX">BACK TO CLUB RIVAL</button>';
+ sheet(h);$('rpX').onclick=()=>{shut();draw4keep()};$('rpO').onclick=()=>openApp('rest',true);if($('rpT'))$('rpT').onclick=()=>schedSheet('tonight');if($('rpS'))$('rpS').onclick=()=>schedSheet('series');
+ $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{S.pk=b.dataset.pk;try{localStorage.setItem('club_pk',S.pk)}catch(e){}restPanel()})}
+function draw4keep(){const y=scrollY;draw();scrollTo(0,y)}
+function wire4(){const on=(id,fn)=>{if($(id))$(id).onclick=fn};on('scNew',()=>schedSheet('new'));on('scT',()=>schedSheet('tonight'));on('scAdd',()=>addSheet(null));on('scDay',daySheet);on('plB',()=>goalNow()?planSheet():goalSheet());on('bfL',()=>{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(y.speaking){y.cancel();$('bfL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance('Coach’s read. '+coachRead().join(' ')+' Today’s brief. '+briefLines().map(x=>x.k.toLowerCase().replace(' · ',', ')+'. '+x.v+'.').join(' '));u.onend=()=>{if($('bfL'))$('bfL').textContent='▶ LISTEN'};y.speak(u);$('bfL').textContent='■ STOP'});on('scWk',weekSheet);wireEv($('m'));document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>b.dataset.panel==='rest'?restPanel():appPanel(b.dataset.panel))}
+try{const k=localStorage.getItem('club_pk');if(['day','week','2w','month','quarter'].includes(k))S.pk=k}catch(e){}
+window.CR={APPS,stats,levelOf,weekStart,draw,S,load,stateOf,events,clubScore,restCmp,schedSave,appStats,occOn,doneDays,isDone,coachBefore,coachAfter,briefLines,bigPic,coachRead,weekPlan,rdy,buildPlan,planWeek,lineUp,savePlan,GOALS};
+draw();
+(async()=>{if(!SB){bootDone();return}try{const {data}=await SB.auth.getSession();S.user=data&&data.session?data.session.user:null}catch(e){}if(S.user)load();else bootDone();
+ SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.user)load()});
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
