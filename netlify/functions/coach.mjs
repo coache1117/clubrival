@@ -1,4 +1,4 @@
-// CLUB RIVAL · CR036 · THE COACH. One coach behind the Orb in every Rival app.
+// CLUB RIVAL · CR037 · THE COACH (CR037: runs by voice - screens, apps, yes/no out loud). One coach behind the Orb in every Rival app.
 // The page sends: what you said + your day (schedule, sleep, work times, how each app went this week) + which app you came from.
 // The coach answers in a few spoken sentences and can PROPOSE changes (move / skip / add / open an app). Nothing changes until you say yes
 // on the screen - the page does the change itself, with the same safe saving every other change uses.
@@ -14,12 +14,15 @@ You can PROPOSE changes with the tools. Every change is shown to the user and on
 Use item ids and days exactly as given in DAY_CONTEXT. Times are 24h HH:MM in the user's time zone.
 Protect sleep and work: never propose a time inside the user's work window or wind-down, and say why when you refuse.
 Money: never say dollar amounts (Club only has percentages). Health: no medical advice or diagnosis; for pain, injury or feeling unwell, tell them to rest and talk to a doctor; for any crisis, tell them to call or text 988 (US) or 911 for an emergency.
-If the user came from an app (FROM_APP), lean on that app first.`;
+If the user came from an app (FROM_APP), lean on that app first.
+You can also RUN the app by voice: show_screen switches Club screens or opens the goal / plan / schedule / account panels, and open_app opens an app (for Mind Rival you can say which part to start). Those happen right away - just say what you're doing ("Opening your week."). Schedule changes (move / skip / add) still wait for a yes - the user can say "yes" or "no" out loud.
+New users: walk them through setup one short question at a time (sign in from the account panel, then set a goal with show_screen goal). Sign-in codes and anything about age or parent permission are done by the user on screen - never ask them to say a code out loud.`;
 const TOOLS = [
   { name: 'move_item', description: 'Propose moving a scheduled item to a new time (and optionally another day).', input_schema: { type: 'object', properties: { item_id: { type: 'string' }, day: { type: 'string', description: 'YYYY-MM-DD of the occurrence being moved' }, new_time: { type: 'string', description: 'HH:MM 24h' }, scope: { type: 'string', enum: ['this', 'future'], description: 'just this day, or this and every one after' } }, required: ['item_id', 'day', 'new_time', 'scope'] } },
   { name: 'skip_item', description: 'Propose skipping one occurrence of a scheduled item.', input_schema: { type: 'object', properties: { item_id: { type: 'string' }, day: { type: 'string' } }, required: ['item_id', 'day'] } },
   { name: 'add_item', description: 'Propose adding a one-time item to the schedule.', input_schema: { type: 'object', properties: { app: { type: 'string', description: 'stride, rep, rankup, mind, mindrival, rest, rise, money, biz, trail, bmx' }, title: { type: 'string' }, date: { type: 'string' }, time: { type: 'string' }, minutes: { type: 'integer' } }, required: ['app', 'title', 'date', 'time', 'minutes'] } },
-  { name: 'open_app', description: 'Propose opening one of the Rival apps (for example Mind Rival for a 60-second routine before a race).', input_schema: { type: 'object', properties: { app: { type: 'string' }, why: { type: 'string' } }, required: ['app'] } }
+  { name: 'open_app', description: 'Open one of the Rival apps right away (for example Mind Rival for a 60-second routine before a race). App ids: stride, rep, rankup, mind (Cube Rival game), mindrival (Mind Rival mental training), rest, rise, money, biz, care, trail, bmx.', input_schema: { type: 'object', properties: { app: { type: 'string' }, do: { type: 'string', enum: ['checkin', 'moment', 'focus', 'calm', 'tough', 'progress', 'history'], description: 'Mind Rival only: what to start - checkin (LET’S FOCUS), moment (60-second THE MOMENT), a focus/calm/tough rep, or a screen' }, why: { type: 'string' } }, required: ['app'] } },
+  { name: 'show_screen', description: 'Switch the Club Rival screen right away. today, week, month, quarter, boss, points, apps are screens; goal, plan, schedule, account open panels.', input_schema: { type: 'object', properties: { screen: { type: 'string', enum: ['today', 'week', 'month', 'quarter', 'boss', 'points', 'apps', 'goal', 'plan', 'schedule', 'account'] } }, required: ['screen'] } }
 ];
 export default async (req) => {
   if (req.method !== 'POST') return json({ error: 'post only' }, 405);
