@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR040</title>
+<title>Club Rival · CR041</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -228,7 +228,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR040';
+const BUILD='CR041';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -325,16 +325,18 @@ function coachOff(){CO.hands=false;stopListen();try{speechSynthesis.cancel()}cat
 const coachUp=()=>!!$('corb')&&$('sh').className==='on';
 function afterTalk(){CO.speaking=false;orbState('idle');const nx=CO.next.shift();if(nx)return runNav(nx);if(CO.bye){CO.bye=false;coachOff();return shut()}if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening)setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening&&!CO.speaking)listen()},250)}
 /* CR038 · in the Club Rival iPhone app the coach uses the phone's own ears (CoachSpeech), so it keeps listening - no tap each time. */
-const CSP=()=>{try{return window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.CoachSpeech||null}catch(e){return null}};
+const CSP=()=>{try{const C=window.Capacitor;if(!C)return null;if(C.Plugins&&C.Plugins.CoachSpeech)return C.Plugins.CoachSpeech;if(CO.csOK===false)return null;if(C.isNativePlatform&&C.isNativePlatform()&&C.registerPlugin){CO.csProxy=CO.csProxy||C.registerPlugin('CoachSpeech');return CO.csProxy}return null}catch(e){return null}};
+/* CR041 · what's inside this iPhone app - shown under the Orb when it can't listen, so one screenshot says what's wrong */
+function appInside(){try{const C=window.Capacitor;if(!C)return 'NOT IN AN APP';const pl=Object.keys(C.Plugins||{}).filter(k=>!/^(WebView|Console|CapacitorHttp|CapacitorCookies)$/.test(k));return (C.getPlatform?C.getPlatform():'?').toUpperCase()+' APP · PARTS: '+(pl.join(', ')||'NONE')+(C.PluginHeaders?' · '+C.PluginHeaders.length+' HEADERS':'')}catch(e){return 'CHECK FAILED'}}
 function heard(said){CO.listening=false;if(said.trim()){CO.quiet=0;ask(said.trim())}else{orbState('idle');if(CO.hands&&coachUp()&&++CO.quiet>=(CSP()?4:2)){CO.quiet=0;CO.hands=false;const b=$('cHands');if(b)b.textContent='HANDS-FREE OFF';const c=$('cost');if(c)c.textContent='I’M HERE · TAP THE ORB'}else if(CO.hands&&coachUp())setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.listening&&!CO.busy)listen()},300)}}
-async function nativeListen(cs){try{if(!CO.perm){const r=await cs.askPermission();CO.perm=!!(r&&r.speech==='granted'&&r.mic==='granted');if(!CO.perm){CO.hands=false;orbState('idle');return toast('ALLOW SPEECH + MICROPHONE FOR CLUB RIVAL IN SETTINGS')}}
+async function nativeListen(cs){if(CO.csOK!==true){try{await cs.available();CO.csOK=true}catch(e){CO.csOK=false;CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET ('+appInside()+') · SEND THIS SCREENSHOT')}}try{if(!CO.perm){const r=await cs.askPermission();CO.perm=!!(r&&r.speech==='granted'&&r.mic==='granted');if(!CO.perm){CO.hands=false;orbState('idle');return toast('ALLOW SPEECH + MICROPHONE FOR CLUB RIVAL IN SETTINGS')}}
  let said='',done=false,t=null,h1=null,h2=null,cap=null;const fin=()=>{if(done)return;done=true;clearTimeout(t);clearTimeout(cap);try{h1&&h1.remove();h2&&h2.remove()}catch(e){}cs.stop().catch(()=>{});CO.nat=null;heard(said)};
  CO.nat={stop:fin};h1=await cs.addListener('partial',d=>{said=String(d&&d.text||'');const c=$('cost');if(c)c.textContent='“'+said+'”';clearTimeout(t);t=setTimeout(fin,d&&d.final?60:1300)});
  h2=await cs.addListener('state',d=>{if(d&&d.status==='stopped'&&CO.listening)setTimeout(fin,80)});cap=setTimeout(()=>{if(!said)fin()},8000);
  await cs.start({});CO.micWhy='';CO.listening=true;orbState('listening')}catch(e){CO.listening=false;CO.nat=null;orbState('idle');toast('COULDN’T LISTEN · '+String(e&&e.message||e).slice(0,40).toUpperCase())}}
 /* CR039 · tapping the Orb never jumps into the type box (on iPhone that popped the keyboard over everything). If it can't listen, the reason stays under the Orb. */
 function micNote(t){CO.listening=false;orbState('idle');const hb=$('cHands');if(hb&&!CO.hands){hb.textContent='HANDS-FREE OFF';hb.setAttribute('aria-pressed','false')}CO.micWhy=t;const c=$('cost');if(c){c.textContent=t;c.classList.add('warn')}}
-function listen(){const cs=CSP();if(cs)return nativeListen(cs);if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()){CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET · BUILD CR038 IN CODEMAGIC · OR OPEN CLUBRIVAL.NETLIFY.APP IN SAFARI')}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){CO.hands=false;return micNote('THIS BROWSER CAN’T LISTEN · TAP THE BOX BELOW TO TYPE')}
+function listen(){const cs=CSP();if(cs)return nativeListen(cs);if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()){CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET ('+appInside()+') · SEND THIS SCREENSHOT · OR USE CLUBRIVAL.NETLIFY.APP IN SAFARI')}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){CO.hands=false;return micNote('THIS BROWSER CAN’T LISTEN · TAP THE BOX BELOW TO TYPE')}
  try{speechSynthesis.cancel()}catch(e){}const r=new SR();CO.rec=r;r.lang='en-US';r.interimResults=true;r.continuous=false;let said='';
  r.onresult=ev=>{said=Array.from(ev.results).map(x=>x[0].transcript).join(' ');const c=$('cost');if(c)c.textContent='“'+said+'”'};
  r.onerror=ev=>{CO.listening=false;orbState('idle');const er=ev&&ev.error||'';if(er==='service-not-allowed'){CO.hands=false;micNote('IPHONE: TURN ON SETTINGS › SIRI › “LISTEN FOR” OR SETTINGS › KEYBOARD › DICTATION, THEN TAP THE ORB')}else if(er==='not-allowed'){CO.hands=false;micNote('MIC IS BLOCKED · SETTINGS › SAFARI › MICROPHONE › ALLOW, THEN TAP THE ORB')}else if(er==='audio-capture'){CO.hands=false;micNote('NO MIC FOUND · CHECK THE MIC, THEN TAP THE ORB')}};r.onend=()=>heard(said);
