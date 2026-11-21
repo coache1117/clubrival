@@ -1,11 +1,13 @@
-// CLUB RIVAL · CR038 · THE COACH'S VOICE (your voice). The page sends the words, this turns them into sound with ElevenLabs.
+// CLUB RIVAL · CR040 · THE COACH'S VOICE (your voice) - the Club coach AND the mic in Rep, RankUp, Mind, Stride, Rest, Rise, Money, Biz. The page sends the words, this turns them into sound with ElevenLabs.
 // Netlify > clubrival > Environment variables: ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID (your Coach E voice). Optional: ELEVENLABS_MODEL_ID.
 // Uses the same model and settings as RankUp's voice, which already works. If Club's own keys fail, it borrows RankUp's voice
 // (rankuprival.netlify.app/api/speak) so the coach still sounds like you - and tells the page exactly why Club's keys failed.
 const SB = 'https://glmyzwxinguqcqtgodts.supabase.co', ANON = 'sb_publishable_DuBWJ2pLLgaQNkoFqiuOfA_WSYzunwW';
 const RANKUP = process.env.VOICE_BACKUP_URL || 'https://rankuprival.netlify.app/api/speak';
-const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
-const audio = (buf, via, why) => new Response(buf, { status: 200, headers: { 'content-type': 'audio/mpeg', 'cache-control': 'no-store', 'x-voice-via': via, 'x-voice-club-why': why || '' } });
+// Who may ask: Club itself, the other Rival sites (*.netlify.app, and our own rival domains). Every call still needs a signed-in Rival account.
+const okOrigin = o => /^https:\/\/([a-z0-9-]+\.)*(netlify\.app|[a-z0-9-]*rival\.(com|app))$/i.test(o || '');
+const json0 = (cors, o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...cors } });
+const audio0 = (cors, buf, via, why) => new Response(buf, { status: 200, headers: { 'content-type': 'audio/mpeg', 'cache-control': 'no-store', 'x-voice-via': via, 'x-voice-club-why': why || '', ...cors } });
 
 async function borrow(text) {
   try {
@@ -15,6 +17,10 @@ async function borrow(text) {
 }
 
 export default async (req) => {
+  const origin = req.headers.get('origin') || '';
+  const CORS = okOrigin(origin) ? { 'access-control-allow-origin': origin, 'vary': 'Origin', 'access-control-expose-headers': 'x-voice-via, x-voice-club-why' } : {};
+  const json = (o, st) => json0(CORS, o, st), audio = (b, v, w) => audio0(CORS, b, v, w);
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...CORS, 'access-control-allow-methods': 'POST, OPTIONS', 'access-control-allow-headers': 'content-type, authorization', 'access-control-max-age': '86400' } });
   if (req.method !== 'POST') return json({ error: 'post only' }, 405);
   const jwt = String(req.headers.get('authorization') || '').replace(/^Bearer\s+/i, ''); if (!jwt || jwt === 'undefined' || jwt === 'null') return json({ error: 'not-signed-in' }, 401);
   const ur = await fetch(SB + '/auth/v1/user', { headers: { apikey: ANON, authorization: 'Bearer ' + jwt } }); if (!ur.ok) return json({ error: 'not-signed-in' }, 401);
