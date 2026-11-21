@@ -1,0 +1,41 @@
+{
+  "appId": "com.clubrival.app",
+  "appName": "Club Rival",
+  "webDir": "www",
+  "server": {
+    "url": "https://clubrival.netlify.app",
+    "allowNavigation": [
+      "clubrival.netlify.app",
+      "striderival.netlify.app",
+      "myreprival.netlify.app",
+      "rankuprival.netlify.app",
+      "reflexrival.netlify.app",
+      "restrival.netlify.app",
+      "*.supabase.co",
+      "tile.openstreetmap.org",
+      "cdnjs.cloudflare.com",
+      "moneyrival.netlify.app",
+      "riserival.netlify.app",
+      "mindrival2.netlify.app",
+      "mybizrival.netlify.app",
+      "cdn.plaid.com",
+      "*.plaid.com"
+    ],
+    "errorPath": "offline.html"
+  },
+  "ios": {
+    "contentInset": "never",
+    "scheme": "ClubRival"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "launchFadeOutDuration": 200,
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "overlaysWebView": true,
+      "style": "DARK"
+    }
+  }
+}
