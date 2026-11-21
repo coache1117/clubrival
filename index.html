@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR038</title>
+<title>Club Rival · CR039</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -209,6 +209,7 @@ html[data-theme="light"] .cm.u{background:#f1f3f6;border-color:#dde2e8}
 body:has(#sh.on .coach) #rvOrb{display:none}
 .chf{align-self:center;min-height:32px;padding:0 14px;border-radius:99px;border:1px solid rgba(74,163,255,.5);background:transparent;color:inherit;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer}.chf[aria-pressed="true"]{background:rgba(74,163,255,.18)}
 .cvn{text-align:center;font:800 10.5px/1.35 -apple-system,sans-serif;letter-spacing:.06em;color:#3fb27f}.cvn.bad{color:#e0703a}.cvn:empty{display:none}
+.cost.warn{color:#e0703a;letter-spacing:.06em;line-height:1.4}
 </style><script>/* CR029 theme: AUTO follows the phone; LIGHT / DARK from ACCOUNT. Runs before the page paints, so no flash. */
 (function(){function pref(){try{return localStorage.getItem('cr_theme')||'auto'}catch(e){return 'auto'}}var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: light)');
  window.crTheme=function(p){if(p){try{localStorage.setItem('cr_theme',p)}catch(e){}}p=pref();var t=p==='auto'?(mq&&mq.matches?'light':'dark'):p;document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f3f3f6':'#050506');return p};
@@ -227,7 +228,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR038';
+const BUILD='CR039';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -318,7 +319,7 @@ function coachSheet(fromTap){if(fromTap)CO.hands=true;const from=CBACK&&APPS.fin
 function paintLog(){const L=$('clog');if(!L)return;L.innerHTML=CO.msgs.slice(-8).map(m=>'<div class="cm '+(m.role==='user'?'u':'a')+'">'+esc(m.content)+'</div>').join('')+(CO.busy?'<div class="cm a dim">…</div>':'');L.scrollTop=1e6;
  const A=$('cact');if(A)A.innerHTML=CO.pending.map((a,i)=>'<div class="cprop"><span>'+esc(actText(a))+'</span><div><button class="go" data-cy="'+i+'">YES</button><button class="go ghost" data-cn="'+i+'">NO</button></div></div>').join('');
  document.querySelectorAll('[data-cy]').forEach(b=>b.onclick=()=>doAct(+b.dataset.cy));document.querySelectorAll('[data-cn]').forEach(b=>b.onclick=()=>{CO.pending.splice(+b.dataset.cn,1);paintLog()})}
-function orbState(s){const o=$('corb'),c=$('cost');if(o)o.className='corb '+s;if(c)c.textContent={listening:'LISTENING…',thinking:'THINKING…',speaking:'TALKING · TAP THE ORB TO ANSWER',idle:'TAP THE ORB AND TALK'}[s]||''}
+function orbState(s){const o=$('corb'),c=$('cost');if(o)o.className='corb '+s;if(c&&s!=='idle')c.classList.remove('warn');if(c&&s==='idle'&&CO.micWhy){c.textContent=CO.micWhy;return}if(c)c.textContent={listening:'LISTENING…',thinking:'THINKING…',speaking:'TALKING · TAP THE ORB TO ANSWER',idle:'TAP THE ORB AND TALK'}[s]||''}
 function unlockVoice(){try{const c=acx();if(c){c.resume();const b=c.createBuffer(1,1,22050),n=c.createBufferSource();n.buffer=b;n.connect(c.destination);n.start(0)}}catch(e){}try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}try{if(!CO.au){CO.au=new Audio();CO.au.setAttribute('playsinline','')}if(CO.au.paused){CO.au.src=SIL;CO.au.play().catch(()=>{})}}catch(e){}}
 function coachOff(){CO.hands=false;stopListen();try{speechSynthesis.cancel()}catch(e){}try{CO.au&&CO.au.pause()}catch(e){}}
 const coachUp=()=>!!$('corb')&&$('sh').className==='on';
@@ -330,12 +331,14 @@ async function nativeListen(cs){try{if(!CO.perm){const r=await cs.askPermission(
  let said='',done=false,t=null,h1=null,h2=null,cap=null;const fin=()=>{if(done)return;done=true;clearTimeout(t);clearTimeout(cap);try{h1&&h1.remove();h2&&h2.remove()}catch(e){}cs.stop().catch(()=>{});CO.nat=null;heard(said)};
  CO.nat={stop:fin};h1=await cs.addListener('partial',d=>{said=String(d&&d.text||'');const c=$('cost');if(c)c.textContent='“'+said+'”';clearTimeout(t);t=setTimeout(fin,d&&d.final?60:1300)});
  h2=await cs.addListener('state',d=>{if(d&&d.status==='stopped'&&CO.listening)setTimeout(fin,80)});cap=setTimeout(()=>{if(!said)fin()},8000);
- await cs.start({});CO.listening=true;orbState('listening')}catch(e){CO.listening=false;CO.nat=null;orbState('idle');toast('COULDN’T LISTEN · '+String(e&&e.message||e).slice(0,40).toUpperCase())}}
-function listen(){const cs=CSP();if(cs)return nativeListen(cs);if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()){CO.hands=false;orbState('idle');toast('UPDATE THE CLUB RIVAL IPHONE APP TO TALK · TYPE FOR NOW');$('cTxt')&&$('cTxt').focus();return}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){orbState('idle');toast('THIS BROWSER CAN’T LISTEN · TYPE INSTEAD');$('cTxt')&&$('cTxt').focus();return}
+ await cs.start({});CO.micWhy='';CO.listening=true;orbState('listening')}catch(e){CO.listening=false;CO.nat=null;orbState('idle');toast('COULDN’T LISTEN · '+String(e&&e.message||e).slice(0,40).toUpperCase())}}
+/* CR039 · tapping the Orb never jumps into the type box (on iPhone that popped the keyboard over everything). If it can't listen, the reason stays under the Orb. */
+function micNote(t){CO.listening=false;orbState('idle');const hb=$('cHands');if(hb&&!CO.hands){hb.textContent='HANDS-FREE OFF';hb.setAttribute('aria-pressed','false')}CO.micWhy=t;const c=$('cost');if(c){c.textContent=t;c.classList.add('warn')}}
+function listen(){const cs=CSP();if(cs)return nativeListen(cs);if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()){CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET · BUILD CR038 IN CODEMAGIC · OR OPEN CLUBRIVAL.NETLIFY.APP IN SAFARI')}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){CO.hands=false;return micNote('THIS BROWSER CAN’T LISTEN · TAP THE BOX BELOW TO TYPE')}
  try{speechSynthesis.cancel()}catch(e){}const r=new SR();CO.rec=r;r.lang='en-US';r.interimResults=true;r.continuous=false;let said='';
  r.onresult=ev=>{said=Array.from(ev.results).map(x=>x[0].transcript).join(' ');const c=$('cost');if(c)c.textContent='“'+said+'”'};
- r.onerror=ev=>{CO.listening=false;orbState('idle');if(ev&&/not-allowed|service-not-allowed/.test(ev.error||'')){CO.hands=false;toast('MIC IS OFF · ALLOW THE MIC OR TYPE')}};r.onend=()=>heard(said);
- try{r.start();CO.listening=true;orbState('listening')}catch(e){orbState('idle')}}
+ r.onerror=ev=>{CO.listening=false;orbState('idle');const er=ev&&ev.error||'';if(er==='service-not-allowed'){CO.hands=false;micNote('IPHONE: TURN ON SETTINGS › SIRI › “LISTEN FOR” OR SETTINGS › KEYBOARD › DICTATION, THEN TAP THE ORB')}else if(er==='not-allowed'){CO.hands=false;micNote('MIC IS BLOCKED · SETTINGS › SAFARI › MICROPHONE › ALLOW, THEN TAP THE ORB')}else if(er==='audio-capture'){CO.hands=false;micNote('NO MIC FOUND · CHECK THE MIC, THEN TAP THE ORB')}};r.onend=()=>heard(said);
+ try{r.start();CO.micWhy='';CO.listening=true;orbState('listening')}catch(e){micNote('COULDN’T START THE MIC · TAP THE ORB AGAIN')}}
 function stopListen(){try{CO.nat&&CO.nat.stop()}catch(e){}try{CO.rec&&CO.rec.stop()}catch(e){}CO.listening=false}
 async function ask(q){if(CO.busy)return;if(!S.user)return acctSheet();const qn=q.replace(/[’‘]/g,"'").trim();
  if(CO.pending.length&&YES.test(qn)){CO.msgs.push({role:'user',content:q});return doAct(0)}
