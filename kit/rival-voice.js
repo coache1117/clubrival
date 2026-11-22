@@ -1,4 +1,4 @@
-/* RIVAL VOICE · RV007 (the coach opens INSIDE this app, in its color - advises, opens apps) · RV006 (one coach: hand-off from Club with the mic on, keeps the screen awake, “Coach, …” questions go to the coach) · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
+/* RIVAL VOICE · RV008 (finds RankUp/Rep's Club sign-in, refreshes an expired one) · RV007 (the coach opens INSIDE this app, in its color - advises, opens apps) · RV006 (one coach: hand-off from Club with the mic on, keeps the screen awake, “Coach, …” questions go to the coach) · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
    TAP THE MIC ONCE: it stays on. Say what you want right away ("start", "the moment", "progress").
    After that it waits for its name: "Coach, pause" · "Coach, resume" · "Coach, skip rest" · "Coach, set done" · "Coach, next" ·
    "Coach, restart" · "Coach, stop round" · "Coach, end". Right after a command you get a few seconds to say the next one without "Coach".
@@ -46,7 +46,23 @@
   })();
   var VOICE = W.RV_VOICE_URL || 'https://clubrival.netlify.app/api/voice', voiceOff = false, ACX = null, src = null, said0 = 0;
   function acx() { try { if (!ACX) { var C = W.AudioContext || W.webkitAudioContext; if (C) ACX = new C() } return ACX } catch (e) { return null } }
-  function token() { try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^sb-glmyzwxinguqcqtgodts-auth-token/.test(k)) { var v = JSON.parse(localStorage.getItem(k)); var t = v && (v.access_token || (v.currentSession && v.currentSession.access_token)); if (t) return t } } } catch (e) { } return '' }
+  /* RV008 · where an app keeps its Club sign-in: the normal Supabase key (Mind, Rest, Rise, Money, Biz, Stride) or Club Link's own key (RankUp, Rep).
+     Coach E's screenshot: the coach opened in RankUp red, but said "connect this app" - RankUp WAS connected, under club_link_auth. */
+  function sessKeys() { var out = []; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^sb-glmyzwxinguqcqtgodts-auth-token$/.test(k) || k === 'club_link_auth') out.push(k) } } catch (e) { } return out }
+  function sessOf(k) { try { var v = JSON.parse(localStorage.getItem(k)); return v && (v.access_token ? v : v.currentSession || v.session || null) } catch (e) { return null } }
+  function token() { var ks = sessKeys(), best = ''; for (var i = 0; i < ks.length; i++) { var v = sessOf(ks[i]); if (v && v.access_token) { if (!v.expires_at || v.expires_at * 1000 > Date.now() + 30000) return v.access_token; best = best || v.access_token } } return best }
+  /* a sign-in older than an hour has an expired pass: trade the refresh token for a fresh one (and store it where the app keeps it, so the app gets it too) */
+  async function freshToken() {
+    var ks = sessKeys();
+    for (var i = 0; i < ks.length; i++) { var v = sessOf(ks[i]); if (v && v.access_token && (!v.expires_at || v.expires_at * 1000 > Date.now() + 30000)) return v.access_token }
+    for (var j = 0; j < ks.length; j++) { var o = sessOf(ks[j]); if (!o || !o.refresh_token) continue;
+      try { var r = await fetch('https://glmyzwxinguqcqtgodts.supabase.co/auth/v1/token?grant_type=refresh_token', { method: 'POST', headers: { apikey: 'sb_publishable_DuBWJ2pLLgaQNkoFqiuOfA_WSYzunwW', 'content-type': 'application/json' }, body: JSON.stringify({ refresh_token: o.refresh_token }) });
+        if (!r.ok) continue; var n = await r.json(); if (!n || !n.access_token) continue; if (!n.expires_at && n.expires_in) n.expires_at = Math.floor(Date.now() / 1000) + n.expires_in;
+        try { var raw = JSON.parse(localStorage.getItem(ks[j])); if (raw && raw.access_token) localStorage.setItem(ks[j], JSON.stringify(Object.assign(raw, n))); else if (raw && raw.currentSession) { raw.currentSession = Object.assign(raw.currentSession, n); localStorage.setItem(ks[j], JSON.stringify(raw)) } } catch (e) { }
+        return n.access_token } catch (e) { } }
+    return token();
+  }
+  function connectBtn() { return W.ClubLink && W.ClubLink.sheet ? '<button data-coconn="1">CONNECT TO CLUB</button>' : '<button data-coclub="1">TALK IN CLUB</button>' }
   function say(t) {
     awakeTalk(); caption(t); lastSaid = norm(t); var me = ++said0, tk = token(), c = acx();
     if (voiceOff || !tk || !c || !W.fetch) return synth(t);
@@ -202,7 +218,7 @@
     D.head.appendChild(st);
   }
   function coSt(t, k) { var o = D.getElementById('rvCoOb'), x = D.getElementById('rvCoSt'); if (x) x.textContent = t; if (o) { o.className = 'ob' + (k ? ' ' + k : '') } }
-  function coLog() { var lg = D.getElementById('rvCoLg'); if (!lg) return; lg.innerHTML = CO.msgs.map(function (m) { return '<div class="m' + (m.role === 'user' ? ' u' : '') + '">' + coEsc(m.content) + (m.btns ? '<div class="ac">' + m.btns + '</div>' : '') + '</div>' }).join(''); lg.scrollTop = lg.scrollHeight; lg.querySelectorAll('[data-coapp]').forEach(function (b) { b.onclick = function () { coGoApp(b.getAttribute('data-coapp')) } }); lg.querySelectorAll('[data-coclub]').forEach(function (b) { b.onclick = function () { coClose(); W.RivalOrb && W.RivalOrb.open() } }) }
+  function coLog() { var lg = D.getElementById('rvCoLg'); if (!lg) return; lg.innerHTML = CO.msgs.map(function (m) { return '<div class="m' + (m.role === 'user' ? ' u' : '') + '">' + coEsc(m.content) + (m.btns ? '<div class="ac">' + m.btns + '</div>' : '') + '</div>' }).join(''); lg.scrollTop = lg.scrollHeight; lg.querySelectorAll('[data-coapp]').forEach(function (b) { b.onclick = function () { coGoApp(b.getAttribute('data-coapp')) } }); lg.querySelectorAll('[data-coclub]').forEach(function (b) { b.onclick = function () { coClose(); W.RivalOrb && W.RivalOrb.open() } }); lg.querySelectorAll('[data-coconn]').forEach(function (b) { b.onclick = function () { coClose(); try { W.ClubLink.sheet() } catch (e) { } } }) }
   function screenText() { try { var el = D.getElementById('rtLay') || D.querySelector('main') || D.body; var t = (el.innerText || '').replace(/\s+\n/g, '\n').replace(/\n{2,}/g, '\n'); return t.slice(0, 1500) } catch (e) { return '' } }
   function coOpen(q) {
     if (CO.open) { if (q) coAsk(q); return } CO.open = true; off(); coCss(); D.documentElement.classList.add('rv-co'); awake(true);
@@ -213,8 +229,8 @@
     D.body.appendChild(o);
     D.getElementById('rvCoX').onclick = coClose; D.getElementById('rvCoOb').onclick = function () { unlock(); CO.hands = true; coListen() };
     D.getElementById('rvCoF').onsubmit = function (e) { e.preventDefault(); var i = D.getElementById('rvCoIn'), v = i.value.trim(); if (!v) return; i.value = ''; coAsk(v) };
-    if (!CO.msgs.length) CO.msgs.push({ role: 'assistant', content: token() ? 'I’m with you in ' + (NAMES[APP] || 'here') + '. Ask me anything.' : 'Connect this app to your Club Rival account and I can see your whole day here. Or talk to me in Club.', btns: token() ? '' : '<button data-coclub="1">TALK IN CLUB</button>' });
-    coLog(); if (q) coAsk(q); else if (token()) { unlock(); setTimeout(coListen, 250) }
+    if (!CO.msgs.length) CO.msgs.push({ role: 'assistant', content: sessKeys().length ? 'I’m with you in ' + (NAMES[APP] || 'here') + '. Ask me anything.' : 'Connect ' + (NAMES[APP] || 'this app') + ' to your Club Rival account once, and I can see your whole day right here.', btns: sessKeys().length ? '' : connectBtn() });
+    coLog(); if (q) coAsk(q); else if (sessKeys().length) { unlock(); setTimeout(coListen, 250) }
   }
   function coClose() { CO.open = false; CO.hands = false; var e = eng; eng = null; if (e) try { e.stop() } catch (x) { } try { speechSynthesis.cancel() } catch (x) { } var o = D.getElementById('rvCo'); if (o) o.remove(); D.documentElement.classList.remove('rv-co'); awake(false) }
   function coListen() {
@@ -224,12 +240,12 @@
   function coAfterTalk() { if (!CO.open) return; var w = Math.max(0, talkUntil - Date.now()) + 350; setTimeout(function () { if (!CO.open) return; if (CO.hands && Date.now() >= talkUntil) coListen(); else if (CO.hands) coAfterTalk(); else coSt('TAP AND TALK', '') }, w) }
   async function coAsk(q) {
     if (CO.busy) return; q = String(q).slice(0, 600); CO.msgs.push({ role: 'user', content: q }); coLog();
-    var tk = token(); if (!tk) { CO.msgs.push({ role: 'assistant', content: 'Connect this app to your Club Rival account first, or ask me in Club.', btns: '<button data-coclub="1">TALK IN CLUB</button>' }); coLog(); return }
-    CO.busy = true; coSt('THINKING', 'think'); var j = {};
-    try { var r = await fetch(CLUBV + 'api/coach', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + tk }, body: JSON.stringify({ from: APP || 'app', screen: screenText(), messages: CO.msgs.filter(function (m) { return m.role === 'user' || m.role === 'assistant' }).map(function (m) { return { role: m.role, content: m.content } }) }) }); j = await r.json().catch(function () { return {} }); if (r.status === 401) j = { say: 'Sign in to this app with your Club Rival account and I’ll see everything.', club: true } } catch (e) { j = { say: 'I can’t reach the club right now. Try again in a second.' } }
+    CO.busy = true; coSt('THINKING', 'think'); var tk = await freshToken(); if (!tk) { CO.busy = false; CO.msgs.push({ role: 'assistant', content: 'Connect ' + (NAMES[APP] || 'this app') + ' to your Club Rival account once, and I’ll answer right here.', btns: connectBtn() }); coLog(); coSt('TAP AND TALK', ''); return }
+    var j = {};
+    try { var r = await fetch(CLUBV + 'api/coach', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + tk }, body: JSON.stringify({ from: APP || 'app', screen: screenText(), messages: CO.msgs.filter(function (m) { return m.role === 'user' || m.role === 'assistant' }).map(function (m) { return { role: m.role, content: m.content } }) }) }); j = await r.json().catch(function () { return {} }); if (r.status === 401) j = { say: 'Your Club sign-in in ' + (NAMES[APP] || 'this app') + ' ran out. Connect it again and I’m back.', conn: true } } catch (e) { j = { say: 'I can’t reach the club right now. Try again in a second.' } }
     CO.busy = false; if (!CO.open) return;
     var acts = (j.actions || []).filter(function (a) { return a && (a.type === 'open_app' || a.type === 'show_screen') }), btns = '';
-    acts.forEach(function (a) { var i = a.input || {}; if (a.type === 'open_app' && i.app && i.app !== APP && (URLS[i.app] || NAT[i.app])) btns += '<button data-coapp="' + coEsc(i.app) + '">OPEN ' + coEsc((NAMES[i.app] || i.app).toUpperCase()) + '</button>'; if (a.type === 'show_screen' || j.club) btns += '<button data-coclub="1">OPEN CLUB</button>' });
+    acts.forEach(function (a) { var i = a.input || {}; if (a.type === 'open_app' && i.app && i.app !== APP && (URLS[i.app] || NAT[i.app])) btns += '<button data-coapp="' + coEsc(i.app) + '">OPEN ' + coEsc((NAMES[i.app] || i.app).toUpperCase()) + '</button>'; if (a.type === 'show_screen') btns += '<button data-coclub="1">OPEN CLUB</button>' }); if (j.conn) btns += connectBtn();
     var t = String(j.say || 'Say that again?'); CO.msgs.push({ role: 'assistant', content: t, btns: btns }); coLog(); coSt('', 'talk'); say(t);
     var oa = acts.filter(function (a) { return a.type === 'open_app' && a.input && a.input.app && a.input.app !== APP })[0];
     if (oa) { setTimeout(function () { coGoApp(oa.input.app) }, Math.max(1200, talkUntil - Date.now() + 300)); return }

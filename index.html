@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR051</title>
+<title>Club Rival · CR052</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -239,7 +239,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR051';
+const BUILD='CR052';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -327,11 +327,11 @@ function appGo(a,web,extra){const sch=NATIVE[a.id];if(!sch||!inApp())return web(
  let left=false;const gone=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',gone);
  try{localStorage.setItem('club_last',JSON.stringify({id:a.id,at:Date.now()}))}catch(e){}
  const sy=String(extra||'').match(/[?&]say=([^&]+)/);const gg=String(extra||'').match(/[?&]go=([a-z]+)/);location.href=sch+'://open?from=club'+(d?'&do='+d[1]:'')+(gg?'&go='+gg[1]:'')+(sy?'&say='+sy[1]:'');
- setTimeout(()=>{document.removeEventListener('visibilitychange',gone);if(!left&&!document.hidden)notHere(a)},2500)}
+ setTimeout(()=>{document.removeEventListener('visibilitychange',gone);if(!left&&!document.hidden)notHere(a)},4000)}
 /* CR050 · Coach E: "When you click the app for Club Rival, it goes straight to Biz. It doesn't even go to Club Rival anymore."
    If the other iPhone app didn't open (not installed, or TestFlight is updating it), Club used to load that app's WEBSITE inside Club itself -
    and then Club was gone. Now Club never turns into another app. It says so and offers TestFlight, or the website in Safari. */
-function notHere(a){sheet('<div class="ey">'+esc(a.name).toUpperCase()+'</div><div class="big">DIDN’T OPEN</div><div class="small">'+esc(a.name)+' isn’t on this phone yet, or TestFlight is still updating it. Open TestFlight, tap Install or Update, then tap it here again.</div><button class="go" id="nhTF">OPEN TESTFLIGHT</button><button class="go ghost" id="nhW">USE THE WEBSITE IN SAFARI</button><button class="go ghost" id="nhX">STAY IN CLUB</button>');
+function notHere(a){sheet('<div class="ey">'+esc(a.name).toUpperCase()+'</div><div class="big">COULDN’T OPEN IT</div><div class="small">The '+esc(a.name)+' iPhone app didn’t answer. Use it on the web for now, or check it’s installed on this phone.</div><button class="go" id="nhW">USE '+esc(a.name).toUpperCase()+' ON THE WEB</button><button class="go ghost" id="nhX">STAY IN CLUB</button><button type="button" class="lnk" id="nhTF">Not on this phone? Get it in TestFlight</button>');
  $('nhX').onclick=shut;$('nhTF').onclick=()=>{shut();location.href='itms-beta://'};$('nhW').onclick=()=>{shut();try{window.open(a.url,'_blank')}catch(e){}}}
 const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',money:'LET’S SAVE',biz:'LET’S WORK'};
 function launchGo(a,go){const w=LAUNCH[a.id];if(!w)return go();let o=$('lpad');if(!o){o=document.createElement('div');o.id='lpad';document.body.appendChild(o)}
@@ -1144,4 +1144,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR005" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR005b" data-app="club" data-noorb="1" defer></script></body></html>
