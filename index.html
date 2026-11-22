@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR047</title>
+<title>Club Rival · CR048</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -229,7 +229,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR047';
+const BUILD='CR048';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -316,12 +316,12 @@ function inApp(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatfo
 function appGo(a,web,extra){const sch=NATIVE[a.id];if(!sch||!inApp())return web();const d=String(extra||'').match(/[?&]do=([a-z0-9_-]+)/i);
  let left=false;const gone=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',gone);
  try{localStorage.setItem('club_last',JSON.stringify({id:a.id,at:Date.now()}))}catch(e){}
- const sy=String(extra||'').match(/[?&]say=([^&]+)/);location.href=sch+'://open?from=club'+(d?'&do='+d[1]:'')+(sy?'&say='+sy[1]:'');
+ const sy=String(extra||'').match(/[?&]say=([^&]+)/);const gg=String(extra||'').match(/[?&]go=([a-z]+)/);location.href=sch+'://open?from=club'+(d?'&do='+d[1]:'')+(gg?'&go='+gg[1]:'')+(sy?'&say='+sy[1]:'');
  setTimeout(()=>{document.removeEventListener('visibilitychange',gone);if(!left&&!document.hidden){toast(a.name.toUpperCase()+' ISN’T ON THIS PHONE YET · OPENING IT HERE');web()}},1600)}
 const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',money:'LET’S SAVE',biz:'LET’S WORK'};
 function launchGo(a,go){const w=LAUNCH[a.id];if(!w)return go();let o=$('lpad');if(!o){o=document.createElement('div');o.id='lpad';document.body.appendChild(o)}
  o.style.setProperty('--ac',a.ac);o.innerHTML='<img src="'+a.art+'" alt=""><b>'+w+'</b><span>'+esc(a.name)+'</span>';o.className='on';try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}setTimeout(go,650);setTimeout(()=>{o.className=''},2500)}
-let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'||q.get('do')==='coach'){CBACK={app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};/* CR043 · came from an iPhone app: BACK opens that app again */if(q.get('do')==='coach'&&f&&/^[a-z]+$/.test(f))CBACK.url='rival'+f+'://open';history.replaceState(null,'',location.pathname)}}catch(e){}
+let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'||q.get('do')==='coach'){CBACK={ask:String(q.get('say')||q.get('ask')||'').slice(0,300),app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};/* CR043 · came from an iPhone app: BACK opens that app again */if(q.get('do')==='coach'&&f&&/^[a-z]+$/.test(f))CBACK.url='rival'+f+'://open';history.replaceState(null,'',location.pathname)}}catch(e){}
 /* ===== CR036 · THE COACH YOU TALK TO. Coach E, 20 Nov: "the orb ... just goes to some static page ... you can't ask it questions".
    Tap the Orb: it listens. Talk. It answers out loud from YOUR day (every app), knows which app you came from, and can propose
    changes - move, skip, add, open an app. Nothing changes until you tap YES. Type if you'd rather. The brain is /api/coach. ===== */
@@ -337,7 +337,7 @@ function coachCtx(){const t=R.dayStr(Date.now()),now=Date.now(),e=S.user?events(
  const st=S.user?stats(S.rows,now):null,L=st?levelOf(st.total):null,apps=APPS.filter(a=>a.state==='open').map(a=>{const x=appStats(a.id,now);return {app:a.id,name:a.name,sessions_this_week:x.ses,sessions_same_point_last_week:x.pSes,personal_bests_this_week:x.riv}}).filter(a=>a.sessions_this_week||a.sessions_same_point_last_week);
  let brief=[],read=[];try{brief=briefLines().map(x=>x.k+': '+x.v)}catch(err){}try{read=coachRead()}catch(err){}
  return {now:new Date().toString(),time_zone:tzName(),today,next_7_days:week.slice(0,40),work:myDay()||null,sleep:S.sched&&S.sched.data?{bed:S.sched.data.bed,wake:S.sched.data.wake}:null,club_level:L?{level:L.lv,xp_into_level:L.into,xp_needed:L.need}:null,apps_this_week:apps,coach_notes:brief.concat(read).slice(0,16)}}
-function coachSheet(fromTap){if(fromTap)CO.hands=true;const from=CBACK&&APPS.find(a=>a.id===CBACK.app),t=R.dayStr(Date.now()),now=Date.now();
+function coachSheet(fromTap){if(fromTap)CO.hands=true;awake(true);const from=CBACK&&APPS.find(a=>a.id===CBACK.app),t=R.dayStr(Date.now()),now=Date.now();
  let first='';if(S.user){const td=events().list.filter(x=>x.act&&R.dayStr(x.t)===t),nx=td.find(x=>!isDone(x)&&x.t1>now),late=td.filter(x=>!isDone(x)&&x.t1<now);first=(td.length?td.length+' on your schedule today'+(nx?', next is '+nx.name+' at '+fT(nx.t):'')+(late.length?', and '+late.length+' still open from earlier':'')+'.':'Nothing on your schedule today.')+' What do you need?'}else first='Sign in and I can see your whole day across every app.';
  if(!CO.msgs.length)CO.msgs.push({role:'assistant',content:(from?'You came from '+from.name+'. ':'')+first});
  sheet('<div class="coach"><div class="corb" id="corb" aria-hidden="true"></div><div class="cost" id="cost">'+(S.user?'TAP THE ORB AND TALK':'SIGN IN TO TALK')+'</div><button class="chf" id="cHands" aria-pressed="'+CO.hands+'">'+(CO.hands?'HANDS-FREE ON':'HANDS-FREE OFF')+'</button><div class="cvn'+(CO.vbad?' bad':'')+'" id="cVoice" role="status">'+esc(CO.vnote||'')+'</div><div class="clog" id="clog"></div><div class="cact" id="cact"></div>'
@@ -355,7 +355,16 @@ function paintLog(){const L=$('clog');if(!L)return;L.innerHTML=CO.msgs.slice(-8)
  document.querySelectorAll('[data-cy]').forEach(b=>b.onclick=()=>{const a=CO.pending[+b.dataset.cy];CO.pending=a?[a]:[];doAll()});document.querySelectorAll('[data-cn]').forEach(b=>b.onclick=()=>{CO.pending.splice(+b.dataset.cn,1);paintLog()})}
 function orbState(s){const o=$('corb'),c=$('cost');if(o)o.className='corb '+s;if(c&&s!=='idle')c.classList.remove('warn');if(c&&s==='idle'&&CO.micWhy){c.textContent=CO.micWhy;return}if(c)c.textContent={listening:'LISTENING…',thinking:'THINKING…',speaking:'TALKING · TAP THE ORB TO ANSWER',idle:'TAP THE ORB AND TALK'}[s]||''}
 function unlockVoice(){try{const c=acx();if(c){c.resume();const b=c.createBuffer(1,1,22050),n=c.createBufferSource();n.buffer=b;n.connect(c.destination);n.start(0)}}catch(e){}try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}try{if(!CO.au){CO.au=new Audio();CO.au.setAttribute('playsinline','')}if(CO.au.paused){CO.au.src=SIL;CO.au.play().catch(()=>{})}}catch(e){}}
-function coachOff(){CO.hands=false;stopListen();try{speechSynthesis.cancel()}catch(e){}try{CO.au&&CO.au.pause()}catch(e){}}
+/* CR048 · STAY AWAKE. While the coach is open, talking or listening, the phone doesn't dim or lock - that lock was cutting him off mid-sentence.
+   The phone's own keep-awake first, plus a silent 1-pixel video (the way iPhone apps keep the screen on). Off again the moment the coach closes. */
+const AWK={wl:null,v:null,on:false};
+function awake(on){AWK.on=!!on;try{if(on){if(navigator.wakeLock&&!AWK.wl&&!document.hidden)navigator.wakeLock.request('screen').then(l=>{AWK.wl=l;l.addEventListener('release',()=>{AWK.wl=null})}).catch(()=>{});awakeVid(true)}else{const l=AWK.wl;AWK.wl=null;if(l)l.release().catch(()=>{});awakeVid(false)}}catch(e){}}
+function awakeVid(on){try{if(on){if(!AWK.v){const v=document.createElement('video');v.setAttribute('playsinline','');v.setAttribute('muted','');v.setAttribute('aria-hidden','true');v.muted=true;v.loop=true;v.src='data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMvbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAll0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHRbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABfG1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAATxzdGJsAAAAvHN0c2QAAAAAAAAAAQAAAKxhdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAAMmF2Y0MBZAAK/+EAF2dkAAqs2V7ARAAAAwAEAAADAAg8SJZYAQAEaO+Py/34+AAAAAAQcGFzcAAAAAEAAAABAAAAFGJ0cnQAAAAAAAALWAAAC1gAAAAYc3R0cwAAAAAAAAABAAAAAgAAQAAAAAAUc3RzcwAAAAAAAAABAAAAAQAAABxzdHNjAAAAAAAAAAEAAAABAAAAAgAAAAEAAAAcc3RzegAAAAAAAAAAAAAAAgAAAskAAAANAAAAFHN0Y28AAAAAAAAAAQAAA18AAABidWR0YQAAAFptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABtZGlyYXBwbAAAAAAAAAAAAAAAAC1pbHN0AAAAJal0b28AAAAdZGF0YQAAAAEAAAAATGF2ZjYwLjE2LjEwMAAAAAhmcmVlAAAC3m1kYXQAAAKuBgX//6rcRem95tlIt5Ys2CDZI+7veDI2NCAtIGNvcmUgMTY0IHIzMTA4IDMxZTE5ZjkgLSBILjI2NC9NUEVHLTQgQVZDIGNvZGVjIC0gQ29weWxlZnQgMjAwMy0yMDIzIC0gaHR0cDovL3d3dy52aWRlb2xhbi5vcmcveDI2NC5odG1sIC0gb3B0aW9uczogY2FiYWM9MSByZWY9MSBkZWJsb2NrPTE6LTM6LTMgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTIgcHN5PTEgcHN5X3JkPTIuMDA6MC43MCBtaXhlZF9yZWY9MCBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTAgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9MCB0aHJlYWRzPTEgbG9va2FoZWFkX3RocmVhZHM9MSBzbGljZWRfdGhyZWFkcz0wIG5yPTAgZGVjaW1hdGU9MSBpbnRlcmxhY2VkPTAgYmx1cmF5X2NvbXBhdD0wIGNvbnN0cmFpbmVkX2ludHJhPTAgYmZyYW1lcz0zIGJfcHlyYW1pZD0yIGJfYWRhcHQ9MSBiX2JpYXM9MCBkaXJlY3Q9MSB3ZWlnaHRiPTEgb3Blbl9nb3A9MCB3ZWlnaHRwPTEga2V5aW50PTI1MCBrZXlpbnRfbWluPTEgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD0xMCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjIwAIAAAAATZYiEABfOf+z/wlX/2PZEor//8QAAAAlBmiEYgvnP/vA=';v.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:.01;pointer-events:none';document.body.appendChild(v);AWK.v=v}const pr=AWK.v.play();if(pr&&pr.catch)pr.catch(()=>{})}else if(AWK.v)AWK.v.pause()}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AWK.on)awake(true)});setInterval(()=>{if(AWK.on&&!CO.hands&&!CO.speaking&&!CO.listening&&!CO.busy&&!coachUp())awake(false)},15000);
+/* CR048 · ONE COACH. When he opens an app he hands you off still talking: the app says it in his voice and its mic comes on by itself. */
+/* go=talk + say=__talk: the iPhone apps pass only do / go / from / say from a link, and only reload when do or say is there - so this needs no new iPhone build. */
+function handOff(){return '&go=talk&say=__talk'}
+function coachOff(){CO.hands=false;awake(false);stopListen();try{speechSynthesis.cancel()}catch(e){}try{CO.au&&CO.au.pause()}catch(e){}}
 const coachUp=()=>!!$('corb')&&$('sh').className==='on';
 function afterTalk(){CO.speaking=false;orbState('idle');const nx=CO.next.shift();if(nx)return runNav(nx);if(CO.bye){CO.bye=false;coachOff();return shut()}if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening)setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening&&!CO.speaking)listen()},250)}
 /* CR038 · in the Club Rival iPhone app the coach uses the phone's own ears (CoachSpeech), so it keeps listening - no tap each time. */
@@ -382,9 +391,14 @@ async function ask(q){if(CO.busy)return;if(!S.user)return acctSheet();const qn=q
  if(BYE.test(qn)){CO.msgs.push({role:'user',content:q});CO.msgs.push({role:'assistant',content:'I’m here when you need me.'});paintLog();CO.bye=true;return talk('I’m here when you need me.')}
  CO.msgs.push({role:'user',content:q});CO.busy=true;CO.pending=[];paintLog();orbState('thinking');
  let res;try{const ss=(await SB.auth.getSession()).data.session;const r=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+(ss&&ss.access_token)},body:JSON.stringify({messages:CO.msgs.slice(-14),context:coachCtx(),from:CBACK?CBACK.app:'club'})});res=await r.json().catch(()=>({}));if(!r.ok&&!res.say)res={say:r.status===401?'Sign in again and I’m back.':'I can’t reach my brain right now. Try again in a minute.'}}catch(e){res={say:'No connection right now. Try again when you’re back online.'}}
- CO.busy=false;CO.msgs.push({role:'assistant',content:res.say});const acts=(res.actions||[]).filter(okAct);CO.next=acts.filter(a=>NAVACT[a.type]).slice(0,1);CO.pending=acts.filter(a=>!NAVACT[a.type]);paintLog();talk(res.say)}
+ CO.busy=false;const acts=(res.actions||[]).filter(okAct);CO.next=acts.filter(a=>NAVACT[a.type]).slice(0,1);CO.pending=acts.filter(a=>!NAVACT[a.type]);res.say=fixSay(res.say||'',acts);CO.msgs.push({role:'assistant',content:res.say});paintLog();talk(res.say)}
+/* CR048 · he only says “yes” when there IS something to say yes to - and never “tap”. */
+function fixSay(t,acts){const pend=acts.filter(a=>!NAVACT[a.type]),nav=acts.find(a=>NAVACT[a.type]);t=String(t||'');
+ if(!pend.length)t=t.replace(/[^.!?]*\b(tap|say|hit)\s+(yes|the yes|confirm)\b[^.!?]*[.!?]?/gi,'').trim();else t=t.replace(/\btap\s+yes\b/gi,'say yes');
+ if(!t&&nav&&nav.type==='open_app'){const a=APPS.find(x=>x.id===(nav.input||{}).app);t='Opening '+(a?a.name:'it')+'. Let’s go.'}
+ if(!t&&nav)t='Here it is.';if(!t&&pend.length)t='Here’s the plan. Say yes and it’s done.';return t||'Say that again?'}
 const NAVACT={show_screen:1,open_app:1},SCR={today:'home',week:'week',month:'month',quarter:'quarter',boss:'boss',points:'pts',apps:'apps'},MRDO=['checkin','moment','focus','calm','tough','progress','history'];
-function runNav(a){const i=a.input||{};if(a.type==='open_app'){coachOff();const ex='&go=resume'+(i.app==='mindrival'&&MRDO.includes(i.do)?'&do='+i.do:'');return openApp(i.app,true,ex)}
+function runNav(a){const i=a.input||{};if(a.type==='open_app'){coachOff();const ex=(i.app==='mindrival'&&MRDO.includes(i.do)?'&do='+i.do:'')+handOff();return openApp(i.app,true,ex)}
  const v=SCR[i.screen];if(v){S.view=v;shut();draw();scrollTo(0,0);return}
  coachOff();({goal:()=>goalSheet(),plan:()=>planSheet(),schedule:()=>weekSheet(),account:()=>acctSheet()})[i.screen]()}
 /* CR038 · YOUR VOICE. Plays through the phone's sound engine (unlocked by your tap - the same way RankUp plays your voice), then a plain
@@ -400,7 +414,7 @@ function voiceWhy(st,j){const u=j.upstreamStatus;if(j.stage==='config')return 'Y
 async function playBuf(buf){const c=acx();if(c){await Promise.race([c.resume(),new Promise(r=>setTimeout(r,1500))]);if(c.state==='running'){const d=await c.decodeAudioData(buf.slice(0));return new Promise(res=>{try{CO.src&&CO.src.stop()}catch(e){}const n=c.createBufferSource();n.buffer=d;n.connect(c.destination);CO.src=n;n.onended=res;n.start(0)})}}
  const u=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));if(!CO.au){CO.au=new Audio();CO.au.setAttribute('playsinline','')}const au=CO.au;return new Promise((res,rej)=>{au.onended=()=>{URL.revokeObjectURL(u);res()};au.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('THE PHONE WOULDN’T PLAY IT'))};au.src=u;au.play().catch(e=>{URL.revokeObjectURL(u);rej(new Error('THE PHONE BLOCKED THE SOUND · TAP THE ORB ONCE'))})})}
 function viaNote(v){return v.via==='rankup'?'YOUR VOICE ✓ (THROUGH RANKUP · CLUB’S OWN KEYS: '+(v.why||'?').toUpperCase()+')':'YOUR VOICE ✓'}
-async function talk(text){CO.speaking=true;orbState('speaking');if(text&&!CO.voiceOff&&S.user){try{const v=await fetchVoice(text);voiceNote(viaNote(v),false);await playBuf(v.buf);return afterTalk()}catch(e){voiceNote(String(e&&e.message||e),true)}}synth(text)}
+async function talk(text){CO.speaking=true;awake(true);orbState('speaking');if(text&&!CO.voiceOff&&S.user){try{const v=await fetchVoice(text);voiceNote(viaNote(v),false);await playBuf(v.buf);return afterTalk()}catch(e){voiceNote(String(e&&e.message||e),true)}}synth(text)}
 async function testVoice(){unlockVoice();voiceNote('CHECKING YOUR VOICE…',false);CO.voiceOff=false;try{const v=await fetchVoice('This is your coach. Let’s get to work.');voiceNote(viaNote(v),false);await playBuf(v.buf)}catch(e){voiceNote(String(e&&e.message||e),true)}}
 function synth(text){try{const y=speechSynthesis;y.cancel();if(!text)return afterTalk();const u=new SpeechSynthesisUtterance(text);const v=y.getVoices().find(v=>/en-US/.test(v.lang)&&/Samantha|Aaron|Nicky|Google US|Natural/i.test(v.name))||y.getVoices().find(v=>/en/.test(v.lang));if(v)u.voice=v;u.rate=1.02;let fin=false;const end=()=>{if(!fin){fin=true;afterTalk()}};u.onend=end;u.onerror=end;y.speak(u);setTimeout(()=>{if(!fin&&!y.speaking)end()},Math.max(2500,text.length*85))}catch(e){afterTalk()}}
 const rowOf=id=>S.evs.find(r=>r.id===id);
@@ -441,10 +455,10 @@ async function doAll(){const list=CO.pending.slice();if(!list.length)return;CO.p
  CO.msgs.push({role:'assistant',content:line||'Done.'});paintLog();
  const sayIt=bad.length?(bad.length===out.length?'That didn’t save. ':good.length+' of '+out.length+' saved. ')+doneText(bad[0].a).replace(/^Sleep set: /,'')+' didn’t take. Want me to try again?':out.length?'Done. '+(out.length===1?'It’s saved.':'All '+out.length+' saved.'):'';
  if(bad.length)CO.pending=bad.map(o=>o.a);paintLog();
- if(away){if(sayIt)await new Promise(res=>{talk(sayIt);setTimeout(res,Math.min(4500,900+sayIt.length*55))});const i=away.input||{};coachOff();return away.type==='open_app'?openApp(i.app,true,'&go=resume'):openApp(i.app,true,'&go=resume&say='+encodeURIComponent(String(i.say).slice(0,160)))}
+ if(away){if(sayIt)await new Promise(res=>{talk(sayIt);setTimeout(res,Math.min(4500,900+sayIt.length*55))});const i=away.input||{};coachOff();return away.type==='open_app'?openApp(i.app,true,handOff()):openApp(i.app,true,'&go=talk&say='+encodeURIComponent(String(i.say).slice(0,160)))}
  orbState('idle');if(sayIt)talk(sayIt)}
 async function doAct(k){const a=CO.pending[k];if(!a)return;const i=a.input||{};let r='ok';
- if(a.type==='open_app'){CO.pending=[];return openApp(i.app,true)}
+ if(a.type==='open_app'){CO.pending=[];coachOff();return openApp(i.app,true,handOff())}
  if(a.type==='move_item'){const row=rowOf(i.item_id),d=JSON.parse(JSON.stringify(row.data));if(i.scope==='future'&&Array.isArray(d.days)&&d.days.length){d.time=i.new_time;if(d.times)Object.keys(d.times).forEach(q=>d.times[q]=i.new_time);d.move=Object.fromEntries(Object.entries(d.move||{}).filter(([q])=>q<i.day));r=await evSplit(row,i.day,{data:d})}else{d.move=Object.assign({},d.move||{},{[i.day]:i.new_time});if(!(Array.isArray(d.days)&&d.days.length)){d.time=i.new_time;d.move={}}r=await evWrite(row,{data:d})}}
  if(a.type==='skip_item'){const row=rowOf(i.item_id),d=JSON.parse(JSON.stringify(row.data));d.skip=Object.assign({},d.skip||{},{[i.day]:1});r=await evWrite(row,{data:d})}
  if(a.type==='add_item'){const app=APPS.find(x=>x.id===i.app)?i.app:'stride';r=await evWrite(null,{app,data:{title:String(i.title).slice(0,60),time:i.time,durMin:Math.max(5,Math.min(240,+i.minutes||30)),days:null,date:i.date,from:i.date}})}
@@ -468,7 +482,7 @@ const BOOT={t0:Date.now(),done:false};
    Club Rival", "Walk in Club Rival", "Start The Moment in Club Rival" open that app (The Moment starts right away). */
 async function siriTake(){const cs=CSP();if(!cs||!cs.takeSiri)return;let d='';try{d=((await cs.takeSiri())||{}).do||''}catch(e){return}if(!d)return;
  if(d==='coach'){if(!S.user)return acctSheet();CO.msgs=[];return coachSheet(true)}const m=d.match(/^app:([a-z0-9]+)(?::([a-z]+))?$/);if(m&&APPS.find(a=>a.id===m[1]&&a.state==='open'))openApp(m[1],true,'&go=resume'+(m[2]?'&do='+m[2]:''))}
-function bootDone(){if(BOOT.done)return;BOOT.done=true;try{orbPut();setTimeout(siriTake,600);if(CBACK)setTimeout(coachSheet,1000)}catch(e){}const w=Math.max(0,700-(Date.now()-BOOT.t0));setTimeout(()=>{const b=document.getElementById('boot');if(b){b.classList.add('gone');setTimeout(()=>b.remove(),600)}},w)}
+function bootDone(){if(BOOT.done)return;BOOT.done=true;try{orbPut();setTimeout(siriTake,600);if(CBACK)setTimeout(()=>{coachSheet(!!CBACK.ask);if(CBACK.ask){const q=CBACK.ask;CBACK.ask='';let n=0;const t=setInterval(()=>{if(S.user||++n>40){clearInterval(t);if(S.user)ask(q)}},250)}},1000)}catch(e){}const w=Math.max(0,700-(Date.now()-BOOT.t0));setTimeout(()=>{const b=document.getElementById('boot');if(b){b.classList.add('gone');setTimeout(()=>b.remove(),600)}},w)}
 setTimeout(bootDone,8000);
 function busy(on){const e=document.getElementById('busy');if(e)e.classList.toggle('on',!!on&&BOOT.done)}
 async function load(){if(!SB||!S.user){draw();bootDone();return}busy(true);try{await load0()}finally{busy(false);bootDone()}}
@@ -1039,4 +1053,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR003" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR004" data-app="club" data-noorb="1" defer></script></body></html>

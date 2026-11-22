@@ -1,4 +1,4 @@
-/* RIVAL VOICE · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
+/* RIVAL VOICE · RV006 (one coach: hand-off from Club with the mic on, keeps the screen awake, “Coach, …” questions go to the coach) · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
    TAP THE MIC ONCE: it stays on. Say what you want right away ("start", "the moment", "progress").
    After that it waits for its name: "Coach, pause" · "Coach, resume" · "Coach, skip rest" · "Coach, set done" · "Coach, next" ·
    "Coach, restart" · "Coach, stop round" · "Coach, end". Right after a command you get a few seconds to say the next one without "Coach".
@@ -20,7 +20,13 @@
     + '#rvCap{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 226px);z-index:2147483601;max-width:86vw;padding:9px 14px;border-radius:14px;background:rgba(20,16,40,.92);color:#fff;font:700 14px/1.3 -apple-system,system-ui,sans-serif;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}#rvCap.on{opacity:1}'
     + '@media (prefers-reduced-motion:reduce){#rvMic.on{animation:none}}';
   var st = D.createElement('style'); st.textContent = css; D.head.appendChild(st);
-  var cap, capT, on = false, open = 0, idleT = null, eng = null, talkUntil = 0, lastSaid = '', perm = false;
+  var cap, capT, on = false, open = 0, idleT = null, eng = null, talkUntil = 0, lastSaid = '', perm = false, woke0 = false;
+  /* RV006 · STAY AWAKE while the mic is on or the coach is talking - the phone locking was cutting him off. Keep-awake first, plus a silent 1-pixel video. */
+  var AWK = { wl: null, v: null, on: false, t: null };
+  function awake(want) { AWK.on = !!want; try { if (want) { if (navigator.wakeLock && !AWK.wl && !D.hidden) navigator.wakeLock.request('screen').then(function (l) { AWK.wl = l; l.addEventListener('release', function () { AWK.wl = null }) }).catch(function () { }); vid(true) } else { var l = AWK.wl; AWK.wl = null; if (l) l.release().catch(function () { }); vid(false) } } catch (e) { } }
+  function vid(want) { try { if (want) { if (!AWK.v) { var v = D.createElement('video'); v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('aria-hidden', 'true'); v.muted = true; v.loop = true; v.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMvbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAll0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHRbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABfG1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAATxzdGJsAAAAvHN0c2QAAAAAAAAAAQAAAKxhdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAAMmF2Y0MBZAAK/+EAF2dkAAqs2V7ARAAAAwAEAAADAAg8SJZYAQAEaO+Py/34+AAAAAAQcGFzcAAAAAEAAAABAAAAFGJ0cnQAAAAAAAALWAAAC1gAAAAYc3R0cwAAAAAAAAABAAAAAgAAQAAAAAAUc3RzcwAAAAAAAAABAAAAAQAAABxzdHNjAAAAAAAAAAEAAAABAAAAAgAAAAEAAAAcc3RzegAAAAAAAAAAAAAAAgAAAskAAAANAAAAFHN0Y28AAAAAAAAAAQAAA18AAABidWR0YQAAAFptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABtZGlyYXBwbAAAAAAAAAAAAAAAAC1pbHN0AAAAJal0b28AAAAdZGF0YQAAAAEAAAAATGF2ZjYwLjE2LjEwMAAAAAhmcmVlAAAC3m1kYXQAAAKuBgX//6rcRem95tlIt5Ys2CDZI+7veDI2NCAtIGNvcmUgMTY0IHIzMTA4IDMxZTE5ZjkgLSBILjI2NC9NUEVHLTQgQVZDIGNvZGVjIC0gQ29weWxlZnQgMjAwMy0yMDIzIC0gaHR0cDovL3d3dy52aWRlb2xhbi5vcmcveDI2NC5odG1sIC0gb3B0aW9uczogY2FiYWM9MSByZWY9MSBkZWJsb2NrPTE6LTM6LTMgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTIgcHN5PTEgcHN5X3JkPTIuMDA6MC43MCBtaXhlZF9yZWY9MCBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTAgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9MCB0aHJlYWRzPTEgbG9va2FoZWFkX3RocmVhZHM9MSBzbGljZWRfdGhyZWFkcz0wIG5yPTAgZGVjaW1hdGU9MSBpbnRlcmxhY2VkPTAgYmx1cmF5X2NvbXBhdD0wIGNvbnN0cmFpbmVkX2ludHJhPTAgYmZyYW1lcz0zIGJfcHlyYW1pZD0yIGJfYWRhcHQ9MSBiX2JpYXM9MCBkaXJlY3Q9MSB3ZWlnaHRiPTEgb3Blbl9nb3A9MCB3ZWlnaHRwPTEga2V5aW50PTI1MCBrZXlpbnRfbWluPTEgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD0xMCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjIwAIAAAAATZYiEABfOf+z/wlX/2PZEor//8QAAAAlBmiEYgvnP/vA='; v.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;opacity:.01;pointer-events:none'; D.body.appendChild(v); AWK.v = v } var pr = AWK.v.play(); if (pr && pr.catch) pr.catch(function () { }) } else if (AWK.v) AWK.v.pause() } catch (e) { } }
+  function awakeTalk() { awake(true); clearTimeout(AWK.t); (function chk() { AWK.t = setTimeout(function () { if (on) return; if (Date.now() < talkUntil) return chk(); awake(false) }, 1500) })() }
+  D.addEventListener('visibilitychange', function () { if (!D.hidden && AWK.on) awake(true) });
   function caption(t, ms) { if (!cap) { cap = D.createElement('div'); cap.id = 'rvCap'; cap.setAttribute('role', 'status'); cap.setAttribute('aria-live', 'polite'); D.body.appendChild(cap) } cap.textContent = t; cap.classList.add('on'); clearTimeout(capT); capT = setTimeout(function () { cap.classList.remove('on') }, ms || 2600) }
   function synth(t) { talkUntil = Date.now() + 700 + String(t).length * 65; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.rate = 1.05; u.onend = u.onerror = function () { talkUntil = Date.now() + 350 }; speechSynthesis.speak(u) } catch (e) { } }
   /* Coach E's voice: the same /api/voice the Club coach uses (it checks you're signed in to the Rival club - same account in every app). */
@@ -28,7 +34,7 @@
   function acx() { try { if (!ACX) { var C = W.AudioContext || W.webkitAudioContext; if (C) ACX = new C() } return ACX } catch (e) { return null } }
   function token() { try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^sb-glmyzwxinguqcqtgodts-auth-token/.test(k)) { var v = JSON.parse(localStorage.getItem(k)); var t = v && (v.access_token || (v.currentSession && v.currentSession.access_token)); if (t) return t } } } catch (e) { } return '' }
   function say(t) {
-    caption(t); lastSaid = norm(t); var me = ++said0, tk = token(), c = acx();
+    awakeTalk(); caption(t); lastSaid = norm(t); var me = ++said0, tk = token(), c = acx();
     if (voiceOff || !tk || !c || !W.fetch) return synth(t);
     talkUntil = Date.now() + 9000;
     var gave = false, fall = setTimeout(function () { if (me === said0 && !gave) { gave = true; synth(t) } }, 2500);
@@ -94,7 +100,9 @@
     if (/scroll up|go up|^top$/.test(s)) { W.scrollTo({ top: 0, behavior: 'smooth' }); return }
     var el = bySyn(said) || press(said);
     if (el) return click(el);
-    say('I didn’t find that button. Say the words on it.');
+    /* RV006 · not a button: a real question goes to the coach (Club), who answers it right away */
+    if ((woke0 || s.split(' ').length >= 3) && W.RivalOrb && W.RivalOrb.open) { woke0 = false; say('On it.'); setTimeout(function () { off(); W.RivalOrb.open(said) }, 900); return }
+    say('I didn’t find that button. Say the words on it, or say Coach.');
   }
   /* one utterance from whichever ears this phone has; cb(text) ('' = nothing heard) */
   function once(cb) {
@@ -127,7 +135,7 @@
     var t = String(text || '').trim(); if (!t) return;
     if (Date.now() < talkUntil || norm(t) === lastSaid) return;           /* that was us talking */
     var n = norm(t), woke = /^(hey |ok |okay )?coach\b/.test(n);
-    if (woke) t = t.replace(/^\s*(hey |ok |okay )?coach[\s,.!:]*/i, '');
+    woke0 = woke; if (woke) t = t.replace(/^\s*(hey |ok |okay )?coach[\s,.!:]*/i, '');
     if (!woke && Date.now() > open) return;                                /* not for us */
     if (!t.trim()) { open = Date.now() + 6000; return caption('Yes?', 1500) }
     open = Date.now() + 6000 + 700 + t.length * 65; bump(); run(t);
@@ -135,8 +143,8 @@
   function loop() { if (!on) return; once(function (t) { mic.classList.remove('hear'); if (!on) return; handle(t); setTimeout(loop, 120) }) }
   function bump() { clearTimeout(idleT); idleT = setTimeout(function () { off(); caption('Mic off. Tap it to talk.', 2500) }, 120000) }
   function unlock() { try { var c = acx(); if (c) { c.resume(); var b = c.createBuffer(1, 1, 22050), n = c.createBufferSource(); n.buffer = b; n.connect(c.destination); n.start(0) } } catch (e) { } try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u) } catch (e) { } }
-  function onn() { on = true; open = Date.now() + 8000; mic.classList.add('on'); mic.setAttribute('aria-pressed', 'true'); unlock(); caption('Listening. Say it now — later start with “Coach, …”', 3000); bump(); loop() }
-  function off() { on = false; clearTimeout(idleT); mic.classList.remove('on', 'hear'); mic.setAttribute('aria-pressed', 'false'); var e = eng; eng = null; if (e) try { e.stop() } catch (x) { } }
+  function onn() { awake(true); on = true; open = Date.now() + 8000; mic.classList.add('on'); mic.setAttribute('aria-pressed', 'true'); unlock(); caption('Listening. Say it now — later start with “Coach, …”', 3000); bump(); loop() }
+  function off() { awake(false); on = false; clearTimeout(idleT); mic.classList.remove('on', 'hear'); mic.setAttribute('aria-pressed', 'false'); var e = eng; eng = null; if (e) try { e.stop() } catch (x) { } }
   var mic = D.createElement('button'); mic.id = 'rvMic'; mic.type = 'button'; mic.setAttribute('aria-label', 'Voice: tap, then say a button or “Coach, …”'); mic.setAttribute('aria-pressed', 'false');
   mic.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
   mic.onclick = function () { on ? (off(), caption('Mic off.', 1200)) : onn() };
@@ -145,11 +153,14 @@
   /* RV005 · CLUB IS THE PARENT. When the Club coach sends you here with ?say=..., this app runs those words as if you said them here.
      The never-press list still holds: nothing that pays, sends, deletes or signs out ever runs this way. */
   (function fromClub() {
-    var q = ''; try { q = new URLSearchParams(location.search).get('say') || '' } catch (e) { } q = String(q).slice(0, 160); if (!q) return;
-    try { var u = new URL(location.href); u.searchParams.delete('say'); history.replaceState(history.state, '', u.toString()) } catch (e) { }
+    var q = '', talk = false; try { var P = new URLSearchParams(location.search); q = P.get('say') || ''; talk = P.get('go') === 'talk' } catch (e) { } q = String(q).slice(0, 160); if (!q) return;
+    try { var u = new URL(location.href); u.searchParams.delete('say'); if (talk) u.searchParams.delete('go'); history.replaceState(history.state, '', u.toString()) } catch (e) { }
+    /* RV006 · ONE COACH: he hands you off still talking - says it in his voice, then the mic comes on by itself (no tap). */
+    var micOn = function () { if (!talk || on || inOldApp()) return; var w = Math.max(0, talkUntil - Date.now()) + 300; setTimeout(function () { onn(); open = Date.now() + 20000; caption('Coach is with you. Say the button, or say Coach.', 3500) }, w) };
+    if (q === '__talk') { var hi = function () { say('I’m right here. Say the button, or say Coach.'); setTimeout(micOn, 400) }; if (D.readyState === 'complete') setTimeout(hi, 1800); else W.addEventListener('load', function () { setTimeout(hi, 1800) }); return }
     if (NEVER.test(norm(q)) && !/^i saved\b/.test(norm(q))) { setTimeout(function () { caption('That one is yours to tap.', 3500) }, 1500); return }
-    var go = function () { caption('Coach: “' + q + '”', 2200); run(q) };
+    var go = function () { caption('Coach: “' + q + '”', 2200); run(q); setTimeout(micOn, 600) };
     if (D.readyState === 'complete') setTimeout(go, 2600); else W.addEventListener('load', function () { setTimeout(go, 2600) });
   })();
-  W.RV = { run: run, press: press, bySyn: bySyn, say: say, num: num, norm: norm, hear: handle, on: onn, off: off, isOn: function () { return on } };
+  W.RV = { awake: awake, run: run, press: press, bySyn: bySyn, say: say, num: num, norm: norm, hear: handle, on: onn, off: off, isOn: function () { return on } };
 })();

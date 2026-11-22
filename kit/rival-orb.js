@@ -1,4 +1,4 @@
-/* RIVAL ORB · OR003 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
+/* RIVAL ORB · OR004 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
    so a change to the Orb is ONE upload to Club - not one per app.
    - Tap the Orb: you're with the one Club coach, and it knows which app you came from.
      In the iPhone apps it opens the Club Rival APP (rivalclub://). If Club isn't on the phone, the Club website opens after a moment.
@@ -7,14 +7,16 @@
 (function () {
   var W = window, D = document; if (W.__rivalOrb) return; W.__rivalOrb = 1;
   var s = D.currentScript, app = (s && s.getAttribute('data-app')) || '', calm = !!(s && s.getAttribute('data-calm')), noOrb = !!(s && s.getAttribute('data-noorb'));
-  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR003';
+  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR004';
   function inApp() { try { return !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { return false } }
-  function web() { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + '&back=' + encodeURIComponent(back) }
-  function go() {
-    if (!inApp()) return web();
+  function web(q) { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + (q ? '&say=' + encodeURIComponent(q) : '') + '&back=' + encodeURIComponent(back) }
+  /* OR004 · go(q): a question said inside this app rides along, and the coach answers it as soon as Club opens */
+  function go(q) {
+    q = typeof q === 'string' ? q.slice(0, 300) : '';
+    if (!inApp()) return web(q);
     var left = false, gone = function () { if (D.hidden) left = true }; D.addEventListener('visibilitychange', gone);
-    location.href = 'rivalclub://open?do=coach&from=' + encodeURIComponent(app);
-    setTimeout(function () { D.removeEventListener('visibilitychange', gone); if (!left && !D.hidden) web() }, 1600);
+    location.href = 'rivalclub://open?do=coach&from=' + encodeURIComponent(app) + (q ? '&say=' + encodeURIComponent(q) : '');
+    setTimeout(function () { D.removeEventListener('visibilitychange', gone); if (!left && !D.hidden) web(q) }, 1600);
   }
   /* open the Club Rival app itself (not the coach) - for "OPEN CLUB RIVAL" buttons */
   function club() {
