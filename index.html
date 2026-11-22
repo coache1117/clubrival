@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR041</title>
+<title>Club Rival · CR043</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -228,7 +228,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR041';
+const BUILD='CR043';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -278,16 +278,25 @@ function openApp(id,direct,extra){const a=APPS.find(x=>x.id===id);if(!a)return;c
  if(s==='soon'){toast(a.name.toUpperCase()+' · COMING SOON');return}
  const go=()=>{try{localStorage.setItem('club_last',JSON.stringify({id,at:Date.now()}))}catch(e){}location.href=a.url+(a.url.indexOf('?')<0?'?':'&')+'from=club&club='+encodeURIComponent(location.origin+location.pathname)+(extra||'&go=resume')};
  if(s==='need'){sheet('<div class="ey">REQUIRES ACCESS</div><div class="big">'+esc(a.name)+'</div><div class="small">This one has its own membership. Open it to see what it includes and start there.</div><button class="go" id="nGo">OPEN '+esc(a.name).toUpperCase()+'</button><button class="go ghost" id="nX">NOT NOW</button>');$('nGo').onclick=go;$('nX').onclick=shut;return}
- launchGo(a,go)}
+ launchGo(a,s==='open'?()=>appGo(a,go,extra):go)}
 
 /* ===== CR034 · ONE COACH. ONE LAUNCH EXPERIENCE. EVERY RIVAL. (Coach E, 20 Nov)
    THE ORB: the same glowing orb, same corner, in every Rival app. Tap it anywhere and you land here, with the one coach:
    where you are today, what's next, what needs you - every line says which app it came from. Opened from an app, it shows the way back.
    THE LAUNCH: hit an app and it says what you're about to do - LET'S LIFT, LET'S FIGHT, LET'S SAVE - then you're in. ===== */
+/* CR042 · APPS, NOT WEBSITES. Inside the Club Rival iPhone app a tile opens that app's own iPhone app (rivalstride://, rivalrep://, ...).
+   If that app isn't on this phone yet, the tile opens it here the old way after a moment. */
+const NATIVE={stride:'rivalstride',rep:'rivalrep',rankup:'rivalrankup',mind:'rivalmind',rest:'rivalrest',money:'rivalmoney',rise:'rivalrise',mindrival:'rivalmindrival',biz:'rivalbiz'};
+function inApp(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}}
+function appGo(a,web,extra){const sch=NATIVE[a.id];if(!sch||!inApp())return web();const d=String(extra||'').match(/[?&]do=([a-z0-9_-]+)/i);
+ let left=false;const gone=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',gone);
+ try{localStorage.setItem('club_last',JSON.stringify({id:a.id,at:Date.now()}))}catch(e){}
+ location.href=sch+'://open?from=club'+(d?'&do='+d[1]:'');
+ setTimeout(()=>{document.removeEventListener('visibilitychange',gone);if(!left&&!document.hidden){toast(a.name.toUpperCase()+' ISN’T ON THIS PHONE YET · OPENING IT HERE');web()}},1600)}
 const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',money:'LET’S SAVE',biz:'LET’S WORK'};
 function launchGo(a,go){const w=LAUNCH[a.id];if(!w)return go();let o=$('lpad');if(!o){o=document.createElement('div');o.id='lpad';document.body.appendChild(o)}
  o.style.setProperty('--ac',a.ac);o.innerHTML='<img src="'+a.art+'" alt=""><b>'+w+'</b><span>'+esc(a.name)+'</span>';o.className='on';try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}setTimeout(go,650);setTimeout(()=>{o.className=''},2500)}
-let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'){CBACK={app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};history.replaceState(null,'',location.pathname)}}catch(e){}
+let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'||q.get('do')==='coach'){CBACK={app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};/* CR043 · came from an iPhone app: BACK opens that app again */if(q.get('do')==='coach'&&f&&/^[a-z]+$/.test(f))CBACK.url='rival'+f+'://open';history.replaceState(null,'',location.pathname)}}catch(e){}
 /* ===== CR036 · THE COACH YOU TALK TO. Coach E, 20 Nov: "the orb ... just goes to some static page ... you can't ask it questions".
    Tap the Orb: it listens. Talk. It answers out loud from YOUR day (every app), knows which app you came from, and can propose
    changes - move, skip, add, open an app. Nothing changes until you tap YES. Type if you'd rather. The brain is /api/coach. ===== */
@@ -327,7 +336,7 @@ function afterTalk(){CO.speaking=false;orbState('idle');const nx=CO.next.shift()
 /* CR038 · in the Club Rival iPhone app the coach uses the phone's own ears (CoachSpeech), so it keeps listening - no tap each time. */
 const CSP=()=>{try{const C=window.Capacitor;if(!C)return null;if(C.Plugins&&C.Plugins.CoachSpeech)return C.Plugins.CoachSpeech;if(CO.csOK===false)return null;if(C.isNativePlatform&&C.isNativePlatform()&&C.registerPlugin){CO.csProxy=CO.csProxy||C.registerPlugin('CoachSpeech');return CO.csProxy}return null}catch(e){return null}};
 /* CR041 · what's inside this iPhone app - shown under the Orb when it can't listen, so one screenshot says what's wrong */
-function appInside(){try{const C=window.Capacitor;if(!C)return 'NOT IN AN APP';const pl=Object.keys(C.Plugins||{}).filter(k=>!/^(WebView|Console|CapacitorHttp|CapacitorCookies)$/.test(k));return (C.getPlatform?C.getPlatform():'?').toUpperCase()+' APP · PARTS: '+(pl.join(', ')||'NONE')+(C.PluginHeaders?' · '+C.PluginHeaders.length+' HEADERS':'')}catch(e){return 'CHECK FAILED'}}
+function appInside(){try{const C=window.Capacitor;if(!C)return 'NOT IN AN APP';const pl=Object.keys(C.Plugins||{}).filter(k=>!/^(WebView|Console|CapacitorHttp|CapacitorCookies)$/.test(k));const N=window.RIVAL_NATIVE;return (C.getPlatform?C.getPlatform():'?').toUpperCase()+' APP'+(N?' · KIT '+N.kit+' · BUILD '+N.build+' · EARS '+(N.ears?'YES':'NO'):' · OLD BUILD (NO KIT)')+' · PARTS: '+(pl.join(', ')||'NONE')+(C.PluginHeaders?' · '+C.PluginHeaders.length+' HEADERS':'')}catch(e){return 'CHECK FAILED'}}
 function heard(said){CO.listening=false;if(said.trim()){CO.quiet=0;ask(said.trim())}else{orbState('idle');if(CO.hands&&coachUp()&&++CO.quiet>=(CSP()?4:2)){CO.quiet=0;CO.hands=false;const b=$('cHands');if(b)b.textContent='HANDS-FREE OFF';const c=$('cost');if(c)c.textContent='I’M HERE · TAP THE ORB'}else if(CO.hands&&coachUp())setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.listening&&!CO.busy)listen()},300)}}
 async function nativeListen(cs){if(CO.csOK!==true){try{await cs.available();CO.csOK=true}catch(e){CO.csOK=false;CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET ('+appInside()+') · SEND THIS SCREENSHOT')}}try{if(!CO.perm){const r=await cs.askPermission();CO.perm=!!(r&&r.speech==='granted'&&r.mic==='granted');if(!CO.perm){CO.hands=false;orbState('idle');return toast('ALLOW SPEECH + MICROPHONE FOR CLUB RIVAL IN SETTINGS')}}
  let said='',done=false,t=null,h1=null,h2=null,cap=null;const fin=()=>{if(done)return;done=true;clearTimeout(t);clearTimeout(cap);try{h1&&h1.remove();h2&&h2.remove()}catch(e){}cs.stop().catch(()=>{});CO.nat=null;heard(said)};
@@ -387,7 +396,7 @@ $('sh').addEventListener('click',e=>{if(e.target.id==='sh')shut()});
 /* CR029: the look switch. AUTO = whatever the phone is set to. */
 function thmHTML(){let p='auto';try{p=localStorage.getItem('cr_theme')||'auto'}catch(e){}return '<label>LOOK</label><div class="thm" id="thm">'+[['auto','AUTO'],['light','LIGHT'],['dark','DARK']].map(x=>'<button type="button" data-thm="'+x[0]+'" class="'+(p===x[0]?'on':'')+'" aria-pressed="'+(p===x[0])+'">'+x[1]+'</button>').join('')+'</div><div class="small" style="margin-top:6px">AUTO follows your phone: light in Light Mode, dark in Dark Mode.</div>'}
 function wireThm(){document.querySelectorAll('[data-thm]').forEach(b=>b.onclick=()=>{window.crTheme(b.dataset.thm);document.querySelectorAll('[data-thm]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)})})}
-function acctSheet(){if(S.user){sheet('<div class="ey">YOUR CLUB RIVAL ACCOUNT</div><div class="big">'+esc(S.user.email||'')+'</div><div class="small">The same sign-in works in every Rival app. Use this email in each app so your sessions count here.</div>'+thmHTML()+'<button class="go ghost" id="aOut">SIGN OUT</button><button class="go ghost" id="aX">CLOSE</button>');$('aX').onclick=shut;wireThm();$('aOut').onclick=async()=>{try{await SB.auth.signOut()}catch(e){}S.user=null;S.rows=null;S.access=new Set();S.sums={};S.sched=null;S.evs=[];S.goal=null;S.res=[];S.rest=null;shut();draw()};return}
+function acctSheet(){if(S.user){sheet('<div class="ey">YOUR CLUB RIVAL ACCOUNT</div><div class="big">'+esc(S.user.email||'')+'</div><div class="small">The same sign-in works in every Rival app. Use this email in each app so your sessions count here.</div>'+thmHTML()+'<button class="go ghost" id="aOut">SIGN OUT</button><button class="go ghost" id="aX">CLOSE</button><button class="go ghost" id="aDel" style="color:#e0703a;margin-top:18px">DELETE MY ACCOUNT</button>');$('aX').onclick=shut;wireThm();$('aDel').onclick=()=>{shut();if(window.RivalOrb&&RivalOrb.deleteAccount)RivalOrb.deleteAccount(SB);else toast('ONE SECOND · TRY AGAIN')};$('aOut').onclick=async()=>{try{await SB.auth.signOut()}catch(e){}S.user=null;S.rows=null;S.access=new Set();S.sums={};S.sched=null;S.evs=[];S.goal=null;S.res=[];S.rest=null;shut();draw()};return}
  sheet('<div class="ey">CLUB RIVAL</div><div class="big">SIGN IN</div><div class="small">One sign-in for every Rival app. We email you a 6-digit code.</div><input id="em" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com"><button class="go" id="eGo">SEND MY CODE</button><div class="err" id="eErr"></div>');
  $('eGo').onclick=async()=>{const em=String($('em').value||'').trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('eErr').textContent='Type your email first.';return}const b=$('eGo');b.disabled=true;b.textContent='SENDING…';
   try{const {error}=await SB.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname}});if(error)throw error}catch(e){b.disabled=false;b.textContent='SEND MY CODE';$('eErr').textContent='Could not send the code. Check the email and try again.';return}
@@ -971,4 +980,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script></body></html>
+</script><script src="kit/rival-orb.js?v=OR002" data-app="club" data-noorb="1" defer></script></body></html>
