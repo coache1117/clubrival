@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR046</title>
+<title>Club Rival · CR047</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -214,7 +214,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
 (function(){function pref(){try{return localStorage.getItem('cr_theme')||'auto'}catch(e){return 'auto'}}var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: light)');
  window.crTheme=function(p){if(p){try{localStorage.setItem('cr_theme',p)}catch(e){}}p=pref();var t=p==='auto'?(mq&&mq.matches?'light':'dark'):p;document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f3f3f6':'#050506');return p};
  window.crTheme();if(mq&&mq.addEventListener)mq.addEventListener('change',function(){window.crTheme()})})();</script>
-<script src="kit/rival-today.js?v=RT001"></script>
+<script src="kit/rival-today.js?v=RT002"></script>
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="navg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset=".7" stop-color="#ffd21a"/><stop offset="1" stop-color="#34c759"/></linearGradient></defs></svg><div id="sbar"></div>
 <!-- CR024 - "while it's thinking we need a dynamic image": the CR ring lights up piece by piece, round and round, until the club is ready -->
@@ -229,7 +229,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR046';
+const BUILD='CR047';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},

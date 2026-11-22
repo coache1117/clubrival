@@ -1,4 +1,4 @@
-/* RIVAL TODAY · RT001 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
+/* RIVAL TODAY · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
    THE STEVE JOBS SCREEN. Every Rival app opens on the same Today screen:
      top    - the name plate (icon, WORD RIVAL in the app's color, one-line job + version, account)
      middle - ONE big card: today's number vs your last time
@@ -24,7 +24,7 @@
       + '.rt-logo{white-space:nowrap;font:900 italic 25px/1 -apple-system,sans-serif;letter-spacing:-.01em}.rt-logo b{color:var(--rtA)}'
       + '.rt-ver{margin-top:6px;font:800 8.5px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#8e939c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
       + '.rt-acct{flex:0 0 auto;width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);background:transparent;color:var(--rtA);font:900 14px/1 -apple-system,sans-serif;cursor:pointer}'
-      + '.rt-hero{margin-top:22px;border-radius:28px;padding:24px 20px 20px;border:1px solid rgba(' + A + ',.28);background:radial-gradient(130% 90% at 100% 0%,rgba(' + A + ',.22),transparent 55%),linear-gradient(160deg,#121316,#070708)}'
+      + '.rt-hero{color:#f4f5f7;margin-top:22px;border-radius:28px;padding:24px 20px 20px;border:1px solid rgba(' + A + ',.28);background:radial-gradient(130% 90% at 100% 0%,rgba(' + A + ',.22),transparent 55%),linear-gradient(160deg,#121316,#070708)}'
       + '.rt-ey{font:900 10px/1.3 -apple-system,sans-serif;letter-spacing:.22em;color:#9aa0a8;text-transform:uppercase}'
       + '.rt-num{margin-top:14px;font:900 italic clamp(52px,17vw,74px)/0.95 -apple-system,sans-serif;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
       + '.rt-num.rt-l{font-size:clamp(44px,13vw,58px)}.rt-num.rt-xl{font-size:clamp(34px,10vw,46px);white-space:normal;line-height:1}'
@@ -100,5 +100,5 @@
     h = h.replace(/^<div class="rt-in"><div class="rt-top">[\s\S]*?<div class="rt-hero"/, '<div class="rt-in rt-inline"><div class="rt-hero"').replace('id="rtGo"', 'id="' + (id || 'rtGo') + '"');
     return h;
   }
-  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT001' };
+  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT002' };
 })();

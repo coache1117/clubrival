@@ -1,5 +1,5 @@
-/* CLUB RIVAL service worker · CR046 - opens with no signal once it has been opened once. */
-var CACHE='club-rival-cr031';
+/* CLUB RIVAL service worker · CR047 - opens with no signal once it has been opened once. */
+var CACHE='club-rival-cr047';
 var CORE=['./','index.html','lib/supabase.js','lib/rest-core.js','icon-192.png','site.webmanifest','art/stride.jpg','art/rep.jpg','art/rankup.jpg','art/mind.jpg','art/bmx.jpg','art/trail.jpg','art/rest.jpg','art/club.jpg'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(CORE)}).then(function(){return self.skipWaiting()}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==CACHE}).map(function(x){return caches.delete(x)}))}).then(function(){return self.clients.claim()}))});
