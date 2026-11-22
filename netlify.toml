@@ -2,3 +2,10 @@
   publish = "."
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["biz-core.js"]
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
