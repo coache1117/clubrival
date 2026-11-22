@@ -1,4 +1,4 @@
-/* RIVAL VOICE · RV006 (one coach: hand-off from Club with the mic on, keeps the screen awake, “Coach, …” questions go to the coach) · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
+/* RIVAL VOICE · RV007 (the coach opens INSIDE this app, in its color - advises, opens apps) · RV006 (one coach: hand-off from Club with the mic on, keeps the screen awake, “Coach, …” questions go to the coach) · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
    TAP THE MIC ONCE: it stays on. Say what you want right away ("start", "the moment", "progress").
    After that it waits for its name: "Coach, pause" · "Coach, resume" · "Coach, skip rest" · "Coach, set done" · "Coach, next" ·
    "Coach, restart" · "Coach, stop round" · "Coach, end". Right after a command you get a few seconds to say the next one without "Coach".
@@ -30,6 +30,20 @@
   function caption(t, ms) { if (!cap) { cap = D.createElement('div'); cap.id = 'rvCap'; cap.setAttribute('role', 'status'); cap.setAttribute('aria-live', 'polite'); D.body.appendChild(cap) } cap.textContent = t; cap.classList.add('on'); clearTimeout(capT); capT = setTimeout(function () { cap.classList.remove('on') }, ms || 2600) }
   function synth(t) { talkUntil = Date.now() + 700 + String(t).length * 65; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.rate = 1.05; u.onend = u.onerror = function () { talkUntil = Date.now() + 350 }; speechSynthesis.speak(u) } catch (e) { } }
   /* Coach E's voice: the same /api/voice the Club coach uses (it checks you're signed in to the Rival club - same account in every app). */
+  var CLUBV = W.RV_CLUB_URL || 'https://clubrival.netlify.app/';
+  /* RV007 · NO SPLASH WHEN CLUB OR THE COACH SENDS YOU IN. Coach E: "it can't go to splash screens. It has to go into the app."
+     Arriving by a link (from=club or from another app) drops the iPhone launch splash at once and passes the app's own tap-to-enter screen
+     (Stride's ENTER, RankUp's splash). Opening the app yourself from the home screen still shows its splash. */
+  (function skipSplash() {
+    var q; try { q = new URLSearchParams(location.search) } catch (e) { return } var f = q.get('from') || ''; if (!/^[a-z]{2,12}$/.test(f)) return;
+    try { var SS = W.Capacitor && W.Capacitor.Plugins && W.Capacitor.Plugins.SplashScreen; if (SS && SS.hide) SS.hide({ fadeOutDuration: 0 }) } catch (e) { }
+    var n = 0, t = setInterval(function () {
+      try {
+        var sp = D.getElementById('splash'); if (sp && !sp.classList.contains('hide') && typeof W.enter === 'function') { W.enter(); clearInterval(t); return }
+        var mb = D.getElementById('mbSp'), go = D.getElementById('rfEnter'); if (mb && go && !mb.classList.contains('off') && mb.getBoundingClientRect().height > 50 && go.getBoundingClientRect().height > 0 && !D.documentElement.getAttribute('data-rfhold')) { go.click(); clearInterval(t); return }
+      } catch (e) { } if (++n > 40) clearInterval(t)
+    }, 150);
+  })();
   var VOICE = W.RV_VOICE_URL || 'https://clubrival.netlify.app/api/voice', voiceOff = false, ACX = null, src = null, said0 = 0;
   function acx() { try { if (!ACX) { var C = W.AudioContext || W.webkitAudioContext; if (C) ACX = new C() } return ACX } catch (e) { return null } }
   function token() { try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^sb-glmyzwxinguqcqtgodts-auth-token/.test(k)) { var v = JSON.parse(localStorage.getItem(k)); var t = v && (v.access_token || (v.currentSession && v.currentSession.access_token)); if (t) return t } } } catch (e) { } return '' }
@@ -101,7 +115,7 @@
     var el = bySyn(said) || press(said);
     if (el) return click(el);
     /* RV006 · not a button: a real question goes to the coach (Club), who answers it right away */
-    if ((woke0 || s.split(' ').length >= 3) && W.RivalOrb && W.RivalOrb.open) { woke0 = false; say('On it.'); setTimeout(function () { off(); W.RivalOrb.open(said) }, 900); return }
+    if (woke0 || s.split(' ').length >= 3) { woke0 = false; off(); coOpen(said); return }
     say('I didn’t find that button. Say the words on it, or say Coach.');
   }
   /* one utterance from whichever ears this phone has; cb(text) ('' = nothing heard) */
@@ -162,5 +176,70 @@
     var go = function () { caption('Coach: “' + q + '”', 2200); run(q); setTimeout(micOn, 600) };
     if (D.readyState === 'complete') setTimeout(go, 2600); else W.addEventListener('load', function () { setTimeout(go, 2600) });
   })();
-  W.RV = { awake: awake, run: run, press: press, bySyn: bySyn, say: say, num: num, norm: norm, hear: handle, on: onn, off: off, isOn: function () { return on } };
+
+  /* ===== RV007 · THE COACH, RIGHT HERE. Coach E: "if I hit that orb, it opens back up at Club Rival. It should remain on the app that I'm on ...
+     the coach should be the color of the app ... but you have the all-knowing coach."
+     Tap the Orb in any app: the same coach opens on top of THIS app, in this app's color. Same brain (Club's /api/coach, which reads your whole day
+     from your account), same voice. He advises - answers, insight, recommendations - and can open another app. He never changes your schedule.
+     Not connected to a Club account in this app yet? He says so and offers Club. ===== */
+  var APP = (function () { var e = D.querySelector('script[data-app]'); return e ? e.getAttribute('data-app') : '' })();
+  var NAMES = { stride: 'Stride Rival', rep: 'Rep Rival', rankup: 'RankUp', mind: 'Cube Rival', mindrival: 'Mind Rival', rest: 'Rest Rival', rise: 'Rise Rival', money: 'Money Rival', biz: 'Biz Rival', bmx: 'BMX Rival', trail: 'Trail Rival', club: 'Club Rival' };
+  var URLS = { stride: 'https://striderival.netlify.app', rep: 'https://myreprival.netlify.app', rankup: 'https://rankuprival.netlify.app', mind: 'https://reflexrival.netlify.app', rest: 'https://restrival.netlify.app', money: 'https://moneyrival.netlify.app', rise: 'https://riserival.netlify.app', mindrival: 'https://mindrival2.netlify.app', biz: 'https://mybizrival.netlify.app', bmx: 'https://rideflowbmx.com', trail: 'https://rideflowmtb.com' };
+  var NAT = { stride: 'rivalstride', rep: 'rivalrep', rankup: 'rivalrankup', mind: 'rivalmind', rest: 'rivalrest', money: 'rivalmoney', rise: 'rivalrise', mindrival: 'rivalmindrival', biz: 'rivalbiz' };
+  var CO = { open: false, msgs: [], busy: false, hands: true, quiet: 0 };
+  function coEsc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] }) }
+  function coCss() {
+    if (D.getElementById('rvCoCss')) return; var st = D.createElement('style'); st.id = 'rvCoCss';
+    st.textContent = '#rvCo{position:fixed;inset:0;z-index:2147483000;background:rgba(4,5,7,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);display:flex;flex-direction:column;color:#f2f4f7;font:500 16px/1.45 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px)}'
+      + '#rvCo .ch{display:flex;align-items:center;justify-content:space-between}#rvCo .ey{font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.22em;color:var(--rvA,#5aa2ff)}#rvCo .x{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:none;color:#fff;font:600 18px/1 -apple-system,sans-serif;cursor:pointer}'
+      + '#rvCo .ob{margin:18px auto 6px;width:132px;height:132px;border-radius:50%;border:0;cursor:pointer;display:block;background:radial-gradient(circle at 34% 30%,#fff 0,rgba(255,255,255,.85) 7%,rgba(var(--rvAr,90,162,255),1) 42%,rgba(var(--rvAr,90,162,255),.7) 70%,rgba(0,0,0,.6) 100%);box-shadow:0 0 0 2px rgba(255,255,255,.14),0 0 60px rgba(var(--rvAr,90,162,255),.55);transition:transform .2s}'
+      + '#rvCo .ob.hear{animation:rvCoP 1s ease-in-out infinite}#rvCo .ob.think{animation:rvCoP 1.8s ease-in-out infinite;opacity:.8}#rvCo .ob.talk{animation:rvCoP .6s ease-in-out infinite}@keyframes rvCoP{50%{transform:scale(1.07);box-shadow:0 0 0 2px rgba(255,255,255,.2),0 0 90px rgba(var(--rvAr,90,162,255),.85)}}'
+      + '#rvCo .st{text-align:center;font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#9aa1ad;margin:6px 0 12px}'
+      + '#rvCo .lg{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px}#rvCo .m{max-width:86%;padding:11px 14px;border-radius:18px;background:rgba(255,255,255,.07)}#rvCo .m.u{align-self:flex-end;background:rgba(var(--rvAr,90,162,255),.22);border:1px solid rgba(var(--rvAr,90,162,255),.4)}'
+      + '#rvCo .ac{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}#rvCo .ac button,#rvCo .gc{border-radius:999px;border:1px solid rgba(var(--rvAr,90,162,255),.6);background:none;color:#fff;font:800 11px/1 -apple-system,sans-serif;letter-spacing:.14em;padding:12px 14px;cursor:pointer}'
+      + '#rvCo form{display:flex;gap:8px;margin-top:10px}#rvCo input{flex:1;min-width:0;height:48px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;padding:0 16px;font:500 16px -apple-system,sans-serif}#rvCo form button{height:48px;padding:0 18px;border-radius:999px;border:0;background:var(--rvA,#5aa2ff);color:#08090b;font:900 12px/1 -apple-system,sans-serif;letter-spacing:.14em}'
+      + 'html.rv-co #rvOrb,html.rv-co #rvDock,html.rv-co body #rvMic,html.rv-co #rvCap{display:none!important}';
+    D.head.appendChild(st);
+  }
+  function coSt(t, k) { var o = D.getElementById('rvCoOb'), x = D.getElementById('rvCoSt'); if (x) x.textContent = t; if (o) { o.className = 'ob' + (k ? ' ' + k : '') } }
+  function coLog() { var lg = D.getElementById('rvCoLg'); if (!lg) return; lg.innerHTML = CO.msgs.map(function (m) { return '<div class="m' + (m.role === 'user' ? ' u' : '') + '">' + coEsc(m.content) + (m.btns ? '<div class="ac">' + m.btns + '</div>' : '') + '</div>' }).join(''); lg.scrollTop = lg.scrollHeight; lg.querySelectorAll('[data-coapp]').forEach(function (b) { b.onclick = function () { coGoApp(b.getAttribute('data-coapp')) } }); lg.querySelectorAll('[data-coclub]').forEach(function (b) { b.onclick = function () { coClose(); W.RivalOrb && W.RivalOrb.open() } }) }
+  function screenText() { try { var el = D.getElementById('rtLay') || D.querySelector('main') || D.body; var t = (el.innerText || '').replace(/\s+\n/g, '\n').replace(/\n{2,}/g, '\n'); return t.slice(0, 1500) } catch (e) { return '' } }
+  function coOpen(q) {
+    if (CO.open) { if (q) coAsk(q); return } CO.open = true; off(); coCss(); D.documentElement.classList.add('rv-co'); awake(true);
+    var o = D.createElement('div'); o.id = 'rvCo'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', 'Coach');
+    o.innerHTML = '<div class="ch"><div class="ey">COACH · ' + coEsc((NAMES[APP] || 'THIS APP').toUpperCase()) + '</div><button class="x" id="rvCoX" aria-label="Close the coach">✕</button></div>'
+      + '<button class="ob" id="rvCoOb" aria-label="Tap and talk to the coach"></button><div class="st" id="rvCoSt" role="status">TAP AND TALK</div>'
+      + '<div class="lg" id="rvCoLg" aria-live="polite"></div><form id="rvCoF"><input id="rvCoIn" placeholder="Or type it" autocomplete="off" aria-label="Ask the coach"><button>ASK</button></form>';
+    D.body.appendChild(o);
+    D.getElementById('rvCoX').onclick = coClose; D.getElementById('rvCoOb').onclick = function () { unlock(); CO.hands = true; coListen() };
+    D.getElementById('rvCoF').onsubmit = function (e) { e.preventDefault(); var i = D.getElementById('rvCoIn'), v = i.value.trim(); if (!v) return; i.value = ''; coAsk(v) };
+    if (!CO.msgs.length) CO.msgs.push({ role: 'assistant', content: token() ? 'I’m with you in ' + (NAMES[APP] || 'here') + '. Ask me anything.' : 'Connect this app to your Club Rival account and I can see your whole day here. Or talk to me in Club.', btns: token() ? '' : '<button data-coclub="1">TALK IN CLUB</button>' });
+    coLog(); if (q) coAsk(q); else if (token()) { unlock(); setTimeout(coListen, 250) }
+  }
+  function coClose() { CO.open = false; CO.hands = false; var e = eng; eng = null; if (e) try { e.stop() } catch (x) { } try { speechSynthesis.cancel() } catch (x) { } var o = D.getElementById('rvCo'); if (o) o.remove(); D.documentElement.classList.remove('rv-co'); awake(false) }
+  function coListen() {
+    if (!CO.open || CO.busy || inOldApp()) return; if (eng) return; coSt('LISTENING', 'hear');
+    once(function (t) { if (!CO.open) return; t = String(t || '').trim(); if (!t) { CO.quiet++; coSt(CO.quiet >= 2 ? 'TAP AND TALK' : 'LISTENING', ''); if (CO.quiet < 2 && CO.hands) setTimeout(coListen, 200); return } CO.quiet = 0; coAsk(t) });
+  }
+  function coAfterTalk() { if (!CO.open) return; var w = Math.max(0, talkUntil - Date.now()) + 350; setTimeout(function () { if (!CO.open) return; if (CO.hands && Date.now() >= talkUntil) coListen(); else if (CO.hands) coAfterTalk(); else coSt('TAP AND TALK', '') }, w) }
+  async function coAsk(q) {
+    if (CO.busy) return; q = String(q).slice(0, 600); CO.msgs.push({ role: 'user', content: q }); coLog();
+    var tk = token(); if (!tk) { CO.msgs.push({ role: 'assistant', content: 'Connect this app to your Club Rival account first, or ask me in Club.', btns: '<button data-coclub="1">TALK IN CLUB</button>' }); coLog(); return }
+    CO.busy = true; coSt('THINKING', 'think'); var j = {};
+    try { var r = await fetch(CLUBV + 'api/coach', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + tk }, body: JSON.stringify({ from: APP || 'app', screen: screenText(), messages: CO.msgs.filter(function (m) { return m.role === 'user' || m.role === 'assistant' }).map(function (m) { return { role: m.role, content: m.content } }) }) }); j = await r.json().catch(function () { return {} }); if (r.status === 401) j = { say: 'Sign in to this app with your Club Rival account and I’ll see everything.', club: true } } catch (e) { j = { say: 'I can’t reach the club right now. Try again in a second.' } }
+    CO.busy = false; if (!CO.open) return;
+    var acts = (j.actions || []).filter(function (a) { return a && (a.type === 'open_app' || a.type === 'show_screen') }), btns = '';
+    acts.forEach(function (a) { var i = a.input || {}; if (a.type === 'open_app' && i.app && i.app !== APP && (URLS[i.app] || NAT[i.app])) btns += '<button data-coapp="' + coEsc(i.app) + '">OPEN ' + coEsc((NAMES[i.app] || i.app).toUpperCase()) + '</button>'; if (a.type === 'show_screen' || j.club) btns += '<button data-coclub="1">OPEN CLUB</button>' });
+    var t = String(j.say || 'Say that again?'); CO.msgs.push({ role: 'assistant', content: t, btns: btns }); coLog(); coSt('', 'talk'); say(t);
+    var oa = acts.filter(function (a) { return a.type === 'open_app' && a.input && a.input.app && a.input.app !== APP })[0];
+    if (oa) { setTimeout(function () { coGoApp(oa.input.app) }, Math.max(1200, talkUntil - Date.now() + 300)); return }
+    coAfterTalk();
+  }
+  function coGoApp(id) {
+    coClose(); var nat = NAT[id], ok = false;
+    try { ok = !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { }
+    if (ok && nat) { location.href = nat + '://open?from=' + encodeURIComponent(APP) + '&go=talk&say=__talk'; return }
+    if (URLS[id]) location.href = URLS[id] + '/?from=' + encodeURIComponent(APP) + '&go=talk&say=__talk';
+  }
+  W.RV = { coach: coOpen, coachClose: coClose, awake: awake, run: run, press: press, bySyn: bySyn, say: say, num: num, norm: norm, hear: handle, on: onn, off: off, isOn: function () { return on } };
 })();

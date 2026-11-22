@@ -1,4 +1,4 @@
-/* RIVAL ORB · OR004 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
+/* RIVAL ORB · OR005 (tap = the coach right here, in this app's color - you stay in the app) · OR004 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
    so a change to the Orb is ONE upload to Club - not one per app.
    - Tap the Orb: you're with the one Club coach, and it knows which app you came from.
      In the iPhone apps it opens the Club Rival APP (rivalclub://). If Club isn't on the phone, the Club website opens after a moment.
@@ -7,7 +7,7 @@
 (function () {
   var W = window, D = document; if (W.__rivalOrb) return; W.__rivalOrb = 1;
   var s = D.currentScript, app = (s && s.getAttribute('data-app')) || '', calm = !!(s && s.getAttribute('data-calm')), noOrb = !!(s && s.getAttribute('data-noorb'));
-  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR004';
+  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR005';
   function inApp() { try { return !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { return false } }
   function web(q) { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + (q ? '&say=' + encodeURIComponent(q) : '') + '&back=' + encodeURIComponent(back) }
   /* OR004 · go(q): a question said inside this app rides along, and the coach answers it as soon as Club opens */
@@ -52,7 +52,7 @@
     if (calm) st.textContent += '#rvOrb{animation:none;opacity:.8}'; /* Rest Rival: no glow pulsing at bedtime */
     D.head.appendChild(st);
     var dk = D.createElement('div'); dk.id = 'rvDock'; dk.setAttribute('aria-hidden', 'true'); D.body.appendChild(dk);
-    var b = D.createElement('button'); b.id = 'rvOrb'; b.type = 'button'; b.setAttribute('aria-label', 'Your coach'); b.innerHTML = '<span>Your coach</span>'; b.onclick = go; D.body.appendChild(b);
+    var b = D.createElement('button'); b.id = 'rvOrb'; b.type = 'button'; b.setAttribute('aria-label', 'Your coach'); b.innerHTML = '<span>Your coach</span>'; b.onclick = function () { if (W.RV && W.RV.coach) W.RV.coach(); else go() }; D.body.appendChild(b);
     place(); setInterval(place, 900); W.addEventListener('resize', place); W.addEventListener('scroll', place, { passive: true });
   }
   /* climb above anything that is pinned (fixed) at the bottom: a tab bar, or a button on a full-screen page */

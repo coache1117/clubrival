@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR050</title>
+<title>Club Rival · CR051</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -100,6 +100,7 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 /* CR049 rows: icon · time · name, tap the row */
 .evw{grid-template-columns:minmax(0,1fr) auto!important}.evw .ev{display:grid!important;grid-template-columns:28px minmax(0,1fr);column-gap:11px;align-items:center}.evw .ev b,.evw .ev span{grid-column:2}.evw .ev span{margin-top:2px}
 .evi{grid-row:1/span 2;width:28px;height:28px;border-radius:8px;object-fit:cover;display:grid;place-items:center;background:rgba(255,255,255,.06);font-style:normal;font:900 14px/1 -apple-system,sans-serif;color:var(--ac,#fff)}
+.tbig{font:800 30px/1 -apple-system,sans-serif!important;height:66px!important;text-align:center}.lnk{display:block;width:100%;margin-top:10px;background:none;border:0;color:var(--mut);font:700 13px/1.3 -apple-system,sans-serif;text-decoration:underline;text-underline-offset:3px;padding:10px;cursor:pointer}
 .evi.evwk{background:linear-gradient(160deg,#2a2d36,#111216);color:#fff;font-size:15px}
 .evrep{font-style:normal;font-weight:900;font-size:11px;margin-left:4px;color:var(--mut);opacity:.85}
 .evch{font-style:normal;font:900 20px/1 -apple-system,sans-serif;color:var(--mut);opacity:.6;text-align:right}
@@ -238,7 +239,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR050';
+const BUILD='CR051';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -812,6 +813,7 @@ function addSheet(row,fromDay){const t=R.dayStr(Date.now()),dk=row?row.id:'new',
  $('aX').onclick=shut;$('aGo').onclick=async()=>{const tm=$('aT').value,dur=Math.max(5,Math.min(600,+$('aD').value||30)),dt=$('aDt').value;if(!tm){$('aE').textContent='Set a time.';return}if(!days.size&&!dt){$('aE').textContent='Pick the day, or pick days to repeat on.';return}
   const K=$('aK').value,nd=Object.assign({},d,{title:$('aN').value.trim(),prog:(PROGS[K]||[]).length?$('aPg').value:null,plan:K==='rep'?(d.plan||''):$('aP').value.trim(),time:tm,durMin:dur,days:days.size?[...days].sort():null,date:days.size?null:dt,from:d.from||t});
   if(row&&tm!==row.data.time){nd.move={};if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm)}
+  {const why=fitCheck(row?row.id:null,nd,days.size?(fd||t):dt);if(why){$('aE').textContent=why;return}}
   /* CR032 - "manually adding replacements risked duplicate activities": say so before adding a second one of the same thing */
   if(!row&&!dupOk){const look=days.size?Array.from({length:7},(_,i)=>R.addDays(t,i)).filter(x=>days.has(R.dayDate(x).getDay())):[dt],hit=look.map(x=>occOn(x).find(o=>o.app===K)).find(Boolean);
    if(hit){dupOk=true;$('aE').textContent='You already have '+hit.name+' on '+fD(hit.day)+' at '+fT(hit.t)+'. To change that one, close this and tap it. Tap SAVE again to add another anyway.';return}}
@@ -865,6 +867,40 @@ function remSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;cons
  const fin=(r,msg)=>{if(r==='ok'||r==='stale'){shut();draw4keep();toast(msg)}else $('rmE').textContent=SCHERR(r)};
  if($('rmOne'))$('rmOne').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.skip=nd.skip||{};nd.skip[day]=1;fin(await evWrite(row,{data:nd}),'REMOVED · THE REST STAY')};
  $('rmAll').onclick=async()=>{const t=R.dayStr(Date.now()),at=day>t?day:t;if(rep&&at>(d.from||t)){const nd=JSON.parse(JSON.stringify(d));nd.until=R.addDays(at,-1);fin(await evWrite(row,{data:nd}),'STOPPED · YOUR HISTORY STAYS')}else fin(await evDelete(row),'REMOVED')}}
+/* CR051 · CHANGING A TIME. Coach E: "5:30 is too late, I want 5 o'clock, click 5 o'clock, hit save ... it doesn't say saved ... sometimes it saves,
+   sometimes it doesn't ... if I'm changing the time I'm changing the time ... if something's going to overlap we should know before we schedule it,
+   it shouldn't allow it ... boxing at 5 and the lift at 6:15 makes sense."
+   The old editor dropped the save when the item had changed anywhere else since the screen loaded ("stale") - that was the "sometimes".
+   Now: one time box, one SAVE. It checks first (each item's real length, your work, your sleep + wind-down), saves, re-reads it from the
+   database, and only then says "SAVED · 5:00 PM". If the item changed elsewhere it re-reads and saves again instead of giving up. */
+function sleepWins(day){const P=schedP();if(!P)return [];const out=[];[day,R.addDays(day,1)].forEach(n=>{try{const pl=R.planFor(P,n),p=R.planned(pl,n),o=(P.overrides[n]||{}),wm=o.windMin||pl.windMin||0;out.push([p.bed-wm*MIN,p.wake,wm])}catch(e){}});return out}
+function fitCheck(skipId,d,startDay,onlyDay){const t=R.dayStr(Date.now()),dur=Math.max(5,+d.durMin||30),rep=Array.isArray(d.days)&&d.days.length>0,days=[];
+ if(onlyDay)days.push(onlyDay);else if(rep){for(let i=0;i<14;i++){const x=R.addDays(startDay||t,i);if(d.days.includes(R.dayDate(x).getDay())&&!(d.skip&&d.skip[x]))days.push(x)}}else days.push(d.date||startDay||t);
+ for(const day of days){const tm=onlyDay&&d.move&&d.move[day]||d.time,a=R.at(day,tm),b=a+dur*MIN;
+  for(const w of sleepWins(day))if(a<w[1]&&w[0]<b)return 'That lands in your sleep'+(w[2]?' and wind-down':'')+' ('+fT(w[0])+' to '+fT(w[1])+'). Pick a time outside it.';
+  const wk=workOf(day);if(wk&&a<wk.t1&&wk.up<b)return 'That’s inside your work hours on '+fD(day)+' ('+fT(wk.up)+' to '+fT(wk.t1)+'). You’re free from '+fT(wk.t1)+'.';
+  const hit=occOn(day).filter(o=>o.id!==skipId&&a<o.t1&&o.t<b).sort((x,y)=>x.t-y.t)[0];
+  if(hit)return 'That overlaps '+hit.name+' on '+fD(day)+' ('+fT(hit.t)+' to '+fT(hit.t1)+'). You’re free from '+fT(hit.t1)+'.'}
+ return null}
+function timeSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;const d=row.data,rep=Array.isArray(d.days)&&d.days.length>0,o=occOn(day).find(x=>x.id===id);if(!o)return;
+ const dur=Math.max(5,Math.round((o.t1-o.t)/MIN)||+d.durMin||30);let only=false;
+ sheet('<div class="ey">'+esc(fD(day)).toUpperCase()+(rep?' · REPEATS':'')+'</div><div class="big">'+esc(o.name).toUpperCase()+'</div>'
+ +'<label for="tT">TIME</label><input id="tT" class="tbig" type="time" value="'+hhmm(o.t)+'"><div class="small" id="tI">'+dur+' min</div>'
+ +'<div class="err" id="tE" role="alert"></div><button class="go" id="tGo">SAVE</button>'
+ +(rep?'<button type="button" class="lnk" id="tOne" aria-pressed="false">Only change '+esc(fD(day))+'</button>':'')+'<button type="button" class="lnk" id="tMore">More options</button>');
+ const info=()=>{const v=$('tT').value;$('tI').textContent=dur+' min'+(v?' · '+fT(R.at(day,v))+' to '+fT(R.at(day,v)+dur*MIN):'')+(rep?(only?' · only '+fD(day):' · every time from '+fD(day)):'');$('tE').textContent=''};
+ $('tT').oninput=info;$('tT').onchange=info;info();$('tMore').onclick=()=>actSheet(id,day);
+ if($('tOne'))$('tOne').onclick=()=>{only=!only;$('tOne').setAttribute('aria-pressed',only);$('tOne').textContent=only?'Change every one from '+fD(day)+' instead':'Only change '+fD(day);$('tGo').textContent=only?'SAVE · ONLY '+fD(day).toUpperCase():'SAVE';info()};
+ $('tGo').onclick=async()=>{const tm=$('tT').value,btn=$('tGo');if(!tm){$('tE').textContent='Pick a time.';return}if(btn.disabled)return;
+  const build=r=>{const nd=JSON.parse(JSON.stringify(r.data));if(rep&&only){nd.move=nd.move||{};nd.move[day]=tm}else if(rep){nd.time=tm;if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm);nd.move=Object.fromEntries(Object.entries(nd.move||{}).filter(([k])=>k<day))}else nd.time=tm;return nd};
+  const why=fitCheck(id,build(row),day,rep&&only?day:null);if(why){$('tE').textContent=why;return}
+  btn.disabled=true;btn.textContent='SAVING…';
+  const write=r=>rep&&!only?evSplit(r,day,{data:build(r)}):evWrite(r,{data:build(r)});
+  let res=await write(row);if(res==='stale'){await loadSched();const fr=S.evs.find(r=>r.id===id);res=fr?await write(fr):'gone'}
+  if(res==='ok'){await loadSched();const now=occOn(day).find(x=>(x.id===id||(x.name===o.name&&x.app===o.app))&&hhmm(x.t)===tm);
+   if(now){shut();draw4keep();toast('SAVED · '+fT(now.t)+(rep&&!only?' FROM '+fD(day).toUpperCase()+' ON':''));return}res='verify'}
+  btn.disabled=false;btn.textContent=rep&&only?'SAVE · ONLY '+fD(day).toUpperCase():'SAVE';$('tE').textContent=res==='verify'?'It didn’t stick. Tap SAVE again.':'Not saved. '+SCHERR(res)};
+}
 function actSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;const d=row.data,rep=Array.isArray(d.days)&&d.days.length>0,o=occOn(day).find(x=>x.id===id),a=APPS.find(x=>x.id===row.app),can=a&&stateOf(a)!=='soon';if(!o)return;
  const t=R.dayStr(Date.now()),auto=sesOn(row.app,day)>0,hand=!!(d.done&&d.done[day]),fin=auto||hand,rs=resOn(row.app,day),before=coachBefore(row,day),after=fin?coachAfter(row,day):[];
  const xp=(S.rows||[]).filter(r=>r.app===row.app&&dayOf(r)===day),xpT=xp.reduce((x,r)=>x+(+r.xp||0),0),nSes=xp.filter(r=>r.kind==='session').length,nRiv=xp.filter(r=>r.kind==='rival').length;
@@ -894,7 +930,7 @@ function actSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;cons
  if($('xO'))$('xO').onclick=()=>openApp(row.app,true,'&go=resume&item='+encodeURIComponent(row.id)+(d.prog?'&program='+encodeURIComponent(d.prog):''));$('xE').onclick=()=>addSheet(row,day);
  $('xNs').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.notes=nd.notes||{};const v=$('xN').value.trim();if(v)nd.notes[day]=v;else delete nd.notes[day];done(await evWrite(row,{data:nd}),'NOTE SAVED')};
  if($('xDn'))$('xDn').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.done=nd.done||{};const was=nd.done[day];if(was)delete nd.done[day];else nd.done[day]=Date.now();done(await evWrite(row,{data:nd}),was?'NOT DONE':'DONE ✓')};
- $('xM').onclick=async()=>{const tm=$('xT').value;if(!tm)return;const nd=JSON.parse(JSON.stringify(d));if(rep){nd.move=nd.move||{};nd.move[day]=tm}else nd.time=tm;done(await evWrite(row,{data:nd}),rep?'MOVED · ONLY THIS ONE':'NEW TIME SAVED')};
+ $('xM').onclick=async()=>{const tm=$('xT').value;if(!tm)return;const nd=JSON.parse(JSON.stringify(d));if(rep){nd.move=nd.move||{};nd.move[day]=tm}else nd.time=tm;{const why=fitCheck(id,nd,day,rep?day:null);if(why){$('xErr').textContent=why;return}}done(await evWrite(row,{data:nd}),rep?'MOVED · ONLY THIS ONE':'NEW TIME SAVED')};
  if($('xF'))$('xF').onclick=async()=>{const tm=$('xT').value;if(!tm)return;const nd=JSON.parse(JSON.stringify(d));nd.time=tm;if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm);nd.move=Object.fromEntries(Object.entries(nd.move||{}).filter(([k])=>k<day));$('xF').disabled=true;done(await evSplit(row,day,{data:nd}),'NEW TIME FROM '+fD(day).toUpperCase()+' ON')};
  if($('xS'))$('xS').onclick=async()=>{const nd=JSON.parse(JSON.stringify(d));nd.skip=nd.skip||{};nd.skip[day]=1;done(await evWrite(row,{data:nd}),'SKIPPED · THE REST STAY')};
  /* CR032 - "preserve past completions and change history": a repeating item with days behind it is ENDED, not wiped */
@@ -948,7 +984,7 @@ function weekSheet(){const t=R.dayStr(Date.now()),P=schedP();let h='<div class="
  for(let i=0;i<7;i++){const d=R.addDays(t,i),rows=occOn(d).map(x=>Object.assign(x,{}));if(P){const pl=R.planFor(P,R.addDays(d,1)),p=R.planned(pl,R.addDays(d,1));if(R.dayStr(p.bed)===d)rows.push({t:p.bed,name:'Bedtime',sub:'Wake '+fT(p.wake)+' · Rest Rival',app:'rest',edit:true,plain:i>0})}
   {const wk=workOf(d);if(wk)rows.push(wk)}rows.sort((a,b)=>a.t-b.t);h+='<div class="dayh">'+(i===0?'TODAY · ':i===1?'TOMORROW · ':'')+fD(d).toUpperCase()+'</div>'+(rows.length?rows.map(evRow).join(''):'<div class="small" style="padding:8px 0">Open</div>')}
  h+='<button class="go" id="wA">+ ADD TO MY SCHEDULE</button><button class="go ghost" id="wX">CLOSE</button>';sheet(h);$('wX').onclick=shut;$('wA').onclick=()=>addSheet(null);wireEv($('shC'))}
-function wireEv(root){root.querySelectorAll('[data-goapp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const it=b.dataset.item,pg=b.dataset.prog;openApp(b.dataset.goapp,true,'&go=resume'+(it?'&item='+encodeURIComponent(it):'')+(pg?'&program='+encodeURIComponent(pg):''))});root.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>actSheet(b.dataset.act,b.dataset.day));root.querySelectorAll('[data-sleep]').forEach(b=>b.onclick=()=>schedSheet('tonight'));root.querySelectorAll('[data-fixed]').forEach(b=>b.onclick=()=>openApp(b.dataset.fixed,true));root.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();remSheet(b.dataset.del,b.dataset.day)});root.querySelectorAll('[data-hide]').forEach(b=>b.onclick=e=>{e.stopPropagation();hideSheet(b.dataset.hide)});if(root.querySelector('#scUnh'))root.querySelector('#scUnh').onclick=unhideAll;if(root.querySelector('#scEd'))root.querySelector('#scEd').onclick=()=>{if(S.schedEdit){S.schedEdit=false;draw()}else schedMenu()};root.querySelectorAll('[data-work]').forEach(b=>b.onclick=daySheet)}
+function wireEv(root){root.querySelectorAll('[data-goapp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const it=b.dataset.item,pg=b.dataset.prog;openApp(b.dataset.goapp,true,'&go=resume'+(it?'&item='+encodeURIComponent(it):'')+(pg?'&program='+encodeURIComponent(pg):''))});root.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>timeSheet(b.dataset.act,b.dataset.day));root.querySelectorAll('[data-sleep]').forEach(b=>b.onclick=()=>schedSheet('tonight'));root.querySelectorAll('[data-fixed]').forEach(b=>b.onclick=()=>openApp(b.dataset.fixed,true));root.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();remSheet(b.dataset.del,b.dataset.day)});root.querySelectorAll('[data-hide]').forEach(b=>b.onclick=e=>{e.stopPropagation();hideSheet(b.dataset.hide)});if(root.querySelector('#scUnh'))root.querySelector('#scUnh').onclick=unhideAll;if(root.querySelector('#scEd'))root.querySelector('#scEd').onclick=()=>{if(S.schedEdit){S.schedEdit=false;draw()}else schedMenu()};root.querySelectorAll('[data-work]').forEach(b=>b.onclick=daySheet)}
 function schedSheet(mode){const e=events(),d=S.sched?S.sched.data:null,pl=e.P?R.planFor(e.P,e.td):null,td=e.td||R.addDays(R.dayStr(Date.now()),1);
  sheet('<div class="ey">'+(mode==='tonight'?'TONIGHT ONLY · '+fD(td).toUpperCase():mode==='new'?'YOUR SLEEP SCHEDULE':'EVERY NIGHT FROM NOW ON')+'</div><div class="big">'+(mode==='tonight'?'CHANGE TONIGHT':'BEDTIME + WAKE')+'</div><div class="small">'+(mode==='tonight'?'Only tonight changes. Your regular schedule and every past night stay as they are.':'Starts tonight. Past nights keep the plan they were scored with.'+(d&&d.sched?' Your weekend times stay as they are.':''))+'</div>'
  +'<div class="two"><div><label for="ssB">BEDTIME</label><input id="ssB" type="time" value="'+(pl?(mode==='tonight'?pl.bed:d.bed):'22:30')+'"></div><div><label for="ssW">WAKE TIME</label><input id="ssW" type="time" value="'+(pl?(mode==='tonight'?pl.wake:d.wake):'06:30')+'"></div></div><div class="err" id="ssE"></div><button class="go" id="ssGo">SAVE</button>'+(mode==='tonight'?'<button class="go ghost" id="ssAll">CHANGE EVERY NIGHT INSTEAD</button>':'')+'<button class="go ghost" id="ssX">CANCEL</button>');
@@ -1108,4 +1144,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR004" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR005" data-app="club" data-noorb="1" defer></script></body></html>
