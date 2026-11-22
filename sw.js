@@ -1,6 +1,9 @@
-// Biz Rival service worker · BZ002. Only the app shell is cached; mail never is.
-const CACHE='biz-rival-bz006';
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','index.html','lib/supabase.js','icon-192.png','app.js','biz-core.js'])).catch(()=>{}))});
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin||u.pathname.startsWith('/api/'))return;
- e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request)))});
+/* CLUB RIVAL service worker · CR050 - opens with no signal once it has been opened once. */
+var CACHE='club-rival-cr050';
+var CORE=['./','index.html','lib/supabase.js','lib/rest-core.js','icon-192.png','site.webmanifest','art/stride.jpg','art/rep.jpg','art/rankup.jpg','art/mind.jpg','art/bmx.jpg','art/trail.jpg','art/rest.jpg','art/club.jpg'];
+self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(CORE)}).then(function(){return self.skipWaiting()}))});
+self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==CACHE}).map(function(x){return caches.delete(x)}))}).then(function(){return self.clients.claim()}))});
+self.addEventListener('fetch',function(e){var r=e.request;if(r.method!=='GET')return;
+  if(r.mode==='navigate'){e.respondWith(fetch(r).then(function(res){var c=res.clone();caches.open(CACHE).then(function(x){x.put('index.html',c)});return res}).catch(function(){return caches.match('index.html')}));return}
+  if(new URL(r.url).origin!==location.origin)return;
+  e.respondWith(fetch(r).then(function(res){if(res.ok){var c=res.clone();caches.open(CACHE).then(function(x){x.put(r,c)})}return res}).catch(function(){return caches.match(r)}))});
