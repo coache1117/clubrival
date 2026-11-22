@@ -1,4 +1,4 @@
-/* RIVAL ORB · OR002 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
+/* RIVAL ORB · OR003 - lives on the Club site (clubrival.netlify.app/kit/rival-orb.js). Every Rival app loads it from here,
    so a change to the Orb is ONE upload to Club - not one per app.
    - Tap the Orb: you're with the one Club coach, and it knows which app you came from.
      In the iPhone apps it opens the Club Rival APP (rivalclub://). If Club isn't on the phone, the Club website opens after a moment.
@@ -7,7 +7,7 @@
 (function () {
   var W = window, D = document; if (W.__rivalOrb) return; W.__rivalOrb = 1;
   var s = D.currentScript, app = (s && s.getAttribute('data-app')) || '', calm = !!(s && s.getAttribute('data-calm')), noOrb = !!(s && s.getAttribute('data-noorb'));
-  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR002';
+  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR003';
   function inApp() { try { return !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { return false } }
   function web() { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + '&back=' + encodeURIComponent(back) }
   function go() {
@@ -23,11 +23,66 @@
     location.href = 'rivalclub://open?from=' + encodeURIComponent(app);
     setTimeout(function () { D.removeEventListener('visibilitychange', gone); if (!left && !D.hidden) location.href = CLUB }, 1600);
   }
+  /* OR003 · ONE FAMILY. The Orb and the mic sit together as one Coach dock, bottom right, in THIS app's color -
+     the same spot in every Rival app. It climbs above anything pinned to the bottom (a tab bar, a big button)
+     and the page gets room at the end so nothing ever hides under it. */
+  var ACC = { rise: '#ff9a3d', rest: '#5aa2ff', money: '#2fd27a', biz: '#3d8bff', mindrival: '#8b6cff', mind: '#8b6cff', stride: '#f0143f', rankup: '#e3262f', rep: '#e0b44a', fuel: '#ff7a59', club: '#ff9a3d' };
+  var acc = (s && s.getAttribute('data-accent')) || ACC[app] || '#5aa2ff';
+  function rgb(h) { h = h.replace('#', ''); return [0, 2, 4].map(function (i) { return parseInt(h.substr(i, 2), 16) }).join(',') }
+  var A = rgb(acc);
   function put() {
     if (noOrb || D.getElementById('rvOrb') || !D.body) return;
-    var st = D.createElement('style'); st.textContent = '#rvOrb{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom) + 170px);z-index:2147481000;width:44px;height:44px;border-radius:50%;border:0;padding:0;cursor:pointer;background:radial-gradient(circle at 34% 30%,#fff 0,#bfe0ff 10%,#4aa3ff 38%,#1546c9 72%,#0a1f66 100%);box-shadow:0 0 0 2px rgba(255,255,255,.18),0 8px 24px rgba(30,100,255,.45),0 0 28px rgba(80,160,255,.35);animation:rvOrbB 3.2s ease-in-out infinite}#rvOrb:active{transform:scale(.94)}@keyframes rvOrbB{50%{box-shadow:0 0 0 2px rgba(255,255,255,.22),0 8px 28px rgba(30,100,255,.6),0 0 40px rgba(80,160,255,.5)}}@media (prefers-reduced-motion:reduce){#rvOrb{animation:none}}#rvOrb span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}';
-    if (calm) st.textContent += '#rvOrb{animation:none;opacity:.55;filter:saturate(.6)}'; /* Rest Rival: no glow pulsing at bedtime */
-    D.head.appendChild(st); var b = D.createElement('button'); b.id = 'rvOrb'; b.type = 'button'; b.setAttribute('aria-label', 'Your coach'); b.innerHTML = '<span>Your coach</span>'; b.onclick = go; D.body.appendChild(b);
+    var st = D.createElement('style'); st.id = 'rvDockCss';
+    st.textContent = ':root{--rvB:calc(env(safe-area-inset-bottom,0px) + 18px);--rvA:' + acc + ';--rvAr:' + A + '}'
+      + 'body{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)!important}'
+      + '#rvDock{position:fixed;right:10px;bottom:var(--rvB);z-index:2147480999;width:110px;height:56px;border-radius:30px;background:rgba(10,11,14,.78);border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 30px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);pointer-events:none;transition:bottom .25s ease}'
+      + '#rvOrb{position:fixed;right:16px;bottom:calc(var(--rvB) + 6px);z-index:2147481000;width:44px;height:44px;border-radius:50%;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:bottom .25s ease;'
+      + 'background:radial-gradient(circle at 34% 30%,#fff 0,rgba(255,255,255,.85) 7%,rgba(' + A + ',1) 42%,rgba(' + A + ',.75) 70%,rgba(0,0,0,.55) 100%);box-shadow:0 0 0 1.5px rgba(255,255,255,.16),0 0 22px rgba(' + A + ',.55);animation:rvOrbB 3.2s ease-in-out infinite}'
+      + '#rvOrb:active{transform:scale(.94)}@keyframes rvOrbB{50%{box-shadow:0 0 0 1.5px rgba(255,255,255,.22),0 0 34px rgba(' + A + ',.8)}}'
+      + '#rvOrb span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}'
+      /* the mic (made by rival-voice.js) joins the dock, left of the Orb */
+      + 'html body #rvMic{left:auto!important;right:66px!important;bottom:calc(var(--rvB) + 6px)!important;width:44px!important;height:44px!important;border:0!important;background:transparent!important;color:#fff!important;box-shadow:none!important;transition:bottom .25s ease}'
+      + 'html body #rvMic.on{background:rgba(' + A + ',.9)!important;color:#0a0a0c!important}html body #rvMic.hear{background:#2fbf71!important}'
+      + 'html body #rvCap{bottom:calc(var(--rvB) + 66px)!important;background:rgba(10,11,14,.92)!important;border:1px solid rgba(' + A + ',.45)}'
+      + 'body.rv-off #rvDock{width:56px}body.drilling #rvDock{width:56px}'
+      + 'html.rv-dock-away #rvDock,html.rv-dock-away #rvOrb,html.rv-dock-away body #rvMic{opacity:0!important;pointer-events:none!important}'
+      + '@media (prefers-reduced-motion:reduce){#rvOrb{animation:none}}';
+    if (calm) st.textContent += '#rvOrb{animation:none;opacity:.8}'; /* Rest Rival: no glow pulsing at bedtime */
+    D.head.appendChild(st);
+    var dk = D.createElement('div'); dk.id = 'rvDock'; dk.setAttribute('aria-hidden', 'true'); D.body.appendChild(dk);
+    var b = D.createElement('button'); b.id = 'rvOrb'; b.type = 'button'; b.setAttribute('aria-label', 'Your coach'); b.innerHTML = '<span>Your coach</span>'; b.onclick = go; D.body.appendChild(b);
+    place(); setInterval(place, 900); W.addEventListener('resize', place); W.addEventListener('scroll', place, { passive: true });
+  }
+  /* climb above anything that is pinned (fixed) at the bottom: a tab bar, or a button on a full-screen page */
+  var lastB = -1;
+  function mine(e) { return e && (e.id === 'rvOrb' || e.id === 'rvDock' || e.id === 'rvMic' || e.id === 'rvCap' || (e.closest && e.closest('#rvMic,#rvOrb,#rvDel'))) }
+  function pinned(e) { for (var n = e; n && n !== D.body && n.nodeType === 1; n = n.parentElement) { var p = getComputedStyle(n).position; if (p === 'fixed' || p === 'sticky') return n } return null }
+  function sheetish(n) { var c = ((n.className && n.className.baseVal != null ? n.className.baseVal : n.className) || '') + ' ' + (n.id || ''); return n.getAttribute('role') === 'dialog' || n.getAttribute('aria-modal') === 'true' || /(^|[\s_-])(sh|sheet|modal|dialog|scrim|overlay)([\s_-]|$)|^sh$|^rvDel$/i.test(c) }
+  function place() {
+    try {
+      var H = W.innerHeight, Wd = W.innerWidth, safe = 18, y = H - safe, tries = 0;
+      while (tries++ < 6) {
+        var top = y - 56, hit = null;
+        [[Wd - 30, y - 8], [Wd - 64, y - 28], [Wd - 104, y - 8], [Wd - 30, top + 6], [Wd - 104, top + 6]].forEach(function (pt) {
+          if (hit || pt[1] < 0) return; var els = D.elementsFromPoint(pt[0], pt[1]);
+          for (var k = 0; k < els.length; k++) {
+            var e = els[k]; if (mine(e) || e === D.body || e === D.documentElement) continue;
+            var pin = pinned(e); if (!pin) break;
+            var r = pin.getBoundingClientRect();
+            if (r.height < H * 0.45) { hit = r.top; break }  /* a bar */
+            if (sheetish(pin)) { hit = -1; break }  /* a sheet or pop-up is open: the dock steps aside */
+            var ctl = e.closest && e.closest('button,a,input,select,textarea,[role=button]');
+            if (ctl && !mine(ctl)) { hit = ctl.getBoundingClientRect().top; break }  /* a button on a full-screen page */
+            break;
+          }
+        });
+        if (hit === -1) { y = -1; break }
+        if (hit == null || hit >= y) break; y = hit - 10;
+      }
+      var hide = y === -1; D.documentElement.classList.toggle('rv-dock-away', hide); if (hide) return;
+      var B = Math.max(safe, Math.round(H - y));
+      if (B !== lastB) { lastB = B; D.documentElement.style.setProperty('--rvB', B === safe ? 'calc(env(safe-area-inset-bottom,0px) + 18px)' : B + 'px') }
+    } catch (e) { }
   }
 
   /* ---------- DELETE MY ACCOUNT ---------- */

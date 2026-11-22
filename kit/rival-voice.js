@@ -1,4 +1,4 @@
-/* RIVAL VOICE · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
+/* RIVAL VOICE · RV005 (runs the Club coach's ?say= commands) · RV004 · lives on the Club site (clubrival.netlify.app/kit/rival-voice.js) - every app loads it from here, so a change is ONE upload to Club. — say it, it presses the button, and it answers in Coach E's voice (Club's ElevenLabs voice; phone voice if that can't load). One small file, dropped into each Rival app (same idea as rival-orb.js).
    TAP THE MIC ONCE: it stays on. Say what you want right away ("start", "the moment", "progress").
    After that it waits for its name: "Coach, pause" · "Coach, resume" · "Coach, skip rest" · "Coach, set done" · "Coach, next" ·
    "Coach, restart" · "Coach, stop round" · "Coach, end". Right after a command you get a few seconds to say the next one without "Coach".
@@ -142,5 +142,14 @@
   mic.onclick = function () { on ? (off(), caption('Mic off.', 1200)) : onn() };
   function put() { if (!D.getElementById('rvMic')) D.body.appendChild(mic) }
   if (D.body) put(); else D.addEventListener('DOMContentLoaded', put);
+  /* RV005 · CLUB IS THE PARENT. When the Club coach sends you here with ?say=..., this app runs those words as if you said them here.
+     The never-press list still holds: nothing that pays, sends, deletes or signs out ever runs this way. */
+  (function fromClub() {
+    var q = ''; try { q = new URLSearchParams(location.search).get('say') || '' } catch (e) { } q = String(q).slice(0, 160); if (!q) return;
+    try { var u = new URL(location.href); u.searchParams.delete('say'); history.replaceState(history.state, '', u.toString()) } catch (e) { }
+    if (NEVER.test(norm(q)) && !/^i saved\b/.test(norm(q))) { setTimeout(function () { caption('That one is yours to tap.', 3500) }, 1500); return }
+    var go = function () { caption('Coach: “' + q + '”', 2200); run(q) };
+    if (D.readyState === 'complete') setTimeout(go, 2600); else W.addEventListener('load', function () { setTimeout(go, 2600) });
+  })();
   W.RV = { run: run, press: press, bySyn: bySyn, say: say, num: num, norm: norm, hear: handle, on: onn, off: off, isOn: function () { return on } };
 })();

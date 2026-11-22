@@ -1,7 +1,8 @@
-// CLUB RIVAL · CR040 · THE COACH'S VOICE (your voice) - the Club coach AND the mic in Rep, RankUp, Mind, Stride, Rest, Rise, Money, Biz. The page sends the words, this turns them into sound with ElevenLabs.
+// CLUB RIVAL · CR046 (says it like a coach) · CR040 · THE COACH'S VOICE (your voice) - the Club coach AND the mic in Rep, RankUp, Mind, Stride, Rest, Rise, Money, Biz. The page sends the words, this turns them into sound with ElevenLabs.
 // Netlify > clubrival > Environment variables: ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID (your Coach E voice). Optional: ELEVENLABS_MODEL_ID.
 // Uses the same model and settings as RankUp's voice, which already works. If Club's own keys fail, it borrows RankUp's voice
 // (rankuprival.netlify.app/api/speak) so the coach still sounds like you - and tells the page exactly why Club's keys failed.
+import { sayable } from '../lib/sayable.mjs';
 const SB = 'https://glmyzwxinguqcqtgodts.supabase.co', ANON = 'sb_publishable_DuBWJ2pLLgaQNkoFqiuOfA_WSYzunwW';
 const RANKUP = process.env.VOICE_BACKUP_URL || 'https://rankuprival.netlify.app/api/speak';
 // Who may ask: Club itself, the other Rival sites (*.netlify.app, and our own rival domains). Every call still needs a signed-in Rival account.
@@ -25,7 +26,8 @@ export default async (req) => {
   const jwt = String(req.headers.get('authorization') || '').replace(/^Bearer\s+/i, ''); if (!jwt || jwt === 'undefined' || jwt === 'null') return json({ error: 'not-signed-in' }, 401);
   const ur = await fetch(SB + '/auth/v1/user', { headers: { apikey: ANON, authorization: 'Bearer ' + jwt } }); if (!ur.ok) return json({ error: 'not-signed-in' }, 401);
   let b = {}; try { b = await req.json() } catch (e) { }
-  const text = String(b.text || '').replace(/\s+/g, ' ').trim().slice(0, 700); if (!text) return json({ error: 'no text' }, 400);
+  const raw = String(b.text || '').replace(/\s+/g, ' ').trim().slice(0, 700); if (!raw) return json({ error: 'no text' }, 400);
+  const text = sayable(raw);   /* CR046 · say it like a coach: 170 lb -> one seventy pounds, Frenzy Live -> lyve (tests: tests/sayable.test.mjs) */
   const KEY = process.env.ELEVENLABS_API_KEY, VID = process.env.ELEVENLABS_VOICE_ID;
   let fail;
   if (!KEY || !VID) fail = { stage: 'config', ok: false, keyPresent: !!KEY, voiceIdPresent: !!VID };
