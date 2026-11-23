@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR054</title>
+<title>Club Rival · CR057</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -153,6 +153,12 @@ main{padding-bottom:calc(env(safe-area-inset-bottom) + 96px)!important}
 .obl{display:flex;flex-direction:column;margin-top:10px}.obr{display:grid;grid-template-columns:28px 40px minmax(0,1fr) 44px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--ln)}.obr:first-child{border-top:0}.obr img{width:40px;height:40px;border-radius:10px;object-fit:cover}.obr b{display:block;font:900 14px/1.2 -apple-system,sans-serif}.obr span{display:block;margin-top:2px;font:700 11.5px/1.3 -apple-system,sans-serif;color:var(--mut)}
 .obup{width:44px;height:44px;border-radius:12px;border:1px solid var(--ln);background:none;color:inherit;font:900 18px/1 -apple-system,sans-serif;cursor:pointer}
 .obslot{display:flex;align-items:center;gap:10px;margin:12px 0 6px;font:900 9px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut)}.obslot i{display:flex;gap:4px}.obslot u{width:22px;height:8px;border-radius:4px;background:#26262e}.obslot u.on{background:linear-gradient(90deg,#ff8a1f,#34c759)}.obslot b{color:#fff;letter-spacing:.06em}.obslot.on{display:block;font:700 13px/1.4 -apple-system,sans-serif;letter-spacing:0;color:#cfcfd6}.obslot.on b{color:#34c759}
+.chips.bg{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chips.bg button{flex:1 1 40%;min-height:46px;font-size:11px;letter-spacing:.08em}
+.obt>.obsw{min-height:36px;padding:0 10px;border-radius:10px;border:1px solid var(--ln);background:transparent;color:var(--tx);font-weight:900;font-size:9.5px;letter-spacing:.12em;cursor:pointer}
+.obt:has(.obsw){grid-template-columns:52px minmax(0,1fr) auto}
+.bpHero{margin:16px 0 6px;padding:18px;border-radius:20px;border:1px solid rgba(255,138,31,.45);background:radial-gradient(120% 100% at 100% 0%,rgba(255,138,31,.2),transparent 60%)}.bpHero span{display:block;font-size:10.5px;font-weight:900;letter-spacing:.18em;color:var(--mut)}.bpHero b{display:block;font-size:64px;line-height:1;font-weight:900;font-style:italic;margin:8px 0 4px}.bpHero em{font-style:normal;color:var(--mut);font-size:13.5px}
+.bpRow{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--ln)}.bpRow img{width:44px;height:44px;border-radius:11px;object-fit:cover}.bpN b{display:block}.bpN>span{display:block;font-size:12px;color:var(--mut)}
+.bpM{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.bpM i{font-style:normal;font-weight:900;font-size:18px;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--ln)}.bpM i.e{border-color:var(--ac);color:var(--ac)}.bpM small{display:block;font-size:8.5px;letter-spacing:.14em;color:var(--mut);margin-bottom:3px}
 .obstart{margin-top:6px;border-color:rgba(255,138,31,.45);background:radial-gradient(120% 100% at 100% 0%,rgba(255,138,31,.16),transparent 60%),linear-gradient(135deg,rgba(26,26,32,.95),rgba(10,10,13,.95))}
 /* CR026 fixes: rank numbers centred; pop-up sheets sit above the nav bar */
 .obr b.obn,.obt i.obn{display:grid;place-items:center;margin:0;font:900 14px/1 -apple-system,sans-serif;font-style:normal;color:#000}
@@ -218,7 +224,7 @@ html[data-theme="light"] .cm.u{background:#f1f3f6;border-color:#dde2e8}
 .cprop{padding:10px 12px;border-radius:14px;border:1.5px solid #4aa3ff}.cprop span{display:block;font-weight:700;margin-bottom:8px}.cprop div{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cprop .go{margin:0}
 .cchips{display:flex;flex-wrap:wrap;gap:6px}.ch2{min-height:36px;padding:0 12px;border-radius:99px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font:800 12px/1 -apple-system,sans-serif;cursor:pointer}
 .cin{display:flex;gap:8px}.cin input{flex:1;min-height:46px;padding:0 12px;border-radius:14px;border:1px solid rgba(127,127,127,.35);background:transparent;color:inherit;font-size:16px}.cin button{width:52px;border-radius:14px;border:0;background:#2f7bff;color:#fff;font-size:18px;cursor:pointer}
-body:has(#sh.on .coach) #rvOrb{display:none}
+body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
 .chf{align-self:center;min-height:32px;padding:0 14px;border-radius:99px;border:1px solid rgba(74,163,255,.5);background:transparent;color:inherit;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer}.chf[aria-pressed="true"]{background:rgba(74,163,255,.18)}
 .cvn{text-align:center;font:800 10.5px/1.35 -apple-system,sans-serif;letter-spacing:.06em;color:#3fb27f}.cvn.bad{color:#e0703a}.cvn:empty{display:none}
 .cost.warn{color:#e0703a;letter-spacing:.06em;line-height:1.4}
@@ -226,7 +232,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
 (function(){function pref(){try{return localStorage.getItem('cr_theme')||'auto'}catch(e){return 'auto'}}var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: light)');
  window.crTheme=function(p){if(p){try{localStorage.setItem('cr_theme',p)}catch(e){}}p=pref();var t=p==='auto'?(mq&&mq.matches?'light':'dark'):p;document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f3f3f6':'#050506');return p};
  window.crTheme();if(mq&&mq.addEventListener)mq.addEventListener('change',function(){window.crTheme()})})();</script>
-<script src="kit/rival-today.js?v=RT002"></script>
+<script src="kit/rival-today.js?v=RT004"></script>
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="navg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset=".7" stop-color="#ffd21a"/><stop offset="1" stop-color="#34c759"/></linearGradient></defs></svg><div id="sbar"></div>
 <!-- CR024 - "while it's thinking we need a dynamic image": the CR ring lights up piece by piece, round and round, until the club is ready -->
@@ -241,7 +247,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR054';
+const BUILD='CR057';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -283,7 +289,9 @@ function heroHTML(){if(!window.RivalToday||!RivalToday.inline)return '';const n=
  const today=E.filter(x=>x&&x.t&&R.dayStr(x.t)===day),done=today.filter(x=>{try{return isDone(x)}catch(e){return false}}).length;
  const up=E.filter(x=>x&&x.t>n-30*MIN&&x.t<n+20*3600*1000&&!(()=>{try{return isDone(x)}catch(e){return false}})()).sort((a,b)=>a.t-b.t)[0];
  const a=up&&APPS.find(q=>q.id===up.app),bar=today.length?{label:'Today',right:done+' of '+today.length+' done',pct:done/today.length*100}:null;let d;
- if(up)d={ey:'Next up · '+t12(up.t)+(up.t<n?' · now':''),big:up.name,small:a?a.name:'',sub:String(up.sub||'').split(' · ').filter(p=>!a||p.trim()!==a.name).join(' · '),bar,btn:a&&stateOf(a)!=='soon'?'GO':'SEE MY DAY',hint:a?'Opens '+a.name+', ready to start.':''};
+ /* CR056 · Coach E: "why the fuck does it say 30 minutes? It should show ... 11 hours from now." How far away it is comes first; the length after. */
+ const away=ms=>{const m=Math.round(ms/6e4);if(m<1)return 'now';if(m<60)return 'in '+m+' min';const h=Math.floor(m/60),r=m%60;return 'in '+h+' hour'+(h===1?'':'s')+(r?' '+r+' min':'')};
+ if(up)d={ey:'Next up · '+t12(up.t)+' · '+(up.t<n?'now':away(up.t-n)),big:up.name,small:a?a.name:'',sub:[up.t>n?away(up.t-n).replace(/^in /,'Starts in '):'Happening now'].concat(String(up.sub||'').split(' · ').filter(p=>!a||p.trim()!==a.name).map(p=>/^\d+ min$/.test(p.trim())?'lasts '+p.trim():p)).join(' · '),bar,btn:a&&stateOf(a)!=='soon'?'GO':'SEE MY DAY',hint:a?'Opens '+a.name+', ready to start.':''};
  else if(!(goalNow()||{}).ranked)d={ey:'Become a Club boss',big:'Pick your apps',small:'for your week',sub:'Put your apps in order and Club Rival builds your week: the days, the programs and your percent in each.',bar,btn:'START',hint:'One minute.'};
  else d={ey:'Today',big:'All clear',small:today.length?'nothing left today':'nothing on today',sub:'Add a workout, a walk or a focus rep and it shows up here.',bar,btn:'ADD TO MY SCHEDULE',hint:''};
  HERO={up,a,d};return RivalToday.inline(CLUBCFG,d,'clGo')}
@@ -658,7 +666,20 @@ async function saveGoal(d){try{const row=S.goal;if(!row){const {error}=await SB.
       (Rest Rival is nightly.) Percent follows days: every day 1% · 3 days 2.5% · 2 or fewer 3% (the most).
    3. Hit all three for 4 straight weeks and a new app slot opens. Keep stacking to Level 10 Club Boss.
    ====================================================================== */
-const GOOD={rankup:'Combat. Confidence, grit and power.',rep:'Strength. Muscle, bones and metabolism.',stride:'Cardio. Heart, lungs and endurance.',mind:'Focus. Reactions and problem solving.',bmx:'Speed and skill on a bike.',trail:'Adventure. Balance, nerve and legs.',rest:'Recovery. The sleep that makes the rest work.',money:'Money. Save 1% more and stop the leaks.',rise:'Mornings. Up on time, proved, a short routine.'};
+/* CR055 · Coach E, 23 Nov: "that's a lot to choose right at that moment ... they choose one or two." Tap a goal; Club picks the TWO apps that
+   move it most (swap either one, or add more - nothing is capped); then the six-month plan on one screen: what 1% becomes, and what to do this week. */
+const BOSS_GOALS=[['look','LOOK GREAT',['rep','stride'],'lean'],['fight','FIGHT SHARP',['rankup','rep'],'all'],['strong','GET STRONGER',['rep','rankup'],'strong'],['fast','FASTER + EXPLOSIVE',['stride','rep'],'lean'],
+ ['lean','LOSE FAT',['stride','rankup'],'lean'],['sleep','SLEEP BETTER',['rest','rise'],'recover'],['morning','OWN MY MORNINGS',['rise','rest'],'recover'],['calm','CALM + FOCUSED',['mindrival','rest'],'sharp'],
+ ['money','SAVE MORE MONEY',['money','rise'],'all'],['biz','GROW MY BUSINESS',['biz','rise'],'all']];
+const APP_TYPE={stride:'fit',rep:'fit',rankup:'fit',trail:'fit',bmx:'fit',mindrival:'mind',mind:'mind',rest:'rec',rise:'rec',money:'life',biz:'life'};const appKind=id=>APP_TYPE[id]||'fit';
+function bossApps(keys,text){const P=keys.map(k=>BOSS_GOALS.find(x=>x[0]===k)).filter(Boolean),out=[];
+ if(!P.length){const t=String(text||'').toLowerCase(),hit=[[/box|fight|punch|spar/,'rankup'],[/strong|lift|muscle|bench|squat/,'rep'],[/run|walk|cardio|fast|speed|explosive|endurance|lean|fat|weight/,'stride'],[/sleep|tired|rest/,'rest'],[/morning|wake|early/,'rise'],[/calm|focus|stress|anx|breath|mind/,'mindrival'],[/money|save|debt|budget/,'money'],[/business|client|lead|gym/,'biz']];hit.forEach(h=>{if(h[0].test(t)&&!out.includes(h[1]))out.push(h[1])});}
+ P.forEach(p=>{if(!out.includes(p[2][0]))out.push(p[2][0])});P.forEach(p=>p[2].forEach(a=>{if(!out.includes(a))out.push(a)}));['rep','stride'].forEach(a=>{if(!out.includes(a))out.push(a)});
+ return out.filter(id=>{const a=APPS.find(x=>x.id===id);return a&&stateOf(a)!=='soon'}).slice(0,2)}
+/* what 1% a session becomes by the goal date, per app (sessions = days a week x weeks). Plain compounding, the same rule as the 37x. */
+function bossGrowth(G){const by=G.by?new Date(G.by+'T12:00:00').getTime():Date.now()+182*864e5,wks=Math.max(1,(by-Date.now())/(7*864e5));
+ return (G.ranked||[]).map(app=>{const d=app==='rest'?7:rankDays(G,app),p=pctFor(d)/100,f=w=>Math.pow(1+p,d*w);return {app,d,pct:pctFor(d),sess:Math.round(d*wks),m1:f(4.35),m3:f(13),end:f(wks),wks}})}
+const GOOD={mindrival:'Calm. Breathing, focus and mental toughness.',biz:'Business. Leads answered, sessions booked.',rankup:'Combat. Confidence, grit and power.',rep:'Strength. Muscle, bones and metabolism.',stride:'Cardio. Heart, lungs and endurance.',mind:'Focus. Reactions and problem solving.',bmx:'Speed and skill on a bike.',trail:'Adventure. Balance, nerve and legs.',rest:'Recovery. The sleep that makes the rest work.',money:'Money. Save 1% more and stop the leaks.',rise:'Mornings. Up on time, proved, a short routine.'};
 const RECO=new Set(['rankup','rep','stride']);
 /* CR049 · Coach E: "I'm gonna need access to business, focus and other shit, and I can't be fucking around having access to three apps ... let's flip that."
    Every app is open and can go on the plan, as many as you want, in your order: #1 gets the most days, then it tapers (never under 1).
@@ -672,39 +693,49 @@ function slotInfo(now){const G=goalNow();if(!G||!G.ranked||!G.start)return {slot
   weeks.push(ok);if(ok){streak++;if(streak===4){earned++;streak=0}}else streak=0;a=bt}
  return {slots:99,streak,earned,weeks}}
 function goalSheet(addMode,startAim){const old=goalNow();const g=old||{goal:'all',days:[1,2,3,4,5,6],slot:'am'};let step=addMode?1:(old&&old.ranked?2:1),pick=g.goal,days=new Set(g.days||[1,2,3,4,5,6]),slot=g.slot||'am',top=g.top||4;
- let ranked=(old&&old.ranked?old.ranked.slice():[]);
+ let ranked=(old&&old.ranked?old.ranked.slice():[]),gk=(old&&old.gk?old.gk.slice():[]),lastPk=old&&old.aim?(old.gk||[]).join()+'|'+old.aim:null,swapAt=-1,clubPk=old&&old.aim?bossApps(old.gk||[],old.aim):[];
  /* CR031 - Coach E: "they never asked me what my goal was ... I have a six month goal." Step 0 asks what and by when; the plan builds toward that date. */
- let aim=(old&&old.aim)||'',by=(old&&old.by)||ymdLocal(addMonths(new Date(),6));if(startAim||(!addMode&&!(old&&old.aim)))step=0;
+ let aim=(old&&old.aim)||'',by=(old&&old.by)||ymdLocal(addMonths(new Date(),6));if(startAim||(!addMode&&!(old&&old.aim)))step=0;if(addMode)step=1
  const pool=APPS.filter(a=>stateOf(a)!=='soon');
  const row=(app,i)=>{const a=APPS.find(x=>x.id===app),d=rankDays({ranked,top,days:[...days]},app);return '<div class="obr" style="--ac:'+a.ac+'"><b class="obn">'+(i+1)+'</b><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+(app==='rest'?'every night':d+' day'+(d===1?'':'s')+' a week')+' · '+pctFor(app==='rest'?7:d)+'% a session</span></div>'+(i?'<button type="button" class="obup" data-up="'+i+'" aria-label="Move '+esc(a.name)+' up">↑</button>':'<span></span>')+'</div>'};
  const paint=()=>{
-  if(step===0){const B=[[3,'3 MONTHS'],[6,'6 MONTHS'],[12,'1 YEAR']];sheet('<div class="ey">BECOME A CLUB BOSS · STEP 1 OF 3</div><div class="big">WHAT’S YOUR GOAL?</div><div class="small">Say it your way. Everything the Club plans works back from it.</div>'
-   +'<label for="gAim">MY GOAL</label><input id="gAim" maxlength="120" placeholder="e.g. Look great, fight sharp, explosive on the bike" value="'+esc(aim)+'">'
+  if(step===0){const B=[[3,'3 MONTHS'],[6,'6 MONTHS'],[12,'1 YEAR']],chipAim=()=>gk.map(k=>BOSS_GOALS.find(x=>x[0]===k)[1]).join(' + ');sheet('<div class="ey">BECOME A CLUB BOSS · STEP 1 OF 4</div><div class="big">WHAT’S YOUR GOAL?</div><div class="small">Tap one or two. Club picks your apps and builds the plan from it.</div>'
+   +'<div class="chips bg" id="gPk">'+BOSS_GOALS.map(x=>'<button type="button" data-bg="'+x[0]+'" class="'+(gk.includes(x[0])?'on':'')+'" aria-pressed="'+gk.includes(x[0])+'">'+x[1]+'</button>').join('')+'</div>'
+   +'<label for="gAim">IN YOUR WORDS <span style="text-transform:none;letter-spacing:0;font-weight:600">(optional)</span></label><input id="gAim" maxlength="120" placeholder="e.g. Look great, fight sharp, explosive on the bike" value="'+esc(aim&&aim!==chipAim()?aim:'')+'">'
    +'<label>BY WHEN?</label><div class="chips" id="gBy">'+B.map(x=>{const d=ymdLocal(addMonths(new Date(),x[0]));return '<button type="button" data-by="'+d+'" class="'+(by===d?'on':'')+'" aria-pressed="'+(by===d)+'">'+x[1]+'</button>'}).join('')+'</div><input id="gDate" type="date" value="'+by+'" aria-label="Or pick the date" style="margin-top:8px">'
-   +'<div class="err" id="g0E"></div><button class="go" id="g0N">NEXT · PICK YOUR APPS</button><button class="go ghost" id="g0X">NOT NOW</button>');
-   const keep=()=>{aim=($('gAim').value||'').trim();by=$('gDate').value||by};
+   +'<div class="err" id="g0E"></div><button class="go" id="g0N">NEXT · CLUB PICKS YOUR APPS</button><button class="go ghost" id="g0X">NOT NOW</button>');
+   const keep=()=>{const t=($('gAim').value||'').trim();aim=t||chipAim();by=$('gDate').value||by};
+   $('gPk').querySelectorAll('button').forEach(b=>b.onclick=()=>{keep();const k=b.dataset.bg,i=gk.indexOf(k);if(i>=0)gk.splice(i,1);else{gk.push(k);if(gk.length>2)gk.shift()}keep();paint()});
    $('gBy').querySelectorAll('button').forEach(b=>b.onclick=()=>{keep();by=b.dataset.by;paint()});
-   $('g0X').onclick=shut;$('g0N').onclick=()=>{keep();if(!aim){$('g0E').textContent='Type your goal first. A few words is plenty.';return}if(!(by>ymdLocal(new Date()))){$('g0E').textContent='Pick a date in the future.';return}step=1;paint()};return}
-  if(step===1){sheet('<div class="ey">BECOME A CLUB BOSS · STEP 2 OF 3</div><div class="big">PICK YOUR APPS</div><div class="small">Tap them in order: #1 gets the most days, and it tapers from there. Pick as many as you want. Tap one again to take it off.</div>'
-   +'<div class="obg">'+pool.map(a=>{const i=ranked.indexOf(a.id);return '<button type="button" class="obt'+(i>=0?' on':'')+'" data-pk="'+a.id+'" aria-pressed="'+(i>=0)+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+esc(GOOD[a.id]||a.line)+'</span>'+(RECO.has(a.id)?'<em>RECOMMENDED</em>':'')+'</div>'+(i>=0?'<i class="obn">'+(i+1)+'</i>':'<i class="obe"></i>')+'</button>'}).join('')+'</div>'
-   +'<div class="err" id="obE"></div><button class="go" id="obN"'+(ranked.length?'':' disabled')+'>'+(ranked.length?'NEXT · '+ranked.length+' PICKED':'PICK AT LEAST ONE')+'</button><button class="go ghost" id="obX">NOT NOW</button>');
-   $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk,i=ranked.indexOf(id);if(i>=0)ranked.splice(i,1);else ranked.push(id);paint()});
-   $('obX').onclick=shut;$('obN').onclick=()=>{if(!ranked.length)return;step=2;paint()};return}
-  sheet('<div class="ey">BECOME A CLUB BOSS · STEP 3 OF 3</div><div class="big">YOUR WEEK</div>'
+   $('g0X').onclick=shut;$('g0N').onclick=()=>{keep();if(!aim){$('g0E').textContent='Tap a goal, or say it in your words.';return}if(!(by>ymdLocal(new Date()))){$('g0E').textContent='Pick a date in the future.';return}
+    const sig=gk.join()+'|'+aim;clubPk=bossApps(gk,aim);if(!ranked.length||sig!==lastPk)ranked=clubPk.slice();lastPk=sig;const bg=BOSS_GOALS.find(x=>x[0]===gk[0]);if(bg)pick=bg[3];step=1;paint()};return}
+  if(step===1){/* CR056 · Coach E: "I can't wait 4 weeks for a sleep app ... only get a certain number of fitness apps. Mind apps, fitness apps." Limits by TYPE. */
+   const earned=(()=>{try{return slotInfo().earned}catch(e){return 0}})(),cap=k=>k==='fit'?2+earned:k==='mind'?1+earned:99,inG=k=>ranked.filter(id=>appKind(id)===k);
+   const grp=(k,title,note)=>{const L=pool.filter(a=>appKind(a.id)===k);if(!L.length)return '';const n=inG(k).length,c=cap(k);return '<div class="ey" style="margin-top:16px">'+title+' · '+(c>=99?'AS MANY AS YOU WANT':n+' OF '+c)+'</div>'+(note?'<div class="small">'+note+'</div>':'')+'<div class="obg" style="margin-top:8px">'+L.map(a=>{const i=ranked.indexOf(a.id);return '<button type="button" class="obt'+(i>=0?' on':'')+'" data-tg="'+a.id+'" aria-pressed="'+(i>=0)+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+esc(GOOD[a.id]||a.line)+'</span>'+(clubPk.includes(a.id)?'<em>CLUB PICK</em>':'')+'</div>'+(i>=0?'<i class="obn">'+(i+1)+'</i>':'<i class="obe"></i>')+'</button>'}).join('')+'</div>'};
+   sheet('<div class="ey">BECOME A CLUB BOSS · STEP 2 OF 4</div><div class="big">YOUR APPS</div><div class="small">Club picked what moves <b style="color:var(--tx)">'+esc(aim)+'</b> the most. Change anything. Fitness and mind are limited so you can actually stick with them; a 4-week streak opens one more of each.</div>'
+    +grp('fit','FITNESS')+grp('mind','MIND')+grp('rec','SLEEP + MORNINGS','Open from day one.')+grp('life','MONEY + BUSINESS','Open from day one.')
+    +'<div class="err" id="obE"></div><button class="go" id="obN"'+(ranked.length?'':' disabled')+'>'+(ranked.length?'NEXT · YOUR WEEK':'PICK AT LEAST ONE')+'</button><button class="go ghost" id="obBk">‹ BACK</button>');
+   $('shC').querySelectorAll('[data-tg]').forEach(b=>b.onclick=()=>{const id=b.dataset.tg,k=appKind(id),i=ranked.indexOf(id);if(i>=0){ranked.splice(i,1);paint();return}
+    if(inG(k).length>=cap(k)){$('obE').textContent=(k==='fit'?'Fitness':'Mind')+' is full at '+cap(k)+'. Tap one off first, or hold a 4-week streak to open another.';return}ranked.push(id);paint()});
+   $('obBk').onclick=()=>{step=0;paint()};$('obN').onclick=()=>{if(!ranked.length)return;step=2;paint()};return}
+  if(step==='pick'){const title=swapAt>=0?'SWAP '+esc(((APPS.find(x=>x.id===ranked[swapAt])||{}).name||'').toUpperCase()):'ADD AN APP';
+   sheet('<div class="ey">BECOME A CLUB BOSS</div><div class="big">'+title+'</div><div class="small">Tap one.</div><div class="obg">'+pool.filter(a=>!ranked.includes(a.id)).map(a=>'<button type="button" class="obt" data-pk="'+a.id+'" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+esc(GOOD[a.id]||a.line)+'</span></div><i class="obe"></i></button>').join('')+'</div><button class="go ghost" id="obBk">‹ BACK</button>');
+   $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;if(swapAt>=0)ranked[swapAt]=id;else ranked.push(id);step=1;paint()});$('obBk').onclick=()=>{step=1;paint()};return}
+  sheet('<div class="ey">BECOME A CLUB BOSS · STEP 3 OF 4</div><div class="big">YOUR WEEK</div>'
    +'<label>DAYS A WEEK FOR YOUR #1</label><div class="chips" id="obT">'+[3,4,5,6].map(n=>'<button type="button" data-top="'+n+'" class="'+(top===n?'on':'')+'" aria-pressed="'+(top===n)+'">'+n+'</button>').join('')+'</div>'
    +'<div class="obl">'+ranked.map(row).join('')+'</div><div class="small" style="margin:6px 2px 0">Every day = 1% a session · 3 days = 2.5% · 2 or fewer = 3%, the most. Show up more and each day asks less of you.</div>'
    +'<label>WHAT YOU WANT MOST</label><div class="chips" id="obG" style="flex-wrap:wrap">'+GOALS.map(x=>'<button type="button" data-g="'+x[0]+'" class="'+(pick===x[0]?'on':'')+'" style="flex:1 1 30%;font-size:9.5px;letter-spacing:.06em" aria-pressed="'+(pick===x[0])+'">'+x[1]+'</button>').join('')+'</div>'
    +'<label>DAYS YOU CAN TRAIN</label><div class="chips" id="gD">'+['S','M','T','W','T','F','S'].map((c,i)=>'<button type="button" data-wd="'+i+'" class="'+(days.has(i)?'on':'')+'" aria-pressed="'+days.has(i)+'">'+c+'</button>').join('')+'</div>'
    +'<label>BEST TIME OF DAY</label><div class="chips" id="gS">'+Object.keys(SLOTS).map(k=>'<button type="button" data-sl="'+k+'" class="'+(slot===k?'on':'')+'" style="font-size:10px;letter-spacing:.1em" aria-pressed="'+(slot===k)+'">'+SLOTS[k][1]+'</button>').join('')+'</div>'
-   +'<div class="err" id="gE"></div><button class="go" id="gGo">BUILD MY WEEK</button><button class="go ghost" id="obB">‹ CHANGE MY APPS</button><button class="go ghost" id="gX">CANCEL</button>');
+   +'<div class="err" id="gE"></div><button class="go" id="gGo">NEXT · MY 6-MONTH PLAN</button><button class="go ghost" id="obB">‹ CHANGE MY APPS</button><button class="go ghost" id="gX">CANCEL</button>');
   $('obT').querySelectorAll('button').forEach(b=>b.onclick=()=>{top=+b.dataset.top;paint()});
   $('shC').querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const i=+b.dataset.up;[ranked[i-1],ranked[i]]=[ranked[i],ranked[i-1]];paint()});
   $('obG').querySelectorAll('button').forEach(b=>b.onclick=()=>{pick=b.dataset.g;paint()});
   $('gD').querySelectorAll('button').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;days.has(i)?days.delete(i):days.add(i);paint()});$('gS').querySelectorAll('button').forEach(b=>b.onclick=()=>{slot=b.dataset.sl;paint()});
   $('obB').onclick=()=>{step=1;paint()};$('gX').onclick=shut;
   $('gGo').onclick=async()=>{if(!days.size){$('gE').textContent='Pick at least one day.';return}$('gGo').disabled=true;
-   const r=await saveGoal({goal:pick,days:[...days].sort(),slot,apps:ranked.slice(),ranked:ranked.slice(),top,start:(old&&old.start)||Date.now(),aim:aim||(old&&old.aim)||'',by:by||(old&&old.by)||''});
-   if(r==='ok'||r==='stale')planSheet();else{$('gGo').disabled=false;$('gE').textContent=SCHERR(r)}}};
+   const r=await saveGoal({goal:pick,days:[...days].sort(),slot,apps:ranked.slice(),ranked:ranked.slice(),top,start:(old&&old.start)||Date.now(),aim:aim||(old&&old.aim)||'',by:by||(old&&old.by)||'',gk:gk.slice()});
+   if(r==='ok'||r==='stale')bossPlanSheet();else{$('gGo').disabled=false;$('gE').textContent=SCHERR(r)}}};
  paint()}
 /* the plan card on BOSS, and the start card on TODAY */
 function planCardHTML(){if(!S.user)return '';const G=goalNow();
@@ -713,6 +744,15 @@ function planCardHTML(){if(!S.user)return '';const G=goalNow();
  return '<div class="cat">YOUR PLAN</div><div class="card"><div class="obl">'+G.ranked.map((app,i)=>{const a=APPS.find(x=>x.id===app);if(!a)return '';const d=rankDays(G,app);return '<div class="obr" style="--ac:'+a.ac+'"><b class="obn">'+(i+1)+'</b><img src="'+a.art+'" alt=""><div><b>'+esc(a.name)+'</b><span>'+(app==='rest'?'every night':d+' day'+(d===1?'':'s')+' a week')+' · '+pctFor(app==='rest'?7:d)+'% a session</span></div><span></span></div>'}).join('')+'</div>'
   +'<div class="obslot"><span>BOSS LEVEL '+lv+'</span><i>'+[0,1,2,3].map(k=>'<u class="'+(k<SI.streak?'on':'')+'"></u>').join('')+'</i><b>'+SI.streak+' of 4 weeks</b></div><div class="small">Hit your days in '+(G.ranked.length===1?'it':'all '+G.ranked.length)+' 4 weeks straight: Boss level '+(lv+1)+(Math.min(6,(G.top||4)+SI.earned)<6?' and one more day a week for your #1':'')+'.</div>'
   +'<div class="row2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="go ghost" id="obEd">CHANGE MY PLAN</button><button class="go" id="plB2">PLAN THIS WEEK</button></div></div>'}
+function bossPlanSheet(){const G=goalNow();if(!G)return goalSheet();const L=bossGrowth(G),x=v=>(v>=10?Math.round(v):Math.round(v*10)/10)+'×',mo=L[0]?Math.max(1,Math.round(L[0].wks/4.35)):6,byT=G.by?new Date(G.by+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric'}):'';
+ const lead=L.filter(r=>r.app!=='rest').concat(L.filter(r=>r.app==='rest'))[0];
+ sheet('<div class="ey">BECOME A CLUB BOSS · STEP 4 OF 4 · YOUR PLAN</div><div class="big">1% AT A TIME.</div><div class="small">'+esc(G.aim||'Your goal')+(byT?' · by '+byT:'')+'</div>'
+  +(lead?'<div class="bpHero"><span>IN '+mo+' MONTH'+(mo===1?'':'S')+' · '+esc(APPS.find(a=>a.id===lead.app).name.toUpperCase())+'</span><b>'+x(lead.end)+'</b><em>your starting level. Each session asks just '+lead.pct+'% more than the last one.</em></div>':'')
+  +L.map(r=>{const a=APPS.find(y=>y.id===r.app);return '<div class="bpRow" style="--ac:'+a.ac+'"><img src="'+a.art+'" alt=""><div class="bpN"><b>'+esc(a.name)+'</b><span>'+(r.app==='rest'?'every night':r.d+' days a week')+' · '+r.pct+'% a session · '+r.sess+' sessions</span><div class="bpM"><i><small>1 MONTH</small>'+x(r.m1)+'</i><i><small>3 MONTHS</small>'+x(r.m3)+'</i><i class="e"><small>'+(byT?byT.toUpperCase():'GOAL')+'</small>'+x(r.end)+'</i></div></div></div>'}).join('')
+  +'<div class="pan"><span>THIS WEEK, DO THIS</span>'+L.map(r=>'<p>'+esc(APPS.find(y=>y.id===r.app).name)+': '+(r.app==='rest'?'track every night':r.d+' sessions')+'. Beat your last one by a little.</p>').join('')+'<p>Hit all of it and the week counts toward your streak. 4 weeks in a row = Club offers your next app.</p></div>'
+  +'<div class="small" style="margin:10px 2px 0">The math: a little better, session after session, compounds. Miss days and it slows down. Keep showing up and it climbs.</div>'
+  +'<button class="go" id="bpGo">SEE MY WEEK</button><button class="go ghost" id="bpB">‹ CHANGE MY PLAN</button>');
+ $('bpGo').onclick=planSheet;$('bpB').onclick=()=>goalSheet()}
 function planSheet(){const G=goalNow();if(!G)return goalSheet();const P=buildPlan(G),g=P.goal,byDay={};P.items.forEach(it=>(byDay[it.day]=byDay[it.day]||[]).push(it));
  sheet('<div class="ey">THE PLANNER · '+fD(P.wk.start).toUpperCase()+' – '+fD(P.wk.end).toUpperCase()+'</div><div class="big">'+g[1]+'</div><div class="small">'+g[2]+'</div>'
  +'<div class="pan" id="plW"><span>HOW THE WEEK WAS BALANCED</span>'+P.why.map(x=>'<p'+(x.startsWith('  ')?' style="color:var(--mut);margin-top:-4px;font-size:12.5px"':'')+'>'+esc(x.trim())+'</p>').join('')+'</div>'
@@ -1152,4 +1192,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR005b" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR006" data-app="club" data-noorb="1" defer></script></body></html>

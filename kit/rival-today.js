@@ -1,4 +1,4 @@
-/* RIVAL TODAY · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
+/* RIVAL TODAY · RT004 (23 Nov: clearer names - TODAY · PROGRESS · ALL, and an app can name its own, e.g. Biz: INBOX) · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
    THE STEVE JOBS SCREEN. Every Rival app opens on the same Today screen:
      top    - the name plate (icon, WORD RIVAL in the app's color, one-line job + version, account)
      middle - ONE big card: today's number vs your last time
@@ -52,7 +52,7 @@
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>'
   };
 
-  function card() { var d = null; try { d = C.card() } catch (e) { d = null } return d || { ey: 'TODAY', big: '—', sub: 'Open MORE to get set up.', btn: 'GET SET UP', hint: '' } }
+  function card() { var d = null; try { d = C.card() } catch (e) { d = null } return d || { ey: 'TODAY', big: '—', sub: 'Open ALL to get set up.', btn: 'GET SET UP', hint: '' } }
   function html(d) {
     var h = '<div class="rt-in"><div class="rt-top"><div class="rt-brand"><img src="' + esc(C.icon) + '" alt=""><div style="min-width:0"><div class="rt-logo">' + esc(C.word) + ' <b>' + esc(C.word2 || 'RIVAL') + '</b></div><div class="rt-ver">' + esc(C.tag) + '</div></div></div>'
       + (C.acct ? '<button class="rt-acct" id="rtAcct" aria-label="Account">' + esc(C.initial ? C.initial() : '') + '</button>' : '') + '</div>'
@@ -84,7 +84,7 @@
     var st = D.createElement('style'); st.id = 'rtCss'; st.textContent = css(C); D.head.appendChild(st);
     lay = D.createElement('div'); lay.id = 'rtLay'; lay.setAttribute('role', 'main'); lay.setAttribute('aria-label', C.word + ' Rival · Today');
     bar = D.createElement('nav'); bar.id = 'rtBar'; bar.setAttribute('role', 'tablist');
-    bar.innerHTML = (C.app === 'club' ? [] : [['club', 'CLUB']]).concat([['today', 'TODAY'], ['history', 'HISTORY'], ['more', 'MORE']]).map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ICON[x[0]] + x[1] + '</button>' }).join('');
+    bar.innerHTML = (C.app === 'club' ? [] : [['club', 'CLUB']]).concat([['today', 'TODAY'], ['history', (C.tabs && C.tabs.history) || 'PROGRESS'], ['more', (C.tabs && C.tabs.more) || 'ALL']]).map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ICON[x[0]] + x[1] + '</button>' }).join('');
     D.body.appendChild(lay); D.body.appendChild(bar);
     bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; if (b.dataset.t === 'club') { goClub(); return } show(b.dataset.t) });
     var q = ''; try { q = location.search } catch (e) { }
@@ -113,5 +113,5 @@
     h = h.replace(/^<div class="rt-in"><div class="rt-top">[\s\S]*?<div class="rt-hero"/, '<div class="rt-in rt-inline"><div class="rt-hero"').replace('id="rtGo"', 'id="' + (id || 'rtGo') + '"');
     return h;
   }
-  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT003' };
+  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT004' };
 })();

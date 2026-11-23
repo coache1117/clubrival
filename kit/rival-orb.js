@@ -7,7 +7,7 @@
 (function () {
   var W = window, D = document; if (W.__rivalOrb) return; W.__rivalOrb = 1;
   var s = D.currentScript, app = (s && s.getAttribute('data-app')) || '', calm = !!(s && s.getAttribute('data-calm')), noOrb = !!(s && s.getAttribute('data-noorb'));
-  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR005';
+  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR006';
   function inApp() { try { return !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { return false } }
   function web(q) { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + (q ? '&say=' + encodeURIComponent(q) : '') + '&back=' + encodeURIComponent(back) }
   /* OR004 · go(q): a question said inside this app rides along, and the coach answers it as soon as Club opens */
@@ -62,6 +62,9 @@
   function sheetish(n) { var c = ((n.className && n.className.baseVal != null ? n.className.baseVal : n.className) || '') + ' ' + (n.id || ''); return n.getAttribute('role') === 'dialog' || n.getAttribute('aria-modal') === 'true' || /(^|[\s_-])(sh|sheet|modal|dialog|scrim|overlay)([\s_-]|$)|^sh$|^rvDel$/i.test(c) }
   function place() {
     try {
+      /* OR006 · Coach E: "a button sitting on it with the orb - no can do." Any open sheet or pop-up: the dock steps aside, every time. */
+      var op = D.querySelector('#sh.on,#stage,#rvDel,[aria-modal="true"],dialog[open],.sheet.on,.modal.on,#obSheet');
+      if (op && op.getBoundingClientRect().height > 0 && getComputedStyle(op).visibility !== 'hidden' && getComputedStyle(op).display !== 'none') { D.documentElement.classList.add('rv-dock-away'); return }
       var H = W.innerHeight, Wd = W.innerWidth, safe = 18, y = H - safe, tries = 0;
       while (tries++ < 6) {
         var top = y - 56, hit = null;
