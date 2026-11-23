@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR052</title>
+<title>Club Rival · CR053</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -101,6 +101,8 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 .evw{grid-template-columns:minmax(0,1fr) auto!important}.evw .ev{display:grid!important;grid-template-columns:28px minmax(0,1fr);column-gap:11px;align-items:center}.evw .ev b,.evw .ev span{grid-column:2}.evw .ev span{margin-top:2px}
 .evi{grid-row:1/span 2;width:28px;height:28px;border-radius:8px;object-fit:cover;display:grid;place-items:center;background:rgba(255,255,255,.06);font-style:normal;font:900 14px/1 -apple-system,sans-serif;color:var(--ac,#fff)}
 .tbig{font:800 30px/1 -apple-system,sans-serif!important;height:66px!important;text-align:center}.lnk{display:block;width:100%;margin-top:10px;background:none;border:0;color:var(--mut);font:700 13px/1.3 -apple-system,sans-serif;text-decoration:underline;text-underline-offset:3px;padding:10px;cursor:pointer}
+.tmrw{font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.2em;color:var(--mut);padding:16px 2px 8px;border-top:1px solid var(--ln);margin-top:6px}
+.fixr{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.fixr button{flex:1 1 auto;min-height:44px;border-radius:12px;border:1.5px solid currentColor;background:none;color:inherit;font:800 12px/1 -apple-system,sans-serif;letter-spacing:.1em;padding:0 12px;cursor:pointer}
 .evi.evwk{background:linear-gradient(160deg,#2a2d36,#111216);color:#fff;font-size:15px}
 .evrep{font-style:normal;font-weight:900;font-size:11px;margin-left:4px;color:var(--mut);opacity:.85}
 .evch{font-style:normal;font:900 20px/1 -apple-system,sans-serif;color:var(--mut);opacity:.6;text-align:right}
@@ -239,7 +241,7 @@ body:has(#sh.on .coach) #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR052';
+const BUILD='CR053';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -540,7 +542,9 @@ function workOf(d){const w=myDay();if(!w||!w.leave)return null;if(!(w.days||[1,2
 function events(){const P=schedP(),out=[];let td=null,sl=null;const t0=R.dayStr(Date.now());if(P){td=tonight(P);const pl=R.planFor(P,td),p=R.planned(pl,td),o=(P.overrides[td]||{}),wm=o.windMin||pl.windMin;sl=[p.bed-wm*MIN,p.wake];
   out.push({id:'rest-wind-'+td,t:p.bed-wm*MIN,name:'Wind-down',sub:wm+' min · Rest Rival',app:'rest',edit:true},{id:'rest-bed-'+td,t:p.bed,name:'Bedtime',sub:(pl.override?'Changed for tonight':'Every night')+' · Rest Rival',app:'rest',edit:true},{id:'rest-wake-'+td,t:p.wake,name:'Wake up',sub:fDur((p.wake-p.bed)/MIN)+' in bed · Rest Rival',app:'rest',edit:true});
   [12,15,20].forEach(h=>{const t=etToday(h);if(t>Date.now()-30*MIN)out.push({id:'mind-frenzy-'+h,t,name:'Frenzy Live',sub:'Cube Rival · fixed time',app:'mind',clash:t>=p.bed-wm*MIN&&t<p.wake})})}
- const horizon=sl?sl[1]:R.at(R.addDays(t0,1),'00:00');[t0,R.addDays(t0,1)].forEach(d=>occOn(d).forEach(x=>{if((d===t0||x.t1>Date.now()-30*MIN)&&x.t<horizon)out.push(Object.assign(x,{clash:!!sl&&x.t1>sl[0]&&x.t<sl[1]}))}));
+ /* CR053 · Coach E: "I changed the bedtime and it wiped out ... anything else that was scheduled." Today stopped at the wake-up, so with an earlier wake
+    tomorrow's workouts vanished until morning. From 6 hours before bed, Today runs through the end of tomorrow (under a TOMORROW line). */
+ const horizon=sl?(Date.now()>=sl[0]-6*60*MIN?R.at(R.addDays(R.dayStr(sl[1]),1),'00:00'):sl[1]):R.at(R.addDays(t0,1),'00:00');[t0,R.addDays(t0,1)].forEach(d=>occOn(d).forEach(x=>{if((d===t0||x.t1>Date.now()-30*MIN)&&x.t<horizon)out.push(Object.assign(x,{clash:!!sl&&x.t1>sl[0]&&x.t<sl[1]}))}));
  if(!P)[12,15,20].forEach(h=>{const t=etToday(h);if(t>Date.now()-30*MIN)out.push({id:'mind-frenzy-'+h,t,name:'Frenzy Live',sub:'Cube Rival · fixed time',app:'mind'})});
  {const wk=workOf(t0);if(wk&&wk.t1>Date.now()-30*MIN)out.push(wk)}
  const acts=out.filter(x=>x.act),wks=out.filter(x=>x.work);acts.forEach(a=>{if(acts.some(b=>b!==a&&a.t<b.t1&&b.t<a.t1)||wks.some(w=>a.t<w.t1&&w.up<a.t1))a.over=true});
@@ -757,7 +761,7 @@ function evRow(x){const a=APPS.find(q=>q.id===x.app),sb=evSub(x),ed=!!S.schedEdi
 /* CR049 · "that's a pile of buttons ... not quite Steve Jobs." Under the schedule: nothing. Up top: one + and one EDIT. EDIT holds the rest. */
 function schedHTML(){if(!S.user)return '';const e=events();
  return '<div class="cat">YOUR SCHEDULE</div><div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP ONE TO CHANGE IT · ✕ TAKES IT OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b><span class="schd">'+(S.schedEdit?'':'<button type="button" class="scplus" id="scAdd" aria-label="Add to my schedule">+</button>')+'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button></span></div>'
- +(e.list.length?e.list.map(evRow).join(''):'<div class="small">Nothing on the schedule yet. Tap + to add one.</div>')+'</div>'}
+ +(e.list.length?(()=>{const tm=R.addDays(R.dayStr(Date.now()),1);let shown=false;return e.list.map(x=>{let h='';if(!shown&&R.dayStr(x.t)===tm&&!x.edit&&!/^rest-wake/.test(x.id)&&x.t>(e.list.find(y=>/^rest-wake/.test(y.id))||{t:0}).t){shown=true;h='<div class="tmrw">TOMORROW · '+esc(fD(tm)).toUpperCase()+'</div>'}return h+evRow(x)}).join('')})():'<div class="small">Nothing on the schedule yet. Tap + to add one.</div>')+'</div>'}
 function workLabel(){const w=myDay();if(!w||!w.leave)return 'WORK · SET YOUR HOURS';const t=R.dayStr(Date.now());return (w.mode==='home'?'WORK FROM HOME · ':'WORK · LEAVE ')+fT(R.at(t,w.leave))+(w.home?(w.mode==='home'?'–':' · HOME ')+fT(R.at(t,w.home)):'')}
 function schedMenu(){const e=events();
  sheet('<div class="ey">YOUR SCHEDULE</div><div class="big">EDIT</div>'
@@ -813,7 +817,7 @@ function addSheet(row,fromDay){const t=R.dayStr(Date.now()),dk=row?row.id:'new',
  $('aX').onclick=shut;$('aGo').onclick=async()=>{const tm=$('aT').value,dur=Math.max(5,Math.min(600,+$('aD').value||30)),dt=$('aDt').value;if(!tm){$('aE').textContent='Set a time.';return}if(!days.size&&!dt){$('aE').textContent='Pick the day, or pick days to repeat on.';return}
   const K=$('aK').value,nd=Object.assign({},d,{title:$('aN').value.trim(),prog:(PROGS[K]||[]).length?$('aPg').value:null,plan:K==='rep'?(d.plan||''):$('aP').value.trim(),time:tm,durMin:dur,days:days.size?[...days].sort():null,date:days.size?null:dt,from:d.from||t});
   if(row&&tm!==row.data.time){nd.move={};if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm)}
-  {const why=fitCheck(row?row.id:null,nd,days.size?(fd||t):dt);if(why){$('aE').textContent=why;return}}
+  {const why=fitCheck(row?row.id:null,nd,days.size?(fd||t):dt);if(why){$('aE').textContent=why;fitHelp($('aE'),$('aT'));return}}
   /* CR032 - "manually adding replacements risked duplicate activities": say so before adding a second one of the same thing */
   if(!row&&!dupOk){const look=days.size?Array.from({length:7},(_,i)=>R.addDays(t,i)).filter(x=>days.has(R.dayDate(x).getDay())):[dt],hit=look.map(x=>occOn(x).find(o=>o.app===K)).find(Boolean);
    if(hit){dupOk=true;$('aE').textContent='You already have '+hit.name+' on '+fD(hit.day)+' at '+fT(hit.t)+'. To change that one, close this and tap it. Tap SAVE again to add another anyway.';return}}
@@ -874,13 +878,17 @@ function remSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;cons
    Now: one time box, one SAVE. It checks first (each item's real length, your work, your sleep + wind-down), saves, re-reads it from the
    database, and only then says "SAVED · 5:00 PM". If the item changed elsewhere it re-reads and saves again instead of giving up. */
 function sleepWins(day){const P=schedP();if(!P)return [];const out=[];[day,R.addDays(day,1)].forEach(n=>{try{const pl=R.planFor(P,n),p=R.planned(pl,n),o=(P.overrides[n]||{}),wm=o.windMin||pl.windMin||0;out.push([p.bed-wm*MIN,p.wake,wm])}catch(e){}});return out}
-function fitCheck(skipId,d,startDay,onlyDay){const t=R.dayStr(Date.now()),dur=Math.max(5,+d.durMin||30),rep=Array.isArray(d.days)&&d.days.length>0,days=[];
+/* CR053 · "this is stuck here": a blocked time now comes with a way out - move it to the first free time, or change the sleep plan. */
+let FIT=null;
+function fitHelp(errEl,timeEl){if(!FIT||!errEl)return;const f=FIT;errEl.insertAdjacentHTML('beforeend','<div class="fixr">'+(f.free?'<button type="button" data-fx="mv">MOVE IT TO '+esc(fT(R.at(R.dayStr(Date.now()),f.free))).toUpperCase()+'</button>':'')+(f.kind==='sleep'?'<button type="button" data-fx="sl">CHANGE MY SLEEP</button>':'')+'</div>');
+ const mv=errEl.querySelector('[data-fx=mv]'),sl=errEl.querySelector('[data-fx=sl]');if(mv)mv.onclick=()=>{timeEl.value=f.free;timeEl.dispatchEvent(new Event('input'));errEl.textContent=''};if(sl)sl.onclick=()=>schedSheet('series')}
+function fitCheck(skipId,d,startDay,onlyDay){FIT=null;const hm=t=>hhmm(t);const t=R.dayStr(Date.now()),dur=Math.max(5,+d.durMin||30),rep=Array.isArray(d.days)&&d.days.length>0,days=[];
  if(onlyDay)days.push(onlyDay);else if(rep){for(let i=0;i<14;i++){const x=R.addDays(startDay||t,i);if(d.days.includes(R.dayDate(x).getDay())&&!(d.skip&&d.skip[x]))days.push(x)}}else days.push(d.date||startDay||t);
  for(const day of days){const tm=onlyDay&&d.move&&d.move[day]||d.time,a=R.at(day,tm),b=a+dur*MIN;
-  for(const w of sleepWins(day))if(a<w[1]&&w[0]<b)return 'That lands in your sleep'+(w[2]?' and wind-down':'')+' ('+fT(w[0])+' to '+fT(w[1])+'). Pick a time outside it.';
-  const wk=workOf(day);if(wk&&a<wk.t1&&wk.up<b)return 'That’s inside your work hours on '+fD(day)+' ('+fT(wk.up)+' to '+fT(wk.t1)+'). You’re free from '+fT(wk.t1)+'.';
+  for(const w of sleepWins(day))if(a<w[1]&&w[0]<b){FIT={kind:'sleep',free:hm(w[1])};return 'That lands in your sleep'+(w[2]?' and wind-down':'')+' ('+fT(w[0])+' to '+fT(w[1])+'). Pick a time outside it.'}
+  const wk=workOf(day);if(wk&&a<wk.t1&&wk.up<b){FIT={kind:'work',free:hm(wk.t1)};return 'That’s inside your work hours on '+fD(day)+' ('+fT(wk.up)+' to '+fT(wk.t1)+'). You’re free from '+fT(wk.t1)+'.'}
   const hit=occOn(day).filter(o=>o.id!==skipId&&a<o.t1&&o.t<b).sort((x,y)=>x.t-y.t)[0];
-  if(hit)return 'That overlaps '+hit.name+' on '+fD(day)+' ('+fT(hit.t)+' to '+fT(hit.t1)+'). You’re free from '+fT(hit.t1)+'.'}
+  if(hit){FIT={kind:'over',free:hm(hit.t1)};return 'That overlaps '+hit.name+' on '+fD(day)+' ('+fT(hit.t)+' to '+fT(hit.t1)+'). You’re free from '+fT(hit.t1)+'.'}}
  return null}
 function timeSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;const d=row.data,rep=Array.isArray(d.days)&&d.days.length>0,o=occOn(day).find(x=>x.id===id);if(!o)return;
  const dur=Math.max(5,Math.round((o.t1-o.t)/MIN)||+d.durMin||30);let only=false;
@@ -893,7 +901,7 @@ function timeSheet(id,day){const row=S.evs.find(r=>r.id===id);if(!row)return;con
  if($('tOne'))$('tOne').onclick=()=>{only=!only;$('tOne').setAttribute('aria-pressed',only);$('tOne').textContent=only?'Change every one from '+fD(day)+' instead':'Only change '+fD(day);$('tGo').textContent=only?'SAVE · ONLY '+fD(day).toUpperCase():'SAVE';info()};
  $('tGo').onclick=async()=>{const tm=$('tT').value,btn=$('tGo');if(!tm){$('tE').textContent='Pick a time.';return}if(btn.disabled)return;
   const build=r=>{const nd=JSON.parse(JSON.stringify(r.data));if(rep&&only){nd.move=nd.move||{};nd.move[day]=tm}else if(rep){nd.time=tm;if(nd.times)Object.keys(nd.times).forEach(k=>nd.times[k]=tm);nd.move=Object.fromEntries(Object.entries(nd.move||{}).filter(([k])=>k<day))}else nd.time=tm;return nd};
-  const why=fitCheck(id,build(row),day,rep&&only?day:null);if(why){$('tE').textContent=why;return}
+  const why=fitCheck(id,build(row),day,rep&&only?day:null);if(why){$('tE').textContent=why;fitHelp($('tE'),$('tT'));return}
   btn.disabled=true;btn.textContent='SAVING…';
   const write=r=>rep&&!only?evSplit(r,day,{data:build(r)}):evWrite(r,{data:build(r)});
   let res=await write(row);if(res==='stale'){await loadSched();const fr=S.evs.find(r=>r.id===id);res=fr?await write(fr):'gone'}
