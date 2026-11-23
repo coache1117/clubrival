@@ -7,7 +7,7 @@
 (function () {
   var W = window, D = document; if (W.__rivalOrb) return; W.__rivalOrb = 1;
   var s = D.currentScript, app = (s && s.getAttribute('data-app')) || '', calm = !!(s && s.getAttribute('data-calm')), noOrb = !!(s && s.getAttribute('data-noorb'));
-  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR006';
+  var CLUB = 'https://clubrival.netlify.app/', VER = 'OR007';
   function inApp() { try { return !!(W.Capacitor && W.Capacitor.isNativePlatform && W.Capacitor.isNativePlatform()) } catch (e) { return false } }
   function web(q) { var back = location.href.split('#')[0]; location.href = CLUB + '?coach=1&from=' + encodeURIComponent(app) + (q ? '&say=' + encodeURIComponent(q) : '') + '&back=' + encodeURIComponent(back) }
   /* OR004 · go(q): a question said inside this app rides along, and the coach answers it as soon as Club opens */
@@ -121,5 +121,18 @@
   }
 
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', put); else put(); setTimeout(put, 1500);
+  /* OR007 · the iPhone status bar (clock, battery) follows the screen: dark text on a light screen, white text on a dark one. Coach E's
+     light-mode screenshot had a white clock on a light page. Reads the page's real background, so it works for every app and theme. */
+  var lastSB = '';
+  function sbFit() {
+    try { var SBp = W.Capacitor && W.Capacitor.Plugins && W.Capacitor.Plugins.StatusBar; if (!SBp || !SBp.setStyle) return;
+      var el = D.elementFromPoint(W.innerWidth / 2, 4) || D.body, bg = '';
+      for (var n = el; n && n.nodeType === 1; n = n.parentElement) { var c = getComputedStyle(n).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)|transparent/.test(c)) { bg = c; break } }
+      if (!bg) bg = getComputedStyle(D.documentElement).backgroundColor || 'rgb(0,0,0)';
+      var m = bg.match(/\d+(\.\d+)?/g) || [0, 0, 0], L = (0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]) / 255, st = L > 0.6 ? 'LIGHT' : 'DARK';
+      if (st !== lastSB) { lastSB = st; SBp.setStyle({ style: st }) }
+    } catch (e) { }
+  }
+  setInterval(sbFit, 1000); D.addEventListener('visibilitychange', sbFit);
   W.RivalOrb = { open: go, club: club, deleteAccount: deleteAccount, version: VER };
 })();

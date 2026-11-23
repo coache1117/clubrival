@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR057</title>
+<title>Club Rival · CR060</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -247,7 +247,7 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR057';
+const BUILD='CR060';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -259,6 +259,7 @@ const APPS=[
  {id:'money',ac:'#2fd27a', cat:'MONEY',         name:'Money Rival',    line:'Save 1% more. Watch it stack.',           art:'art/money.jpg',  url:'https://moneyrival.netlify.app',  state:'open'},
  {id:'rise',ac:'#ff9a3d',  cat:'RECOVERY',      name:'Rise Rival',     line:'Win the morning. Prove you’re up.',        art:'art/rise.jpg',   url:'https://riserival.netlify.app',   state:'open'},
  {id:'mindrival',ac:'#8b6cff',cat:'MIND',       name:'Mind Rival',     line:'Focus. Calm. Mental toughness.',           art:'art/mindrival.jpg',url:'https://mindrival2.netlify.app',  state:'open'},
+ {id:'social',ac:'#2dd4bf',cat:'MIND',       name:'Social Rival',   line:'Protect your time. Make it count.',        art:'art/social.jpg', url:'https://socialrival.netlify.app', state:'open'},
  {id:'biz',ac:'#3d8bff',   cat:'BUSINESS',      name:'Biz Rival',      line:'Leads answered. Sessions booked.',         art:'art/biz.jpg',    url:'https://mybizrival.netlify.app',  state:'open'}
 ];
 const CATS=['FITNESS','MIND','GAMES','EXTREME SPORTS','RECOVERY','MONEY','BUSINESS'];
@@ -331,7 +332,7 @@ function openApp(id,direct,extra){const a=APPS.find(x=>x.id===id);if(!a)return;c
    THE LAUNCH: hit an app and it says what you're about to do - LET'S LIFT, LET'S FIGHT, LET'S SAVE - then you're in. ===== */
 /* CR042 · APPS, NOT WEBSITES. Inside the Club Rival iPhone app a tile opens that app's own iPhone app (rivalstride://, rivalrep://, ...).
    If that app isn't on this phone yet, the tile opens it here the old way after a moment. */
-const NATIVE={stride:'rivalstride',rep:'rivalrep',rankup:'rivalrankup',mind:'rivalmind',rest:'rivalrest',money:'rivalmoney',rise:'rivalrise',mindrival:'rivalmindrival',biz:'rivalbiz'};
+const NATIVE={stride:'rivalstride',rep:'rivalrep',rankup:'rivalrankup',mind:'rivalmind',rest:'rivalrest',money:'rivalmoney',rise:'rivalrise',mindrival:'rivalmindrival',biz:'rivalbiz',social:'rivalsocial'};
 function inApp(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}}
 function appGo(a,web,extra){const sch=NATIVE[a.id];if(!sch||!inApp())return web();const d=String(extra||'').match(/[?&]do=([a-z0-9_-]+)/i);
  let left=false;const gone=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',gone);
@@ -343,7 +344,7 @@ function appGo(a,web,extra){const sch=NATIVE[a.id];if(!sch||!inApp())return web(
    and then Club was gone. Now Club never turns into another app. It says so and offers TestFlight, or the website in Safari. */
 function notHere(a){sheet('<div class="ey">'+esc(a.name).toUpperCase()+'</div><div class="big">COULDN’T OPEN IT</div><div class="small">The '+esc(a.name)+' iPhone app didn’t answer. Use it on the web for now, or check it’s installed on this phone.</div><button class="go" id="nhW">USE '+esc(a.name).toUpperCase()+' ON THE WEB</button><button class="go ghost" id="nhX">STAY IN CLUB</button><button type="button" class="lnk" id="nhTF">Not on this phone? Get it in TestFlight</button>');
  $('nhX').onclick=shut;$('nhTF').onclick=()=>{shut();location.href='itms-beta://'};$('nhW').onclick=()=>{shut();try{window.open(a.url,'_blank')}catch(e){}}}
-const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',money:'LET’S SAVE',biz:'LET’S WORK'};
+const LAUNCH={rise:'LET’S RISE',rest:'LET’S REST',rep:'LET’S LIFT',stride:'LET’S MOVE',rankup:'LET’S FIGHT',bmx:'LET’S RIDE',trail:'LET’S RIDE',mind:'LET’S PLAY',mindrival:'LET’S FOCUS',social:'LET’S PROTECT IT',money:'LET’S SAVE',biz:'LET’S WORK'};
 function launchGo(a,go){const w=LAUNCH[a.id];if(!w)return go();let o=$('lpad');if(!o){o=document.createElement('div');o.id='lpad';document.body.appendChild(o)}
  o.style.setProperty('--ac',a.ac);o.innerHTML='<img src="'+a.art+'" alt=""><b>'+w+'</b><span>'+esc(a.name)+'</span>';o.className='on';try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}setTimeout(go,650);setTimeout(()=>{o.className=''},2500)}
 let CBACK=null;try{const q=new URLSearchParams(location.search),b=q.get('back'),f=q.get('from');if(q.get('coach')==='1'||q.get('do')==='coach'){CBACK={ask:String(q.get('say')||q.get('ask')||'').slice(0,300),app:f||'',url:b&&/^https:\/\/[a-z0-9.-]+\.(netlify\.app|com)\//.test(b)?b:''};/* CR043 · came from an iPhone app: BACK opens that app again */if(q.get('do')==='coach'&&f&&/^[a-z]+$/.test(f))CBACK.url='rival'+f+'://open';history.replaceState(null,'',location.pathname)}}catch(e){}
@@ -671,7 +672,7 @@ async function saveGoal(d){try{const row=S.goal;if(!row){const {error}=await SB.
 const BOSS_GOALS=[['look','LOOK GREAT',['rep','stride'],'lean'],['fight','FIGHT SHARP',['rankup','rep'],'all'],['strong','GET STRONGER',['rep','rankup'],'strong'],['fast','FASTER + EXPLOSIVE',['stride','rep'],'lean'],
  ['lean','LOSE FAT',['stride','rankup'],'lean'],['sleep','SLEEP BETTER',['rest','rise'],'recover'],['morning','OWN MY MORNINGS',['rise','rest'],'recover'],['calm','CALM + FOCUSED',['mindrival','rest'],'sharp'],
  ['money','SAVE MORE MONEY',['money','rise'],'all'],['biz','GROW MY BUSINESS',['biz','rise'],'all']];
-const APP_TYPE={stride:'fit',rep:'fit',rankup:'fit',trail:'fit',bmx:'fit',mindrival:'mind',mind:'mind',rest:'rec',rise:'rec',money:'life',biz:'life'};const appKind=id=>APP_TYPE[id]||'fit';
+const APP_TYPE={social:'mind',stride:'fit',rep:'fit',rankup:'fit',trail:'fit',bmx:'fit',mindrival:'mind',mind:'mind',rest:'rec',rise:'rec',money:'life',biz:'life'};const appKind=id=>APP_TYPE[id]||'fit';
 function bossApps(keys,text){const P=keys.map(k=>BOSS_GOALS.find(x=>x[0]===k)).filter(Boolean),out=[];
  if(!P.length){const t=String(text||'').toLowerCase(),hit=[[/box|fight|punch|spar/,'rankup'],[/strong|lift|muscle|bench|squat/,'rep'],[/run|walk|cardio|fast|speed|explosive|endurance|lean|fat|weight/,'stride'],[/sleep|tired|rest/,'rest'],[/morning|wake|early/,'rise'],[/calm|focus|stress|anx|breath|mind/,'mindrival'],[/money|save|debt|budget/,'money'],[/business|client|lead|gym/,'biz']];hit.forEach(h=>{if(h[0].test(t)&&!out.includes(h[1]))out.push(h[1])});}
  P.forEach(p=>{if(!out.includes(p[2][0]))out.push(p[2][0])});P.forEach(p=>p[2].forEach(a=>{if(!out.includes(a))out.push(a)}));['rep','stride'].forEach(a=>{if(!out.includes(a))out.push(a)});
@@ -679,7 +680,7 @@ function bossApps(keys,text){const P=keys.map(k=>BOSS_GOALS.find(x=>x[0]===k)).f
 /* what 1% a session becomes by the goal date, per app (sessions = days a week x weeks). Plain compounding, the same rule as the 37x. */
 function bossGrowth(G){const by=G.by?new Date(G.by+'T12:00:00').getTime():Date.now()+182*864e5,wks=Math.max(1,(by-Date.now())/(7*864e5));
  return (G.ranked||[]).map(app=>{const d=app==='rest'?7:rankDays(G,app),p=pctFor(d)/100,f=w=>Math.pow(1+p,d*w);return {app,d,pct:pctFor(d),sess:Math.round(d*wks),m1:f(4.35),m3:f(13),end:f(wks),wks}})}
-const GOOD={mindrival:'Calm. Breathing, focus and mental toughness.',biz:'Business. Leads answered, sessions booked.',rankup:'Combat. Confidence, grit and power.',rep:'Strength. Muscle, bones and metabolism.',stride:'Cardio. Heart, lungs and endurance.',mind:'Focus. Reactions and problem solving.',bmx:'Speed and skill on a bike.',trail:'Adventure. Balance, nerve and legs.',rest:'Recovery. The sleep that makes the rest work.',money:'Money. Save 1% more and stop the leaks.',rise:'Mornings. Up on time, proved, a short routine.'};
+const GOOD={mindrival:'Calm. Breathing, focus and mental toughness.',social:'Focus. Protects your time from the scroll.',biz:'Business. Leads answered, sessions booked.',rankup:'Combat. Confidence, grit and power.',rep:'Strength. Muscle, bones and metabolism.',stride:'Cardio. Heart, lungs and endurance.',mind:'Focus. Reactions and problem solving.',bmx:'Speed and skill on a bike.',trail:'Adventure. Balance, nerve and legs.',rest:'Recovery. The sleep that makes the rest work.',money:'Money. Save 1% more and stop the leaks.',rise:'Mornings. Up on time, proved, a short routine.'};
 const RECO=new Set(['rankup','rep','stride']);
 /* CR049 · Coach E: "I'm gonna need access to business, focus and other shit, and I can't be fucking around having access to three apps ... let's flip that."
    Every app is open and can go on the plan, as many as you want, in your order: #1 gets the most days, then it tapers (never under 1).
@@ -823,7 +824,7 @@ const PROGS={
  stride:[['walk','WALK',30,''],['run','RUN',30,'']]
 };
 const progOf=(app,id)=>(PROGS[app]||[]).find(x=>x[0]===id)||null;
-const KIND=[['money','Money check-in','Money Rival'],['biz','Business block','Biz Rival'],['rise','Morning routine','Rise Rival'],['stride','Run or walk','Stride Rival'],['rep','Lift','Rep Rival'],['rankup','Boxing','RankUp Boxing'],['mind','Cube games','Cube Rival'],['mindrival','Mind training','Mind Rival'],['bmx','BMX session','Ride Flow BMX'],['trail','Trail ride','Trail Rival'],['rest','Wind-down or nap','Rest Rival'],['meal','Meal',''],['club','Something else','']];
+const KIND=[['money','Money check-in','Money Rival'],['biz','Business block','Biz Rival'],['rise','Morning routine','Rise Rival'],['stride','Run or walk','Stride Rival'],['rep','Lift','Rep Rival'],['rankup','Boxing','RankUp Boxing'],['mind','Cube games','Cube Rival'],['mindrival','Mind training','Mind Rival'],['social','Protected time','Social Rival'],['bmx','BMX session','Ride Flow BMX'],['trail','Trail ride','Trail Rival'],['rest','Wind-down or nap','Rest Rival'],['meal','Meal',''],['club','Something else','']];
 function occOn(day){const wd=R.dayDate(day).getDay(),out=[];S.evs.forEach(r=>{const d=r.data,rep=Array.isArray(d.days)&&d.days.length>0;if(rep?!(d.days.includes(wd)&&day>=(d.from||'2000-01-01')&&!(d.until&&day>d.until)):d.date!==day)return;if(d.skip&&d.skip[day])return;
   const tm=(d.move&&d.move[day])||(d.times&&d.times[wd])||d.time,t=R.at(day,tm),dur=+d.durMin||30,k=KIND.find(x=>x[0]===r.app);const pg=progOf(r.app,d.prog);out.push({id:r.id,day,t,t1:t+dur*MIN,name:d.title||(pg?pg[1]:(k?k[1]:'Activity')),sub:dur+' min'+(k&&k[2]?' · '+k[2]:'')+(pg&&d.title?' · '+pg[1]:'')+(!pg&&PROGS[r.app]?' · pick which one':'')+(d.move&&d.move[day]?' · moved today':''),app:r.app,act:true,rep})});return out.sort((a,b)=>a.t-b.t)}
 function sesOn(app,day){return (S.rows||[]).filter(r=>r.app===app&&r.kind==='session'&&R.dayStr(new Date(r.at).getTime())===day).length}
@@ -1192,4 +1193,4 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.user)load();siriTake()}});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR006" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR007" data-app="club" data-noorb="1" defer></script></body></html>
