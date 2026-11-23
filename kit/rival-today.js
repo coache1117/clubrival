@@ -1,4 +1,4 @@
-/* RIVAL TODAY · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
+/* RIVAL TODAY · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
    THE STEVE JOBS SCREEN. Every Rival app opens on the same Today screen:
      top    - the name plate (icon, WORD RIVAL in the app's color, one-line job + version, account)
      middle - ONE big card: today's number vs your last time
@@ -46,6 +46,7 @@
       + 'html.rt-app body{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 170px)!important}';
   }
   var ICON = {
+    club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6"/><path d="M4 12h9a7 7 0 0 1 7 7"/></svg>',
     today: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></svg>',
     history: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V12M10 20V8M15 20v-6M20 20V5"/></svg>',
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>'
@@ -75,22 +76,34 @@
     if (bar) bar.hidden = !!(C.ownNav && t !== 'today');  /* an app with its own bottom bar keeps it inside; its TODAY button comes back here */
     tabs(); try { sessionStorage.setItem('rt_' + C.app, t) } catch (e) { }
   }
+  /* back to Club: the Club APP when this is the iPhone app (the orb kit knows how, with a website fallback), else the Club website */
+  function goClub() { try { if (W.RivalOrb && W.RivalOrb.club) { W.RivalOrb.club(); return } } catch (e) { } location.href = 'https://clubrival.netlify.app/?from=' + encodeURIComponent(C.app || '') }
   function ready() { try { return !C.ready || !!C.ready() } catch (e) { return false } }
   function start() {
     if (lay) return;
     var st = D.createElement('style'); st.id = 'rtCss'; st.textContent = css(C); D.head.appendChild(st);
     lay = D.createElement('div'); lay.id = 'rtLay'; lay.setAttribute('role', 'main'); lay.setAttribute('aria-label', C.word + ' Rival · Today');
     bar = D.createElement('nav'); bar.id = 'rtBar'; bar.setAttribute('role', 'tablist');
-    bar.innerHTML = [['today', 'TODAY'], ['history', 'HISTORY'], ['more', 'MORE']].map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ICON[x[0]] + x[1] + '</button>' }).join('');
+    bar.innerHTML = (C.app === 'club' ? [] : [['club', 'CLUB']]).concat([['today', 'TODAY'], ['history', 'HISTORY'], ['more', 'MORE']]).map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ICON[x[0]] + x[1] + '</button>' }).join('');
     D.body.appendChild(lay); D.body.appendChild(bar);
-    bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.t) });
+    bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; if (b.dataset.t === 'club') { goClub(); return } show(b.dataset.t) });
     var q = ''; try { q = location.search } catch (e) { }
     show(/[?&]do=/.test(q) && !/[?&]do=coach/.test(q) ? 'more' : 'today');   /* a deep link (voice, Siri, Club) goes straight to that spot */
-    var wasReady = true; timer = setInterval(function () { if (!ready()) { wasReady = false; lay.hidden = true; bar.hidden = true; D.documentElement.classList.remove('rt-on', 'rt-app'); return } if (!wasReady) { wasReady = true; show('today') } paint(false) }, 1200);
+    var wasReady = true; timer = setInterval(function () { if (!ready()) { wasReady = false; lay.hidden = true; bar.hidden = true; pillOn(true); D.documentElement.classList.remove('rt-on', 'rt-app'); return } if (!wasReady) { wasReady = true; pillOn(false); show('today') } paint(false) }, 1200);
     D.addEventListener('visibilitychange', function () { if (!D.hidden) paint(true) });
   }
+  /* before the Today screen can run (signing in, first setup) there is still a way back: a small ‹ CLUB pill, bottom left */
+  var pill = null;
+  function pillOn(on) {
+    if (!C || C.app === 'club') return;
+    if (on && !pill && D.body) { pill = D.createElement('button'); pill.id = 'rtBack'; pill.type = 'button'; pill.textContent = '‹ CLUB'; pill.setAttribute('aria-label', 'Back to Club Rival');
+      pill.style.cssText = 'position:fixed;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:2147483600;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(10,10,14,.86);color:#fff;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.16em;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);cursor:pointer';
+      var ps = D.createElement('style'); ps.textContent = 'html body>#rtBack:not([hidden]){display:block!important;visibility:visible!important;opacity:1!important}'; D.head.appendChild(ps);  /* an app's own intro screen can hide everything else; never this */
+      pill.onclick = goClub; D.body.appendChild(pill) }
+    if (pill) pill.hidden = !on;
+  }
   function mount(cfg) {
-    C = cfg; var go = function () { if (!D.body) return setTimeout(go, 50); if (ready()) start(); else { var w = setInterval(function () { if (ready()) { clearInterval(w); start() } }, 700) } };
+    C = cfg; var go = function () { if (!D.body) return setTimeout(go, 50); if (ready()) { pillOn(false); start() } else { pillOn(true); var w = setInterval(function () { if (ready()) { clearInterval(w); pillOn(false); start() } }, 700) } };
     if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', go); else go();
   }
   /* For an app that already has its own screens and bottom bar (Club): just the family card + big button, dropped into its home. */
@@ -100,5 +113,5 @@
     h = h.replace(/^<div class="rt-in"><div class="rt-top">[\s\S]*?<div class="rt-hero"/, '<div class="rt-in rt-inline"><div class="rt-hero"').replace('id="rtGo"', 'id="' + (id || 'rtGo') + '"');
     return h;
   }
-  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT002' };
+  W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT003' };
 })();
