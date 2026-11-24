@@ -41,7 +41,7 @@ Money: never say dollar amounts (Club only has percentages). Health: no medical 
 If the user is inside an app (FROM_APP), lean on that app first - ON_SCREEN is what that app shows them right now.
 Write times as 6:30 PM and weights as 135 lb - the voice turns them into coach talk.
 New users: walk them through setup one short question at a time (sign in from the account panel, then set a goal on the Boss screen). Sign-in codes and anything about age or parent permission are done by the user on screen - never ask them to say a code out loud.`;
-const APPN = { stride: 'Stride Rival', rep: 'Rep Rival', rankup: 'RankUp', mind: 'Cube Rival', mindrival: 'Mind Rival', rest: 'Rest Rival', rise: 'Rise Rival', money: 'Money Rival', biz: 'Biz Rival', social: 'Social Rival', care: 'CareCircle', trail: 'Trail Rival', bmx: 'BMX Rival' };
+const APPN = { stride: 'Stride Rival', rep: 'Rep Rival', rankup: 'RankUp', mind: 'Cube Rival', mindrival: 'Mind Rival', rest: 'Rest Rival', rise: 'Rise Rival', money: 'Money Rival', biz: 'Biz Rival', social: 'Social Rival', fuel: 'Fuel Rival', care: 'CareCircle', trail: 'Trail Rival', bmx: 'BMX Rival' };
 // CR048 · when the brain only used tools, never invent a "tap yes" - opening an app needs no yes at all.
 export function fallback(actions) {
   const nav = new Set(['open_app', 'show_screen']), pend = (actions || []).filter(a => !nav.has(a.type)), o = (actions || []).find(a => a.type === 'open_app');
@@ -51,7 +51,7 @@ export function fallback(actions) {
   return 'Say that again?';
 }
 const TOOLS = [
-  { name: 'open_app', description: 'Open one of the Rival apps right away (for example Mind Rival for a 60-second routine before a race). App ids: stride, rep, rankup, mind (Cube Rival game), mindrival (Mind Rival mental training), social (Social Rival - protected time away from social media), rest, rise, money, biz, care, trail, bmx.', input_schema: { type: 'object', properties: { app: { type: 'string' }, do: { type: 'string', enum: ['checkin', 'moment', 'focus', 'calm', 'tough', 'progress', 'history'], description: 'Mind Rival only: what to start - checkin (LET’S FOCUS), moment (60-second THE MOMENT), a focus/calm/tough rep, or a screen' }, why: { type: 'string' } }, required: ['app'] } },
+  { name: 'open_app', description: 'Open one of the Rival apps right away (for example Mind Rival for a 60-second routine before a race). App ids: stride, rep, rankup, mind (Cube Rival game), mindrival (Mind Rival mental training), social (Social Rival - protected time away from social media), fuel (Fuel Rival - meals, protein and water), rest, rise, money, biz, care, trail, bmx.', input_schema: { type: 'object', properties: { app: { type: 'string' }, do: { type: 'string', enum: ['checkin', 'moment', 'focus', 'calm', 'tough', 'progress', 'history'], description: 'Mind Rival only: what to start - checkin (LET’S FOCUS), moment (60-second THE MOMENT), a focus/calm/tough rep, or a screen' }, why: { type: 'string' } }, required: ['app'] } },
   { name: 'show_screen', description: 'Switch the Club Rival screen right away. today, week, month, quarter, boss, points, apps are screens; goal, plan, schedule, account open panels.', input_schema: { type: 'object', properties: { screen: { type: 'string', enum: ['today', 'week', 'month', 'quarter', 'boss', 'points', 'apps', 'goal', 'plan', 'schedule', 'account'] } }, required: ['screen'] } }
 ];
 export default async (req) => {
