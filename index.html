@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR065</title>
+<title>Club Rival · CR066</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -252,7 +252,7 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR065';
+const BUILD='CR066';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -398,15 +398,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AWK.on)aw
 function handOff(){return '&go=talk&say=__talk'}
 function coachOff(){CO.hands=false;awake(false);stopListen();try{speechSynthesis.cancel()}catch(e){}try{CO.au&&CO.au.pause()}catch(e){}}
 const coachUp=()=>!!$('corb')&&$('sh').className==='on';
-function afterTalk(){CO.speaking=false;orbState('idle');const nx=CO.next.shift();if(nx)return runNav(nx);if(CO.bye){CO.bye=false;coachOff();return shut()}if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening)setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening&&!CO.speaking)listen()},150)}
+function afterTalk(){CO.speaking=false;CO.saidEnd=Date.now();orbState('idle');const nx=CO.next.shift();if(nx)return runNav(nx);if(CO.bye){CO.bye=false;coachOff();return shut()}if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening)setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.busy&&!CO.listening&&!CO.speaking)listen()},150)}
 /* CR038 · in the Club Rival iPhone app the coach uses the phone's own ears (CoachSpeech), so it keeps listening - no tap each time. */
 const CSP=()=>{try{const C=window.Capacitor;if(!C)return null;if(C.Plugins&&C.Plugins.CoachSpeech)return C.Plugins.CoachSpeech;if(CO.csOK===false)return null;if(C.isNativePlatform&&C.isNativePlatform()&&C.registerPlugin){CO.csProxy=CO.csProxy||C.registerPlugin('CoachSpeech');return CO.csProxy}return null}catch(e){return null}};
 /* CR041 · what's inside this iPhone app - shown under the Orb when it can't listen, so one screenshot says what's wrong */
 function appInside(){try{const C=window.Capacitor;if(!C)return 'NOT IN AN APP';const pl=Object.keys(C.Plugins||{}).filter(k=>!/^(WebView|Console|CapacitorHttp|CapacitorCookies)$/.test(k));const N=window.RIVAL_NATIVE;return (C.getPlatform?C.getPlatform():'?').toUpperCase()+' APP'+(N?' · KIT '+N.kit+' · BUILD '+N.build+' · EARS '+(N.ears?'YES':'NO'):' · OLD BUILD (NO KIT)')+' · PARTS: '+(pl.join(', ')||'NONE')+(C.PluginHeaders?' · '+C.PluginHeaders.length+' HEADERS':'')}catch(e){return 'CHECK FAILED'}}
 function heard(said){CO.listening=false;if(said.trim()){CO.quiet=0;ask(said.trim())}else{orbState('idle');if(CO.hands&&coachUp()&&++CO.quiet>=(CSP()?4:2)){CO.quiet=0;CO.hands=false;const b=$('cHands');if(b)b.textContent='HANDS-FREE OFF';const c=$('cost');if(c)c.textContent='I’M HERE · TAP THE ORB'}else if(CO.hands&&coachUp())setTimeout(()=>{if(CO.hands&&coachUp()&&!CO.listening&&!CO.busy)listen()},300)}}
 async function nativeListen(cs){if(CO.csOK!==true){try{await cs.available();CO.csOK=true}catch(e){CO.csOK=false;CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET ('+appInside()+') · SEND THIS SCREENSHOT')}}try{if(!CO.perm){const r=await cs.askPermission();CO.perm=!!(r&&r.speech==='granted'&&r.mic==='granted');if(!CO.perm){CO.hands=false;orbState('idle');return toast('ALLOW SPEECH + MICROPHONE FOR CLUB RIVAL IN SETTINGS')}}
- let said='',done=false,t=null,h1=null,h2=null,cap=null;const barge=CO.speaking;const fin=()=>{if(done)return;done=true;clearTimeout(t);clearTimeout(cap);try{h1&&h1.remove();h2&&h2.remove()}catch(e){}cs.stop().catch(()=>{});CO.nat=null;heard(barge?stripEcho(said):said)};
- CO.nat={stop:fin};h1=await cs.addListener('partial',d=>{said=String(d&&d.text||'');if(CO.speaking){if(echo(said))return;shutUp()}const c=$('cost');if(c)c.textContent='“'+said+'”';clearTimeout(t);t=setTimeout(fin,d&&d.final?60:2000)});
+ let said='',done=false,t=null,h1=null,h2=null,cap=null;const barge=CO.speaking;const fin=()=>{if(done)return;done=true;clearTimeout(t);clearTimeout(cap);try{h1&&h1.remove();h2&&h2.remove()}catch(e){}cs.stop().catch(()=>{});CO.nat=null;let out=(barge||echoWin())?stripEcho(said):said;if(echoWin()&&spk(out).length>=2&&echo(out))out='';heard(fixHeard(out))};
+ CO.nat={stop:fin};h1=await cs.addListener('partial',d=>{said=String(d&&d.text||'');if(echoWin()&&echo(said)){if(!CO.speaking){clearTimeout(t);t=setTimeout(fin,2500)}return}if(CO.speaking)shutUp();const c=$('cost');if(c)c.textContent='“'+said+'”';clearTimeout(t);t=setTimeout(fin,d&&d.final?60:2000)});
  h2=await cs.addListener('state',d=>{if(d&&d.status==='stopped'&&CO.listening)setTimeout(fin,80)});cap=setTimeout(()=>{if(!said)fin()},8000);
  await cs.start({contextualStrings:earWords()});CO.micWhy='';CO.listening=true;orbState('listening')}catch(e){CO.listening=false;CO.nat=null;orbState('idle');toast('COULDN’T LISTEN · '+String(e&&e.message||e).slice(0,40).toUpperCase())}}
 /* CR039 · tapping the Orb never jumps into the type box (on iPhone that popped the keyboard over everything). If it can't listen, the reason stays under the Orb. */
@@ -414,7 +414,7 @@ function micNote(t){CO.listening=false;orbState('idle');const hb=$('cHands');if(
 function listen(){const cs=CSP();if(cs)return nativeListen(cs);if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()){CO.hands=false;return micNote('THIS IPHONE APP CAN’T LISTEN YET ('+appInside()+') · SEND THIS SCREENSHOT · OR USE CLUBRIVAL.NETLIFY.APP IN SAFARI')}const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){CO.hands=false;return micNote('THIS BROWSER CAN’T LISTEN · TAP THE BOX BELOW TO TYPE')}
  try{speechSynthesis.cancel()}catch(e){}const r=new SR();CO.rec=r;r.lang='en-US';r.interimResults=true;r.continuous=false;let said='',qt=null;
  r.onresult=ev=>{said=Array.from(ev.results).map(x=>x[0].transcript).join(' ');const c=$('cost');if(c)c.textContent='“'+said+'”';clearTimeout(qt);qt=setTimeout(()=>{try{r.stop()}catch(e){}},2000)};
- r.onerror=ev=>{CO.listening=false;orbState('idle');const er=ev&&ev.error||'';if(er==='service-not-allowed'){CO.hands=false;micNote('IPHONE: TURN ON SETTINGS › SIRI › “LISTEN FOR” OR SETTINGS › KEYBOARD › DICTATION, THEN TAP THE ORB')}else if(er==='not-allowed'){CO.hands=false;micNote('MIC IS BLOCKED · SETTINGS › SAFARI › MICROPHONE › ALLOW, THEN TAP THE ORB')}else if(er==='audio-capture'){CO.hands=false;micNote('NO MIC FOUND · CHECK THE MIC, THEN TAP THE ORB')}};r.onend=()=>heard(said);
+ r.onerror=ev=>{CO.listening=false;orbState('idle');const er=ev&&ev.error||'';if(er==='service-not-allowed'){CO.hands=false;micNote('IPHONE: TURN ON SETTINGS › SIRI › “LISTEN FOR” OR SETTINGS › KEYBOARD › DICTATION, THEN TAP THE ORB')}else if(er==='not-allowed'){CO.hands=false;micNote('MIC IS BLOCKED · SETTINGS › SAFARI › MICROPHONE › ALLOW, THEN TAP THE ORB')}else if(er==='audio-capture'){CO.hands=false;micNote('NO MIC FOUND · CHECK THE MIC, THEN TAP THE ORB')}};r.onend=()=>heard(fixHeard(said));
  try{r.start();CO.micWhy='';CO.listening=true;orbState('listening')}catch(e){micNote('COULDN’T START THE MIC · TAP THE ORB AGAIN')}}
 function stopListen(){try{CO.nat&&CO.nat.stop()}catch(e){}try{CO.rec&&CO.rec.stop()}catch(e){}CO.listening=false}
 async function ask(q){if(CO.busy)return;if(!S.user)return acctSheet();const qn=q.replace(/[’‘]/g,"'").trim();
@@ -462,8 +462,17 @@ function earWords(){const w=[];for(let h=1;h<=12;h++){['',':15',':30',':45'].for
  APPS.forEach(a=>w.push(a.name));try{anchors().forEach(r=>w.push(r.data.title))}catch(e){}w.push('work','sleep','bedtime','wake up','lift','Anchor');return w.slice(0,200)}
 function splitSay(t){const m=String(t).match(/^(.{20,}?[.!?])\s+(.{12,})$/s);return m?[m[1],m[2]]:[String(t)]}
 function shutUp(){CO.cut=true;CO.talkN=(CO.talkN||0)+1;try{CO.src&&CO.src.stop()}catch(e){}try{CO.au&&CO.au.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}CO.speaking=false;orbState('listening')}
-function stripEcho(t){const sp=new Set((CO.saying||'').toLowerCase().match(/[a-z']+/g)||[]),w=String(t).split(/\s+/);let k=0;while(k<w.length&&sp.has(w[k].toLowerCase().replace(/[^a-z']/g,'')))k++;return w.slice(k).join(' ')}
-function echo(heard){/* the phone's mic can hear the coach's own voice - that isn't you talking */const w=String(heard).toLowerCase().match(/[a-z']+/g)||[];if(w.length<2)return true;const said=new Set((CO.saying||'').toLowerCase().match(/[a-z']+/g)||[]);return w.filter(x=>said.has(x)).length/w.length>=0.6}
+/* CR066 · Coach E's video: the coach heard its OWN line ("Lyft is still 5:30 AM...") after it stopped talking and answered itself.
+   Now: its words are matched loosely (a slip like Lyft/lift still counts), the longest stretch of its own words is cut off the front,
+   and for 4 seconds after it stops talking, anything that is mostly its own words is thrown away. */
+const spk=t=>String(t||'').toLowerCase().replace(/\blyft\b/g,'lift').match(/[a-z']+/g)||[];
+function fixHeard(t){return String(t||'').replace(/\bLyft\b/g,'lift').replace(/\blyft\b/g,'lift')}
+function stripEcho(t){const sp=new Set(spk(CO.saying)),w=String(t).split(/\s+/).filter(Boolean);let best=0,hit=0;
+ for(let k=0;k<w.length;k++){const x=spk(w[k])[0];if(x&&sp.has(x))hit++;if(k>=1&&hit/(k+1)>=0.75&&x&&sp.has(x))best=k+1}
+ return w.slice(best).join(' ')}
+const echoWin=()=>CO.speaking||(CO.saidEnd&&Date.now()-CO.saidEnd<4000);
+function echo(heard){/* the phone's mic can hear the coach's own voice - that isn't you talking. CR066: echo = what's left after cutting its own words off the front is mostly its own words IN ITS ORDER (your "make it Monday Wednesday Friday" reuses its words, but not in its order) */
+ const rest=spk(stripEcho(heard));if(rest.length<2)return true;const a=spk(CO.saying);let prev=new Array(a.length+1).fill(0);for(const x of rest){const cur=[0];for(let k=1;k<=a.length;k++)cur[k]=a[k-1]===x?prev[k-1]+1:Math.max(prev[k],cur[k-1]);prev=cur}return prev[a.length]/rest.length>=0.8}
 function bargeOn(){if(!CO.hands||CO.listening||!CSP())return;setTimeout(()=>{if(CO.speaking&&CO.hands&&!CO.listening&&coachUp())listen()},350)}
 async function testVoice(){unlockVoice();voiceNote('CHECKING YOUR VOICE…',false);CO.voiceOff=false;try{const v=await fetchVoice('This is your coach. Let’s get to work.');voiceNote(viaNote(v),false);await playBuf(v.buf)}catch(e){voiceNote(String(e&&e.message||e),true)}}
 function synth(text){try{const y=speechSynthesis;y.cancel();if(!text)return afterTalk();const u=new SpeechSynthesisUtterance(text);const v=y.getVoices().find(v=>/en-US/.test(v.lang)&&/Samantha|Aaron|Nicky|Google US|Natural/i.test(v.name))||y.getVoices().find(v=>/en/.test(v.lang));if(v)u.voice=v;u.rate=1.02;let fin=false;const end=()=>{if(!fin){fin=true;afterTalk()}};u.onend=()=>{if(!CO.cut)end()};u.onerror=()=>{if(!CO.cut)end()};y.speak(u);setTimeout(()=>{if(!fin&&!y.speaking)end()},Math.max(2500,text.length*85))}catch(e){afterTalk()}}

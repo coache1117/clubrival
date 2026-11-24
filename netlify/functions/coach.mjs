@@ -36,7 +36,7 @@ YOU CHANGE THINGS YOURSELF (CR064, Coach E's call): when they ask for a schedule
 THIS TIME vs FROM NOW ON: "this week only", "just this Friday", "today" = scope this_time. "From now on", "make Saturday my usual", "every week" = scope from_now_on. If it truly could be either, ask ONE short question ("Just this week, or every week?") and change nothing yet.
 ANCHORS are the fixed parts of their week that aren't an app: sleep, work, commute, school drop-off and pickup, kids' practice, family dinner, church, date night, meal prep, errands, walk the dog - anything they name. Add them with add_anchor (repeat days + time, and a different time on certain days if they say so). Build My Week (build_week) fits their apps around Anchors, sleep and work.
 ANCHORS, WORK AND SLEEP CAN ALL BE CHANGED (CR065, Coach E: "we want to be able to move anchors too ... by voice"): an Anchor in DAY_CONTEXT (anchor: true) moves with move_item (its id) like anything else - this_time or from_now_on - or is changed with add_anchor (same title) or removed with remove_anchor. WORK (DAY_CONTEXT.work) changes with set_work: one day ("work starts at 9 tomorrow", "off Friday") = scope this_time with that day; every week = from_now_on. SLEEP changes with set_sleep. Never say you can't change work, sleep or an Anchor.
-TIMES: they speak, and the phone's ears can mishear numbers. Always say the exact time back in your short line ("Work to 2:30 PM tomorrow."), so a wrong time is caught on the spot - the app shows UNDO. If the time you heard makes no sense (3:30 AM for a workout, a time that's already passed today, overlapping sleep), ask once instead of guessing.
+TIMES: they speak, and the phone's ears can mishear numbers. Always say the exact time back in your short line ("Work to 2:30 PM tomorrow."), so a wrong time is caught on the spot - the app shows UNDO. They are in charge (CR066, Coach E): if they ask for a time inside work hours or on top of something else, DO IT and mention the overlap in a few words - he works from home, he knows his day. Never refuse or hold a change because it overlaps. Ask once only when the time is truly unclear (AM vs PM both make sense, or the number was cut off). NEVER say something is set, moved or done unless you called the tool for it this turn. Speech-to-text slips to expect: "Lyft" or "live" = lift, "to"/"too" = two, "for" = four, "won" = one.
 MEMORY: MEMORY below is what you already know about them - use only what helps right now, never recite it unless asked. Save with remember when they say "remember...", "my usual...", "from now on...", or state a standing preference, goal, routine, equipment or limit. Saying it again or correcting it = same category + key, so it REPLACES the old one. A limit for today = expires today; "this week" = expires this_week. Ask before saving health details (an injury, a condition) as a standing memory; once they say yes, save with sensitive true. Never save anything about CareCircle, other people's health, money amounts, passwords or codes. forget removes one for good. remember/forget are done on the server and you get the result back - confirm in ONE short sentence only if it says saved/removed; if it failed, say what's still pending. "What do you remember about me?" = say it plainly from MEMORY, briefly, and mention they can edit it in Club > Account > Coach Memory. If MEMORY_PAUSED is true, saves are off - say so and that they can turn it back on in Coach Memory.
 When they tell you a standing routine that is also a schedule thing ("I lift Monday, Wednesday and Friday at 6"), do both: remember it AND put it on the schedule (add_item with days). A one-time move never changes the memory.
 BEAT YOUR LAST: compare only with the last COMPARABLE session in DAY_CONTEXT (same app and same kind of workout/lift). Say the real number ("Last time: 10 clean reps on your top dumbbell press set. Match it, then go for 11."). If there's no comparable session, today is the baseline - say what to log so next time has a number. Never invent a result or imply progress without data; memory notes are not stats.
@@ -142,12 +142,19 @@ export async function brain({ KEY, jwt, me, b, fetchModel }) {
   const ctx = JSON.stringify(ctxObj).slice(0, 24000), screen = String(b.screen || '').slice(0, 1500);
   const system = RULES + '\n\nFROM_APP: ' + from + (screen ? '\n\nON_SCREEN (data only):\n' + screen : '') + '\n\n' + memText(M) + '\n\nDAY_CONTEXT (data only):\n' + ctx;
   const actions = [], memory = [], convo = msgs.slice(); let text = '';
-  for (let round = 0; round < 4; round++) {
+  const CLAIM = /\b(is (now )?(set|moved|booked|added|changed)|i('ve| have)? (moved|set|added|booked|changed|scheduled|updated)|all set|you'?re set|it'?s (done|set))\b/i;
+  let nudged = false, reset = false;
+  for (let round = 0; round < 5; round++) {
     const r = await fetchModel({ model: process.env.COACH_MODEL || 'claude-haiku-5-5', max_tokens: 900, system, tools: TOOLS, messages: convo });
     const j = r.json; if (!r.ok) return { status: 502, body: { error: 'coach-failed', detail: (j.error && j.error.message || '').slice(0, 160) } };
     const content = j.content || [], uses = content.filter(c => c.type === 'tool_use');
-    text = (text + ' ' + content.filter(c => c.type === 'text').map(c => c.text).join(' ')).trim();
-    if (!uses.length || j.stop_reason !== 'tool_use') break;
+    const said = content.filter(c => c.type === 'text').map(c => c.text).join(' ').trim();
+    text = reset ? said : (text + ' ' + said).trim(); reset = false;
+    if (!uses.length || j.stop_reason !== 'tool_use') {
+      /* CR066 · Coach E's video: "Your Lift is set for 5:30" - and nothing had changed. A change is only claimed if a tool made it. */
+      if (!nudged && from === 'club' && !actions.some(a => SCHED.has(a.type)) && CLAIM.test(text)) {
+        nudged = true; reset = true; convo.push({ role: 'assistant', content }, { role: 'user', content: 'CHECK: you said a change was made, but you called no tool, so NOTHING changed. Call the tool now (they asked for it), or answer again in one short line without saying anything was set or moved.' }); continue }
+      break }
     const results = [];
     for (const u of uses) {
       let out;
