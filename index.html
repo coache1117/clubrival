@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR073</title>
+<title>Club Rival · CR076</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -118,6 +118,46 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 .bmr .bmx{flex:1;min-width:0}.bmr .bmx b{display:block;font:800 14px/1.2 -apple-system,sans-serif}.bmr .bmx small{display:block;margin-top:2px;font:600 11px/1.3 -apple-system,sans-serif;opacity:.7}
 .bmr em{flex:none;font-style:normal;font:900 14px/1 -apple-system,sans-serif;color:var(--ac,#ff9a3d)}
 .bmsam .go{margin-top:12px}
+/* CR074 · Coach E: "we have a sense of elegance and class ... then we smash it open with these big-ass buttons." Same size, quiet look:
+   dark button, orange words. And the day reads like a blind: what's done is shaded (still tappable), an arrow marks NOW / NEXT. */
+#clGo,.bmdgo{background:var(--s2)!important;color:#ff9a3d!important;box-shadow:none!important;border:1px solid rgba(255,154,61,.38)!important;font:900 15px/1 -apple-system,sans-serif!important;letter-spacing:.16em!important;font-style:normal!important;text-transform:uppercase}
+.bmdgo{min-height:56px;border-radius:17px}
+.evw.evpast{opacity:.34;transition:opacity .3s}
+.evw.evpast:active,.evw.evpast:focus-within{opacity:.7}
+.evw.evnow{position:relative;background:linear-gradient(90deg,rgba(255,154,61,.13),rgba(255,154,61,0) 70%);border-radius:12px;margin:0 -8px;padding-left:8px;padding-right:8px;border-top-color:transparent}
+.evw.evnow::before{content:"";position:absolute;left:-2px;top:10px;bottom:10px;width:3px;border-radius:3px;background:#ff9a3d}
+.nowl{display:flex;align-items:center;gap:8px;margin:10px 0 2px;font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#ff9a3d}
+.nowl::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(255,154,61,.6),transparent)}
+.bmrow{display:grid;grid-template-columns:1fr 118px;gap:10px;margin:0 0 12px}.bmrow .bmdgo{margin:0}.bmrow .bmout{font-size:13px!important;letter-spacing:.1em!important;white-space:nowrap;padding:0 6px}
+.zm{margin:0 0 12px}.zmt{display:flex;gap:6px;margin-bottom:8px}.zmt button{flex:1;padding:9px;border-radius:11px;border:1px solid var(--ln);background:none;color:var(--mut);font:900 10.5px/1 -apple-system,sans-serif;letter-spacing:.18em;cursor:pointer}.zmt button.on{color:#ff9a3d;border-color:rgba(255,154,61,.5)}
+.wk7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.wkd{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 8px;border-radius:13px;border:1px solid var(--ln);background:var(--s1,transparent);color:inherit;cursor:pointer}
+.wkd span{font:900 8.5px/1 -apple-system,sans-serif;letter-spacing:.08em;color:var(--mut)}.wkd b{font:900 17px/1 -apple-system,sans-serif}
+.wkd>i{display:flex;align-items:flex-end;width:8px;height:30px;border-radius:4px;background:rgba(127,127,127,.15);overflow:hidden}.wkd>i>i{display:block;width:100%;background:#ff9a3d;border-radius:4px}
+.wkd em{font-style:normal;font:800 10px/1 -apple-system,sans-serif;color:var(--mut)}.wkd.on{border-color:#ff9a3d}.wkd.on span{color:#ff9a3d}
+.moh,.mog{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.moh span{text-align:center;font:900 9px/1 -apple-system,sans-serif;color:var(--mut);padding-bottom:4px}
+.mod{aspect-ratio:1;border-radius:9px;border:1px solid var(--ln);background:rgba(255,154,61,var(--g));color:inherit;display:grid;place-items:center;cursor:pointer;padding:0}
+.mod b{font:800 11px/1 -apple-system,sans-serif}.mod.past{opacity:.35}.mod.on{outline:2px solid #ff9a3d;outline-offset:1px}
+.mo35 .small{margin-top:8px}
+.hbc{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px 10px 10px;margin:0 0 14px;border-radius:18px;border:1px solid rgba(255,154,61,.35);background:var(--s2);color:inherit;text-align:left;font:inherit;cursor:pointer}
+.hbc img{flex:none;width:58px;height:58px;border-radius:12px;object-fit:cover}.hbc span{flex:1;min-width:0}.hbc em{display:block;font-style:normal;font:900 10px/1 -apple-system,sans-serif;letter-spacing:.18em;color:#ff9a3d}.hbc b{display:block;margin-top:5px;font:900 16px/1.2 -apple-system,sans-serif}.hbc small{display:block;margin-top:3px;font:600 12px/1.3 -apple-system,sans-serif;color:var(--mut)}.hbc u,.hbli u{text-decoration:none;font:900 22px/1 -apple-system,sans-serif;color:var(--mut)}
+.hbcov{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:1/1.05;background:#000}.hbcov img{width:100%;height:100%;object-fit:cover;opacity:.78}
+.hbcovt{position:absolute;inset:auto 0 0 0;padding:70px 20px 20px;background:linear-gradient(transparent,rgba(0,0,0,.92));color:#fff}.hbcovt span{display:block;font:900 12px/1 -apple-system,sans-serif;letter-spacing:.3em;color:#ff9a3d}.hbcovt b{display:block;margin:6px 0;font:900 40px/.95 -apple-system,sans-serif;letter-spacing:-.01em;font-style:italic}.hbcovt em{display:block;margin-top:10px;font-style:normal;font:600 14px/1.35 -apple-system,sans-serif;opacity:.85}
+.hbl{display:flex;flex-direction:column;gap:8px}.hbli{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px 10px 10px;border-radius:16px;border:1px solid var(--ln);background:var(--s2);color:inherit;text-align:left;font:inherit;cursor:pointer}
+.hbli img,.hbli>i{flex:none;width:52px;height:52px;border-radius:11px;object-fit:cover}.hbli>i{display:grid;place-items:center;font-style:normal;font:900 22px/1 -apple-system,sans-serif;color:#ff9a3d;border:1px solid rgba(255,154,61,.4)}
+.hbli span{flex:1;min-width:0}.hbli em{display:block;font-style:normal;font:900 9.5px/1 -apple-system,sans-serif;letter-spacing:.16em;color:#ff9a3d}.hbli b{display:block;margin-top:4px;font:900 15px/1.2 -apple-system,sans-serif}.hbli small{display:block;margin-top:3px;font:600 11.5px/1.3 -apple-system,sans-serif;color:var(--mut)}
+.hbback{border:0;background:none;color:#ff9a3d;font:900 12px/1 -apple-system,sans-serif;letter-spacing:.14em;padding:6px 0 14px;cursor:pointer}
+.hbhero{margin:0 0 16px;border-radius:20px;overflow:hidden;position:relative;background:#000}.hbhero img{display:block;width:100%;max-height:420px;object-fit:cover}.hbhero figcaption{position:absolute;left:12px;bottom:12px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.65);color:#fff;font:800 11px/1 -apple-system,sans-serif;letter-spacing:.08em}
+.hbey{font:900 11px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#ff9a3d}.hbtt{margin:8px 0 14px;font:900 30px/1.05 -apple-system,sans-serif;letter-spacing:-.01em}
+.hbpbar{position:sticky;top:8px;z-index:5;margin:0 0 16px}.hbpbar .bmdgo{width:100%;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.hbpbar .small{margin-top:6px}
+.hbbody p,.hbbody li{font:500 17px/1.6 Georgia,'Iowan Old Style',serif;margin:0 0 14px}.hbbody ul,.hbbody ol{padding-left:22px;margin:0 0 14px}.hbbody li{margin-bottom:8px}.hbbody b{font-weight:800}
+.hbbody h3{margin:26px 0 10px;font:900 20px/1.2 -apple-system,sans-serif!important;letter-spacing:0!important;text-transform:none!important}
+.hbbody .hbnow{background:rgba(255,154,61,.12);box-shadow:-10px 0 0 rgba(255,154,61,.12),10px 0 0 rgba(255,154,61,.12);border-radius:6px;transition:background .3s}
+.hbtip{margin:0 0 16px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,154,61,.35);font:600 14.5px/1.45 -apple-system,sans-serif}.hbtip span{display:block;margin-bottom:5px;font:900 9.5px/1 -apple-system,sans-serif;letter-spacing:.18em;color:#ff9a3d}
+.hbtw{overflow-x:auto;margin:0 0 16px}.hbt{width:100%;border-collapse:collapse;font:600 13px/1.35 -apple-system,sans-serif}.hbt th{text-align:left;font:900 10px/1.2 -apple-system,sans-serif;letter-spacing:.12em;color:var(--mut);padding:8px 6px;border-bottom:1px solid var(--ln)}.hbt td{padding:9px 6px;border-bottom:1px solid var(--ln);vertical-align:top;min-width:30px}
+.hbch{margin:4px 0 18px}.hbch svg{width:100%;height:auto;display:block}.hbch .g{stroke:var(--ln);stroke-width:1}.hbch .ax{font:700 9px -apple-system,sans-serif;fill:var(--mut)}.hbch .ln{fill:none;stroke:#ff9a3d;stroke-width:3;stroke-linecap:round}.hbch .fill{fill:rgba(255,154,61,.12)}.hbch .dot{fill:#ff9a3d}.hbch .vl{font:900 11px -apple-system,sans-serif;fill:var(--tx)}.hbch figcaption{margin-top:6px;font:600 12.5px/1.4 -apple-system,sans-serif;color:var(--mut)}
+.hbstrip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:6px 0 10px}.hbstrip figure{margin:0}.hbstrip img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;display:block}.hbstrip .next div{aspect-ratio:3/4;border-radius:10px;border:1.5px dashed #ff9a3d;display:grid;place-items:center;font:900 20px/1 -apple-system,sans-serif;color:#ff9a3d}.hbstrip figcaption{text-align:center;margin-top:5px;font:900 12px/1 -apple-system,sans-serif}
+#hbTry{margin-top:10px}
 .scplus{width:38px;height:34px;border-radius:999px;border:1px solid var(--ln);background:none;color:inherit;font:300 24px/1 -apple-system,sans-serif;display:grid;place-items:center;padding:0 0 2px;cursor:pointer}
 .evw .evr .evdel{width:34px;min-height:34px;height:34px;border-radius:50%;padding:0!important;font-size:13px;display:grid;place-items:center}
 .evr .tg,.evr .evgo{box-sizing:border-box;width:96px;max-width:96px;margin:0;justify-content:center;text-align:center}
@@ -285,7 +325,7 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR073';
+const BUILD='CR076';
 const APPS=[
  {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg?v=70', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
@@ -342,23 +382,31 @@ const LN=()=>{try{return window.Capacitor&&window.Capacitor.Plugins&&window.Capa
 const remOn=()=>{try{return localStorage.getItem('cr_remind')==='1'}catch(e){return false}};
 let REMT=null;function remindSoon(){clearTimeout(REMT);REMT=setTimeout(remindSync,1500)}
 async function remindSync(){const L=LN();if(!L||!S.user)return;try{const pend=await L.getPending();const mine=((pend&&pend.notifications)||[]).filter(n=>n.id>=700000&&n.id<800000);if(mine.length)await L.cancel({notifications:mine.map(n=>({id:n.id}))});if(!remOn())return;
- const now=Date.now(),list=(events().list||[]).filter(x=>x&&x.t-10*MIN>now+60000&&x.t<now+36*3600*1000&&!(x.act&&isDone(x))).slice(0,40);
- const notes=list.map((x,i)=>{const a=APPS.find(q=>q.id===x.app);return {id:700000+i,title:x.name+' in 10 minutes',body:(a?a.name+' · ':'')+t12(x.t),schedule:{at:new Date(x.t-10*MIN)},extra:{app:x.app||''}}});
+ /* CR075 · Coach E: "with all these apps that could be a ton of notifications ... get them from CR, but have them linked together." Club is the one
+    voice: things within 15 min of each other ride in ONE heads-up ("Boxing 5:00 · then Lifting 5:15"), nothing while you sleep, at most 12 a day,
+    and a tap opens the right app straight into that program. */
+ const now=Date.now(),inSleep=t=>sleepWins(R.dayStr(t)).concat(sleepWins(R.addDays(R.dayStr(t),-1))).some(w=>t>=w[0]&&t<w[1]);
+ const tmw=R.addDays(R.dayStr(now),1),seenK=new Set((events().list||[]).map(x=>x.id+'|'+R.dayStr(x.t)));let all0=(events().list||[]).concat(occOn(tmw).filter(o=>!seenK.has(o.id+'|'+tmw)));const list=all0.filter(x=>x&&!x.edit&&!/^rest-wake/.test(x.id||'')&&x.t-10*MIN>now+60000&&x.t<now+36*3600*1000&&!(x.act&&isDone(x))&&!inSleep(x.t-10*MIN)).sort((a,b)=>a.t-b.t);
+ const grp=[];list.forEach(x=>{const g=grp[grp.length-1];if(g&&x.t-g[0].t<=15*MIN)g.push(x);else grp.push([x])});
+ const per={};const keep=grp.filter(g=>{const d=R.dayStr(g[0].t);per[d]=(per[d]||0)+1;return per[d]<=12}).slice(0,40);
+ const notes=keep.map((g,i)=>{const x=g[0],a=APPS.find(q=>q.id===x.app),row=x.act?S.evs.find(r=>r.id===x.id):null;return {id:700000+i,title:x.name+' in 10 minutes'+(a?' · '+shortApp(a):''),body:t12(x.t)+(g.length>1?' · then '+g.slice(1).map(y=>y.name+' '+t12(y.t)).join(' · '):'')+(a?'. Tap to open '+a.name+'.':''),schedule:{at:new Date(x.t-10*MIN)},extra:{app:a?x.app:'',item:row?row.id:'',prog:row&&row.data&&row.data.prog||''}}});
  if(notes.length)await L.schedule({notifications:notes})}catch(e){}}
+let LNW=false;function remindWire(){const L=LN();if(!L||LNW||!L.addListener)return;LNW=true;try{L.addListener('localNotificationActionPerformed',e=>{const x=(e&&e.notification&&e.notification.extra)||{};if(x.app&&APPS.some(a=>a.id===x.app))setTimeout(()=>openApp(x.app,true,'&go=resume'+(x.item?'&item='+encodeURIComponent(x.item):'')+(x.prog?'&program='+encodeURIComponent(x.prog):'')),400)})}catch(e){}}
+setTimeout(remindWire,800);
 async function remindToggle(){const L=LN();if(!L)return toast('REMINDERS COME WITH THE CLUB RIVAL iPHONE APP');if(remOn()){try{localStorage.setItem('cr_remind','0')}catch(e){}await remindSync();toast('REMINDERS OFF');return acctSheet()}
  let ok=false;try{const r=await L.requestPermissions();ok=r&&r.display==='granted'}catch(e){}if(!ok)return toast('ALLOW NOTIFICATIONS FOR CLUB RIVAL IN SETTINGS');try{localStorage.setItem('cr_remind','1')}catch(e){}await remindSync();toast('REMINDERS ON · 10 MIN BEFORE EACH THING');acctSheet()}
 function draw(){const st=stats(S.rows),L=levelOf(st.total),nx=Math.min(MAX_LEVEL,L.lv+1);
  $('m').innerHTML='<div class="top"><div class="brand"><img src="art/club.jpg" alt=""><div><div class="logo">CLUB <b>RIVAL</b></div><div class="ver">RUNS YOUR DAY · '+BUILD+'</div></div></div><button class="pill" id="acct">'+(S.user?'✓ ACCOUNT':'SIGN IN')+'</button></div>'
-  +(S.view==='pts'?ptsPage(st,L):S.view==='apps'?appsPage():S.view==='boss'?goalCardHTML()+bossHTML()+planCardHTML()+percHTML():/* CR019 - Coach E: "drop the XP from the top" - the big XP block is gone from home. One thin strip instead; tap it for your points. */ancCardHTML()+heroHTML()+'<button class="lvs" id="toPts" style="display:none" aria-label="Your points"><span class="lvn"><b>'+L.lv+'</b>LEVEL</span><span class="lvm">'+(S.user?(L.max?'<em>LEVEL 100 · TOP OF THE CLUB</em>':'<em>'+com(L.into)+' / '+com(L.need)+' to level '+nx+'</em>'):'<em>Sign in to start your level</em>')+'<i class="bar"><i style="width:'+(S.user?Math.max(2,Math.round(L.into*100/L.need)):0)+'%"></i></i></span><span class="lvw"><b>'+com(S.user?st.week:0)+'</b>THIS WEEK</span><i class="lvgo2">›</i></button>'+schedHTML())
+  +(S.view==='hb'?(window.hbPage?hbPage():''):S.view==='pts'?ptsPage(st,L):S.view==='apps'?hbCard()+appsPage():S.view==='boss'?goalCardHTML()+bossHTML()+planCardHTML()+percHTML():/* CR019 - Coach E: "drop the XP from the top" - the big XP block is gone from home. One thin strip instead; tap it for your points. */ancCardHTML()+heroHTML()+'<button class="lvs" id="toPts" style="display:none" aria-label="Your points"><span class="lvn"><b>'+L.lv+'</b>LEVEL</span><span class="lvm">'+(S.user?(L.max?'<em>LEVEL 100 · TOP OF THE CLUB</em>':'<em>'+com(L.into)+' / '+com(L.need)+' to level '+nx+'</em>'):'<em>Sign in to start your level</em>')+'<i class="bar"><i style="width:'+(S.user?Math.max(2,Math.round(L.into*100/L.need)):0)+'%"></i></i></span><span class="lvw"><b>'+com(S.user?st.week:0)+'</b>THIS WEEK</span><i class="lvgo2">›</i></button>'+schedHTML()+(S.user?'<div style="margin-top:14px">'+hbCard()+'</div>':''))
   +(S.view!=='boss'?'':'<div class="cat">YOUR ACTIVITY THIS WEEK</div><div class="card"><div class="ah"><b>SUN – SAT</b><span>'+(S.user?com(st.week)+' XP':'')+'</span></div>'
   +(!S.user?'<div class="small">Sign in to see your sessions and XP from every Rival app in one place.</div><button class="go" id="act1">SIGN IN</button>'
     :S.err?'<div class="small">'+esc(S.err)+'</div>'
     :!st.act.length?'<div class="small">Nothing yet this week. Finish a session in any Rival app and it shows up here.</div>'
     :(()=>{const mx=Math.max(1,...st.act.map(a=>a.sessions));return st.act.map(a=>{const p=APPS.find(x=>x.id===a.app)||{name:a.app,art:''};return '<div class="row" style="--ac:'+(p.ac||'#34c759')+'"><img src="'+p.art+'" alt=""><div><div class="nm"><span>'+esc(p.name).toUpperCase()+'</span><em>'+a.sessions+' SESSION'+(a.sessions===1?'':'S')+'</em></div><div class="ub"><i style="width:'+Math.max(4,Math.round(a.sessions*100/mx))+'%"></i></div></div><div class="x">'+com(a.xp)+'<small>XP</small></div></div>'}).join('')})())
   +'</div><div class="small" style="margin:14px 4px 0">A finished session is 10 XP. Beating your rival is 100 XP. Every 500 XP is a Club Rival level.</div>');
- $('m').insertAdjacentHTML('beforeend',navHTML());document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{if(S.view===b.dataset.nav){scrollTo({top:0,behavior:'smooth'});return}S.view=b.dataset.nav;draw();scrollTo(0,0)});
+ $('m').insertAdjacentHTML('beforeend',navHTML());document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{if(window.hbLeave)hbLeave();if(S.view===b.dataset.nav){scrollTo({top:0,behavior:'smooth'});return}S.view=b.dataset.nav;draw();scrollTo(0,0)});
  remindSoon();$('acct').onclick=acctSheet;if($('clGo'))$('clGo').onclick=heroGo;['gAimEdit','gAimAdd'].forEach(id=>{if($(id))$(id).onclick=()=>goalSheet(false,true)});if($('toPts'))$('toPts').onclick=()=>{S.view='pts';draw();scrollTo(0,0)};document.querySelectorAll('.toHome').forEach(b=>b.onclick=()=>{S.view='home';draw();scrollTo(0,0)});if($('toApps'))$('toApps').onclick=()=>{S.view='apps';draw();scrollTo(0,0)};if($('toHome'))$('toHome').onclick=()=>{S.view='home';draw();scrollTo(0,0)};if($('act1'))$('act1').onclick=acctSheet;wire4();bossAnim();{const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};if($('bCatch'))$('bCatch').onclick=()=>bossCatchGo($('bCatch'));on('obGo',()=>goalSheet());on('obEd',()=>goalSheet());on('obAdd',()=>goalSheet(true));on('plB2',planSheet);on('obAnc',()=>anchorSetup())}
- document.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
+ document.querySelectorAll('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app));if(window.hbWire)hbWire();document.querySelectorAll('[data-hbo]').forEach(b=>b.onclick=()=>{if(window.hbOpen){S.view='hb';window.HBS_.ch=null;draw();scrollTo(0,0)}})}
 function openApp(id,direct,extra){const a=APPS.find(x=>x.id===id);if(!a)return;const s=stateOf(a);if(id==='rest'&&!direct&&S.user&&s==='open')return restPanel();
  if(s==='soon'){toast(a.name.toUpperCase()+' · COMING SOON');return}
  const go=()=>{try{localStorage.setItem('club_last',JSON.stringify({id,at:Date.now()}))}catch(e){}location.href=a.url+(a.url.indexOf('?')<0?'?':'&')+'from=club&club='+encodeURIComponent(location.origin+location.pathname)+(extra||'&go=resume')};
@@ -647,11 +695,41 @@ function pairOffer(rows){const ch={};
  $('poGo').onclick=async()=>{$('poGo').disabled=true;$('poGo').textContent='SAVING…';let bad=0;for(const r of rows){if(ch[r.id]===undefined)continue;const x=pairsFor(r.data.anchor)[ch[r.id]];const cur=S.evs.find(y=>y.id===r.id);const res=await evWrite(cur,{app:'anchor',data:Object.assign({},cur.data,{pair:{app:x[0],do:x[1],tag:x[2],label:x[3]}})});if(res!=='ok'&&res!=='stale')bad++}
   await loadSched();if(bad){$('poGo').disabled=false;$('poGo').textContent='TRY AGAIN';$('poE').textContent='Some didn’t save. Check your connection.';return}toast('PAIRED');anchorsSheet();draw4keep()}}
 
+
+
+/* CR076 · THE REAL RIVAL HANDBOOK (handbook.js): top of APPS, and a line under your schedule on TODAY. */
+function hbCard(){return '<button type="button" class="hbc" data-hbo="1"><img src="art/hb/cover-boxing.jpg" alt=""><span><em>THE REAL RIVAL HANDBOOK</em><b>Beat yesterday. Count the 1%.</b><small>8 chapters · read it or hear it in Coach E’s voice</small></span><u>›</u></button>'}
+/* ===== CR075 · Coach E (in the car): "you can see one day, but you don't know what's going on for the week ... then 30 days, a sense of the
+   volume." Three zoom levels on TODAY: the day (below), the WEEK strip (7 days, a bar for how full each is) and the MONTH glow map
+   (each day glows brighter the busier it is). Tap any day to open it. Busy = minutes of things planned (sleep not counted). ===== */
+function dayLoad(d){try{return occOn(d).reduce((a,o)=>a+Math.max(0,Math.min(600,(o.t1-o.t)/MIN)),0)}catch(e){return 0}}
+let ZOOM='week';
+function zoomHTML(){if(!S.user||!S.evs)return '';const t=R.dayStr(Date.now());
+ const tabs='<div class="zmt">'+[['week','WEEK'],['month','MONTH']].map(x=>'<button type="button" data-zm="'+x[0]+'" aria-pressed="'+(ZOOM===x[0])+'"'+(ZOOM===x[0]?' class="on"':'')+'>'+x[1]+'</button>').join('')+'</div>';
+ if(ZOOM==='week'){const ds=Array.from({length:7},(_,i)=>R.addDays(t,i)),L=ds.map(dayLoad),mx=Math.max(240,...L);
+  return '<div class="zm">'+tabs+'<div class="wk7">'+ds.map((d,i)=>{const n=occOn(d).length,dt=R.dayDate(d);return '<button type="button" class="wkd'+(i===0?' on':'')+'" data-zd="'+d+'" aria-label="'+esc(fD(d))+', '+n+' things"><span>'+(i===0?'TODAY':WDN[dt.getDay()].toUpperCase())+'</span><b>'+dt.getDate()+'</b><i><i style="height:'+Math.round(L[i]/mx*100)+'%"></i></i><em>'+n+'</em></button>'}).join('')+'</div></div>'}
+ const st=R.addDays(t,-((R.dayDate(t).getDay()+6)%7)),ds=Array.from({length:35},(_,i)=>R.addDays(st,i)),L=ds.map(dayLoad),mx=Math.max(240,...L);
+ return '<div class="zm">'+tabs+'<div class="mo35"><div class="moh">'+['M','T','W','T','F','S','S'].map(x=>'<span>'+x+'</span>').join('')+'</div><div class="mog">'+ds.map((d,i)=>{const v=L[i]/mx,past=d<t;return '<button type="button" class="mod'+(d===t?' on':'')+(past?' past':'')+'" data-zd="'+d+'" style="--g:'+(v?(.12+v*.88).toFixed(2):0)+'" aria-label="'+esc(fD(d))+'"><b>'+R.dayDate(d).getDate()+'</b></button>'}).join('')+'</div><div class="small">Brighter = busier. Tap a day to open it.</div></div></div>'}
+/* ===== CR075 · I'M OUT. Coach E: "had to run an errand" in the middle of Build & Sell. Tap I'M OUT, pick how long: Club blocks that time
+   and slides what was in it to right after, in order, so nothing shows as missed. Anchors and fixed-time events don't move. UNDO for 20 s. ===== */
+function outSheet(){let mins=30,what='Errand';const draw0=()=>sheet('<div class="ey">I’M OUT</div><div class="big">STEPPING AWAY</div><div class="small">Club blocks the time and moves what was in it to right after. Nothing counts as missed.</div>'
+  +'<label>WHAT</label><div class="chips">'+['Errand','Appointment','Pickup','Something else'].map(x=>'<button type="button" data-ow="'+x+'"'+(what===x?' class="on" aria-pressed="true"':' aria-pressed="false"')+'>'+x+'</button>').join('')+'</div>'
+  +'<label>HOW LONG</label><div class="chips">'+[15,30,45,60,90,120].map(m=>'<button type="button" data-om="'+m+'"'+(mins===m?' class="on" aria-pressed="true"':' aria-pressed="false"')+'>'+(m<60?m+' min':m/60+' hr')+'</button>').join('')+'</div>'
+  +'<div class="small" id="oPv" style="margin-top:10px">'+esc(outPlan(mins).txt)+'</div><div class="err" id="oE"></div><button class="go" id="oGo">I’M OUT · '+(mins<60?mins+' MIN':mins/60+' HR')+'</button><button class="go ghost" id="oX">NOT NOW</button>');
+ const wire=()=>{document.querySelectorAll('[data-ow]').forEach(b=>b.onclick=()=>{what=b.dataset.ow;draw0();wire()});document.querySelectorAll('[data-om]').forEach(b=>b.onclick=()=>{mins=+b.dataset.om;draw0();wire()});$('oX').onclick=shut;$('oGo').onclick=()=>outGo(what,mins)};draw0();wire()}
+function outPlan(mins){const n=Date.now(),day=R.dayStr(n),a=Math.floor(n/(5*MIN))*5*MIN,b=a+mins*MIN;let at=b;const mv=[];
+ occOn(day).filter(o=>o.act&&!o.anchor&&!(S.evs.find(r=>r.id===o.id)||{data:{}}).data.out&&o.t>=a-2*MIN&&o.t<b&&!isDone(o)).sort((x,y)=>x.t-y.t).forEach(o=>{const dur=o.t1-o.t,nt=Math.max(at,o.t);if(nt!==o.t)mv.push({o,nt});at=Math.max(at,nt+dur)});
+ return {a,b,day,mv,txt:mv.length?'Moves '+mv.map(x=>x.o.name+' to '+fT(x.nt)).join(', ')+'.':'Nothing on your schedule in that window. It just blocks the time.'}}
+async function outGo(what,mins){const P=outPlan(mins),btn=$('oGo');btn.disabled=true;btn.textContent='MOVING…';CO.undo={snap:undoSnap(),at:Date.now()};let bad=0;
+ const r1=await evWrite(null,{app:'club',data:{title:what,prog:'',plan:'',time:hhmm(P.a),durMin:mins,days:null,date:P.day,from:P.day,out:true}});if(r1!=='ok')bad++;
+ for(const m of P.mv){const row=S.evs.find(r=>r.id===m.o.id);if(!row)continue;const d=Object.assign({},row.data);d.move=Object.assign({},d.move||{});d.move[P.day]=hhmm(m.nt);const x=await evWrite(row,{app:row.app,data:d});if(x!=='ok'&&x!=='stale')bad++}
+ await loadSched();draw4keep();remindSoon();if(bad){btn.disabled=false;btn.textContent='TRY AGAIN';$('oE').textContent='Some didn’t save. Check your connection.';return}
+ shut();toast('✓ OUT TILL '+fT(P.b).toUpperCase()+(P.mv.length?' · '+P.mv.length+' MOVED':''))}
 /* ===== CR073 · BUILD MY DAY. Coach E: "a template is onboarding with the answers filled in" - anchors first, then your goal and your days,
    then Club fills the open time with a suggestion for each slot (tap to keep or toss). Samples live here too: COACH E'S RIVAL ROUTINE is
    the first one, so anyone can drop a whole proven day into their week in one tap, then move things around. Everything it adds is
    tagged with the routine it came from, so TAKE IT OFF removes exactly that and nothing you made yourself. ===== */
-const ROUTINES=[{id:'coache',name:'COACH E’S RIVAL ROUTINE',by:'Coach E',line:'Up at 4:30. Box and lift before 6. Build and sell 8 to 2. Fuel all day. Mind at every turn: Hype going in, Calm → Focus coming out, Reset through the day and on the drive.',days:[1,2,3,4,5],
+const ROUTINES=[{id:'coache',extra:[['10:00','groceries','Grocery shopping','Sun',60]],name:'COACH E’S RIVAL ROUTINE',by:'Coach E',line:'Up at 4:30. Box and lift before 6. Build and sell 8 to 2. Fuel all day. Mind at every turn: Hype going in, Calm → Focus coming out, Reset through the day and on the drive.',days:[1,2,3,4,5],
  items:[['04:30','fuel','water','Water / Fuel',5],['04:45','mindrival','audio-hype','Mind · Hype',null],['05:00','rankup','boxfit','Boxing',15],['05:15','rep','full','Lifting',45],
   ['06:00','fuel','meal','Meal',null],['06:15','mindrival','audio-shift','Mind · Calm → Focus',null],['07:45','club','','Review the full plan',15],['08:00','biz','block','Build & Sell',360],
   ['09:00','fuel','meal','Shake',5],['12:00','fuel','meal','Meal',null],['12:15','mindrival','audio-reset','Mind · Reset',null],['15:00','fuel','meal','Meal',null],['18:00','fuel','meal','Fuel',null],
@@ -715,11 +793,11 @@ function routineItems(R0){const hasRest=!!(S.sched&&S.sched.data&&S.sched.data.b
 function routineSheet(id){const R0=ROUTINES.find(r=>r.id===id);if(!R0)return;const L=routineItems(R0),mine=S.evs.some(r=>r.data&&r.data.routine===id),cm=anchorFind('Commute');
  sheet('<div class="ey">SAMPLE ROUTINE · BY '+esc(R0.by.toUpperCase())+'</div><div class="big">'+esc(R0.name)+'</div><div class="small">'+esc(R0.line)+'</div>'
   +'<div class="bml">'+L.map((it,i)=>bmdItemRow(it,i,true).replace('<button','<div').replace('</button>','</div>')).join('')+'</div>'
-  +(cm?'<div class="small" style="margin-top:8px">🎧 Your Commute Anchor gets the Reset audio for the drive.</div>':'')
+  +(R0.extra?R0.extra.map(x=>'<div class="bmr on" style="cursor:default"><span class="bmt">'+x[3]+' '+fT(R.at(R.dayStr(Date.now()),x[0]))+'</span><i>🛒</i><span class="bmx"><b>'+esc(x[2])+'</b><small>Anchor · '+x[4]+' min · every '+x[3]+' · opens your Fuel grocery list</small></span><em>✓</em></div>').join(''):'')+(cm?'<div class="small" style="margin-top:8px">🎧 Your Commute Anchor gets the Reset audio for the drive.</div>':'')
   +(S.sched&&S.sched.data&&S.sched.data.bed?'<div class="small" style="margin-top:8px">🌙 Wind-down is already on your schedule from Rest ('+fT(R.at(R.dayStr(Date.now()),bmdWind()))+'): shower, clean up, lay out clothes, review tomorrow’s plan.</div>':'')+'<div class="small" style="margin-top:8px">Fuel lives inside the Build & Sell block on purpose: you eat while you work.</div>'
   +'<div class="err" id="rtE"></div><button class="go" id="rtUse">'+(mine?'PUT IT IN AGAIN (REPLACES IT)':'USE THIS ROUTINE · MON – FRI')+'</button>'+(mine?'<button class="go ghost" id="rtOff">TAKE IT OFF MY WEEK</button>':'')+'<button class="go ghost" id="rtBk">BACK</button>');
  $('rtBk').onclick=buildMyDay;if($('rtOff'))$('rtOff').onclick=async()=>{await routineOff(id);routineSheet(id)};
- $('rtUse').onclick=async()=>{const ok=await routineWrite(id,L,$('rtUse'),$('rtE'));if(ok&&cm&&!(cm.data.pair&&cm.data.pair.do==='audio-reset')){const cur=S.evs.find(y=>y.id===cm.id);if(cur)await evWrite(cur,{app:'anchor',data:Object.assign({},cur.data,{pair:{app:'mindrival',do:'audio-reset',tag:'🎧 RESET',label:'Calm, focus, motivate for the drive'}})});await loadSched();draw4keep()}}}
+ $('rtUse').onclick=async()=>{const ok=await routineWrite(id,L,$('rtUse'),$('rtE'));if(ok&&R0.extra)for(const x of R0.extra){if(!anchorFind(x[2])){const pr=(PAIR[x[1]]||[])[0];await anchorSave(null,{title:x[2],time:x[0],durMin:x[4],days:[0],key:x[1],pair:pr?{app:pr[0],do:pr[1],tag:pr[2],label:pr[3]}:null})}}if(ok){await loadSched();draw4keep()}if(ok&&cm&&!(cm.data.pair&&cm.data.pair.do==='audio-reset')){const cur=S.evs.find(y=>y.id===cm.id);if(cur)await evWrite(cur,{app:'anchor',data:Object.assign({},cur.data,{pair:{app:'mindrival',do:'audio-reset',tag:'🎧 RESET',label:'Calm, focus, motivate for the drive'}})});await loadSched();draw4keep()}}}
 /* Build My Week = the planner Club already has, which plans around sleep, work, and everything on the calendar - Anchors included */
 function buildWeekNow(){if(!goalNow())return goalSheet();planSheet()}
 /* ===== CR064 · UNDO. Every change the coach makes can be put back in one tap: what the schedule was before is kept for 20 seconds. ===== */
@@ -907,7 +985,7 @@ function events(){const P=schedP(),out=[];let td=null,sl=null;const t0=R.dayStr(
  const horizon=sl?(Date.now()>=sl[0]-6*60*MIN?R.at(R.addDays(R.dayStr(sl[1]),1),'00:00'):sl[1]):R.at(R.addDays(t0,1),'00:00');[t0,R.addDays(t0,1)].forEach(d=>occOn(d).forEach(x=>{if((d===t0||x.t1>Date.now()-30*MIN)&&x.t<horizon)out.push(Object.assign(x,{clash:!!sl&&x.t1>sl[0]&&x.t<sl[1]}))}));
  if(!P)[12,15,20].forEach(h=>{const t=etToday(h);if(t>Date.now()-30*MIN)out.push({id:'mind-frenzy-'+h,t,name:'Frenzy Live',sub:'Cube Rival · fixed time',app:'mind'})});
  {const wk=workOf(t0);if(wk&&wk.t1>Date.now()-30*MIN)out.push(wk)}
- const acts=out.filter(x=>x.act),wks=out.filter(x=>x.work||x.anchor);acts.forEach(a=>{if(acts.some(b=>b!==a&&a.t<b.t1&&b.t<a.t1)||wks.some(w=>a.t<w.t1&&(w.up!=null?w.up:w.t)<a.t1))a.over=true});
+ const acts=out.filter(x=>x.act),wks=out.filter(x=>x.work||x.anchor);const lite=x=>x.app==='fuel'||x.app==='mindrival'||(x.t1-x.t)<=10*MIN;/* CR074: eating or a Mind audio inside a work block is on purpose - not an overlap */acts.forEach(a=>{if(lite(a))return;if(acts.some(b=>b!==a&&!lite(b)&&a.t<b.t1&&b.t<a.t1)||wks.some(w=>a.t<w.t1&&(w.up!=null?w.up:w.t)<a.t1))a.over=true});
  {const wr=out.find(x=>x.id==='rest-wake-'+td);if(wr){const wk=workOf(R.dayStr(wr.t));if(wk&&wr.t>wk.up)wr.late='AFTER WORK STARTS'}}
  const shown=out.filter(x=>x.act||x.work||!isHidden(x));
  return {P,td,list:shown.sort((a,b)=>a.t-b.t),hidden:out.length-shown.length}}
@@ -1157,8 +1235,8 @@ function evRow(x){const a=APPS.find(q=>q.id===x.app),sb=evSub(x),ed=!!S.schedEdi
  return '<div class="evw" style="--ac:'+(a?a.ac:x.work?'#c9cbd3':'#8d8d98')+'"><button class="ev" '+at+(a?' aria-label="'+esc(x.name)+', '+esc(fT(x.t))+', opens '+esc(a.name)+'"':'')+'>'+ic+'<b><time>'+fT(x.t)+(x.rep?'<i class="evrep" title="Repeats" aria-label="repeats">↻</i>':'')+'</time>'+esc(x.name)+'</b>'+(sb?'<span>'+esc(sb)+'</span>':'')+'</button><div class="evr">'+pb+right+'</div></div>'}
 /* CR049 · "that's a pile of buttons ... not quite Steve Jobs." Under the schedule: nothing. Up top: one + and one EDIT. EDIT holds the rest. */
 function schedHTML(){if(!S.user)return '';const e=events();
- return '<div class="cat">YOUR SCHEDULE</div><button type="button" class="go bmdgo" id="bmdT">⚡ BUILD MY DAY</button><div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP ONE TO CHANGE IT · ✕ TAKES IT OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b><span class="schd">'+(S.schedEdit?'':'<button type="button" class="scplus" id="scAdd" aria-label="Add to my schedule">+</button>')+'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button></span></div>'
- +(e.list.length?(()=>{const tm=R.addDays(R.dayStr(Date.now()),1);let shown=false;return e.list.map(x=>{let h='';if(!shown&&R.dayStr(x.t)===tm&&!x.edit&&!/^rest-wake/.test(x.id)&&x.t>(e.list.find(y=>/^rest-wake/.test(y.id))||{t:0}).t){shown=true;h='<div class="tmrw">TOMORROW · '+esc(fD(tm)).toUpperCase()+'</div>'}return h+evRow(x)}).join('')})():'<div class="small">Nothing on the schedule yet. Tap + to add one.</div>')+'</div>'}
+ return '<div class="cat">YOUR SCHEDULE</div><div class="bmrow"><button type="button" class="go bmdgo" id="bmdT">BUILD MY DAY</button><button type="button" class="go bmdgo bmout" id="outT">I’M OUT</button></div>'+zoomHTML()+'<div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP ONE TO CHANGE IT · ✕ TAKES IT OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b><span class="schd">'+(S.schedEdit?'':'<button type="button" class="scplus" id="scAdd" aria-label="Add to my schedule">+</button>')+'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button></span></div>'
+ +(e.list.length?(()=>{const tm=R.addDays(R.dayStr(Date.now()),1),nw=Date.now(),T0=R.dayStr(nw),cur=e.list.find(x=>x.t<=nw&&(x.t1||x.t+30*MIN)>nw&&!x.edit)||e.list.find(x=>x.t>nw);let shown=false;return e.list.map(x=>{const pst=R.dayStr(x.t)===T0&&(x.t1||x.t+30*MIN)<=nw&&x!==cur,cls=x===cur?' evnow':pst?' evpast':'';let h='';if(!shown&&R.dayStr(x.t)===tm&&!x.edit&&!/^rest-wake/.test(x.id)&&x.t>(e.list.find(y=>/^rest-wake/.test(y.id))||{t:0}).t){shown=true;h='<div class="tmrw">TOMORROW · '+esc(fD(tm)).toUpperCase()+'</div>'}return h+(x===cur?'<div class="nowl"><span>'+(x.t<=nw?'▶ NOW':'▶ NEXT')+'</span></div>':'')+evRow(x).replace('<div class="evw"','<div class="evw'+cls+'"')}).join('')})():'<div class="small">Nothing on the schedule yet. Tap + to add one.</div>')+'</div>'}
 function workLabel(){const w=myDay();if(!w||!w.leave)return 'WORK · SET YOUR HOURS';const t=R.dayStr(Date.now());return (w.mode==='home'?'WORK FROM HOME · ':'WORK · LEAVE ')+fT(R.at(t,w.leave))+(w.home?(w.mode==='home'?'–':' · HOME ')+fT(R.at(t,w.home)):'')}
 function schedMenu(){const e=events();
  sheet('<div class="ey">YOUR SCHEDULE</div><div class="big">EDIT</div>'
@@ -1521,7 +1599,7 @@ const NAV=[['home','TODAY','<path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-
  ['boss','BOSS','<path d="M3 17l5-5 4 3 8-8"/><path d="M15 7h5v5"/>'],
  ['apps','APPS','<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>'],
  ['pts','POINTS','<circle cx="12" cy="12" r="8"/><path d="M12 8v8M9 11l3-3 3 3"/>']];
-function navHTML(){const v=S.view||'home';return '<nav class="nav" aria-label="Club Rival">'+NAV.map(n=>'<button type="button" data-nav="'+n[0]+'" class="'+(v===n[0]?'on':'')+'"'+(v===n[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+n[2]+'</svg><span>'+n[1]+'</span></button>').join('')+'</nav>'}
+function navHTML(){const v=S.view==='hb'?'apps':(S.view||'home');return '<nav class="nav" aria-label="Club Rival">'+NAV.map(n=>'<button type="button" data-nav="'+n[0]+'" class="'+(v===n[0]?'on':'')+'"'+(v===n[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+n[2]+'</svg><span>'+n[1]+'</span></button>').join('')+'</nav>'}
 /* CR031 - YOUR GOAL: what, by when, and where 1% compounding gets you if you hit your plan every week. */
 function addMonths(d,n){const x=new Date(d.getFullYear(),d.getMonth()+n,d.getDate());return x}
 function ymdLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -1605,7 +1683,7 @@ function restPanel(){const rest=APPS.find(a=>a.id==='rest'),c=restCmp(S.pk),e=ev
  sheet(h);$('rpX').onclick=()=>{shut();draw4keep()};$('rpO').onclick=()=>openApp('rest',true);if($('rpT'))$('rpT').onclick=()=>schedSheet('tonight');if($('rpS'))$('rpS').onclick=()=>schedSheet('series');
  $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{S.pk=b.dataset.pk;try{localStorage.setItem('club_pk',S.pk)}catch(e){}restPanel()})}
 function draw4keep(){const y=scrollY;draw();scrollTo(0,y)}
-function wire4(){const on=(id,fn)=>{if($(id))$(id).onclick=fn};on('scNew',()=>schedSheet('new'));on('scT',()=>schedSheet('tonight'));on('scAdd',()=>addSheet(null));on('bmdT',buildMyDay);on('bmdO',buildMyDay);on('scDay',daySheet);on('plB',()=>goalNow()?planSheet():goalSheet());on('bfL',()=>{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(y.speaking){y.cancel();$('bfL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance('Coach’s read. '+coachRead().join(' ')+' Today’s brief. '+briefLines().map(x=>x.k.toLowerCase().replace(' · ',', ')+'. '+x.v+'.').join(' '));u.onend=()=>{if($('bfL'))$('bfL').textContent='▶ LISTEN'};y.speak(u);$('bfL').textContent='■ STOP'});on('scWk',weekSheet);wireEv($('m'));document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>b.dataset.panel==='rest'?restPanel():appPanel(b.dataset.panel))}
+function wire4(){const on=(id,fn)=>{if($(id))$(id).onclick=fn};on('scNew',()=>schedSheet('new'));on('scT',()=>schedSheet('tonight'));on('scAdd',()=>addSheet(null));on('bmdT',buildMyDay);on('outT',outSheet);document.querySelectorAll('[data-zm]').forEach(b=>b.onclick=()=>{ZOOM=b.dataset.zm;draw4keep()});document.querySelectorAll('[data-zd]').forEach(b=>b.onclick=()=>planDay(b.dataset.zd));on('bmdO',buildMyDay);on('scDay',daySheet);on('plB',()=>goalNow()?planSheet():goalSheet());on('bfL',()=>{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(y.speaking){y.cancel();$('bfL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance('Coach’s read. '+coachRead().join(' ')+' Today’s brief. '+briefLines().map(x=>x.k.toLowerCase().replace(' · ',', ')+'. '+x.v+'.').join(' '));u.onend=()=>{if($('bfL'))$('bfL').textContent='▶ LISTEN'};y.speak(u);$('bfL').textContent='■ STOP'});on('scWk',weekSheet);wireEv($('m'));document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>b.dataset.panel==='rest'?restPanel():appPanel(b.dataset.panel))}
 try{const k=localStorage.getItem('club_pk');if(['day','week','2w','month','quarter'].includes(k))S.pk=k}catch(e){}
 window.CR={APPS,stats,levelOf,weekStart,draw,S,load,stateOf,events,clubScore,restCmp,schedSave,appStats,occOn,doneDays,isDone,coachBefore,coachAfter,briefLines,bigPic,coachRead,weekPlan,rdy,buildPlan,planWeek,lineUp,savePlan,GOALS};
 draw();
@@ -1613,7 +1691,8 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(document.hidden){RT_HID=Date.now();return}if(S.user)load();if(RT_HID&&Date.now()-RT_HID<60000){RT_HID=0;const cs=CSP();if(cs&&cs.takeSiri)siriTakeOnly();return}RT_HID=0;siriTake()});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR007" data-app="club" data-noorb="1" defer></script><div class="sa69" aria-hidden="true"></div>
+</script><script src="handbook.js?v=76" defer></script>
+<script src="kit/rival-orb.js?v=OR007" data-app="club" data-noorb="1" defer></script><div class="sa69" aria-hidden="true"></div>
 <script>
 /* CR069 · Coach E's screenshot: the page slid under the clock ("YOU4:25SCHEDULE") - a dark strip now sits behind the clock.
    And the bottom bar was stuck in the middle of the screen after the keyboard closed (an iPhone web-view quirk):
