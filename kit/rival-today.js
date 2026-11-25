@@ -31,6 +31,7 @@
       + '.rt-small{margin-top:9px;font:900 12px/1 -apple-system,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9aa0a8}'
       + '.rt-sub{margin-top:12px;font:600 15px/1.42 -apple-system,sans-serif;color:#cdd2d8}'
       + '.rt-bar{margin-top:18px;height:10px;border-radius:10px;background:rgba(255,255,255,.08);overflow:hidden}.rt-bar i{display:block;height:100%;border-radius:10px;background:var(--rtA)}'
+      + '.rt-meter{display:block;width:100%;margin-top:18px;padding:0;border:0;background:none;cursor:pointer}.rt-meter svg{display:block;width:100%;height:44px;border-radius:10px;background:rgba(255,255,255,.06)}'
       + '.rt-barl{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font:800 10.5px/1.2 -apple-system,sans-serif;letter-spacing:.12em;color:#9aa0a8;text-transform:uppercase}'
       + '.rt-vs{margin-top:16px;display:flex;gap:10px}.rt-vs>div{flex:1;min-width:0;border-radius:16px;border:1px solid rgba(255,255,255,.08);padding:12px;background:rgba(0,0,0,.35)}'
       + '.rt-vs .rt-k{font:900 9px/1.2 -apple-system,sans-serif;letter-spacing:.2em;color:#9aa0a8;text-transform:uppercase}.rt-vs .rt-v{margin-top:7px;font:900 italic 21px/1.05 -apple-system,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rt-vs .rt-v.up{color:var(--rtA)}'
@@ -59,6 +60,8 @@
       + '<div class="rt-hero" id="rtHero"><div class="rt-ey">' + esc(d.ey) + '</div><div class="rt-num' + (String(d.big).length > 9 ? ' rt-xl' : String(d.big).length > 6 ? ' rt-l' : '') + '">' + esc(d.big) + '</div>' + (d.small ? '<div class="rt-small">' + esc(d.small) + '</div>' : '')
       + (d.sub ? '<div class="rt-sub">' + esc(d.sub) + '</div>' : '');
     if (d.bar) h += '<div class="rt-bar"><i style="width:' + Math.max(2, Math.min(100, +d.bar.pct || 0)) + '%"></i></div><div class="rt-barl"><span>' + esc(d.bar.label) + '</span><span>' + esc(d.bar.right) + '</span></div>';
+    /* CR071 · a spike meter on the card (Rest's night, Rise's morning). d.meter = {bars:[{v:0-100 or null, c:colour}], label, right} */
+    if (d.meter && d.meter.bars && d.meter.bars.length) { var mb = d.meter.bars, mw = 1000 / mb.length; h += '<button type="button" class="rt-meter" id="rtMeter" aria-label="' + esc(d.meter.label || 'Meter') + '"><svg viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true">' + mb.map(function (b, i) { var v = b.v == null ? 0 : Math.max(0, Math.min(100, +b.v)), hh = b.v == null ? 0 : Math.max(3, 42 * v / 100); return hh ? '<rect x="' + (i * mw).toFixed(1) + '" width="' + Math.max(1, mw - .8).toFixed(1) + '" y="' + (44 - hh).toFixed(1) + '" height="' + hh.toFixed(1) + '" fill="' + esc(b.c || 'var(--rtA)') + '"/>' : '' }).join('') + '</svg></button><div class="rt-barl"><span>' + esc(d.meter.label || '') + '</span><span>' + esc(d.meter.right || '') + '</span></div>' }
     if (d.vs && d.vs.length) h += '<div class="rt-vs">' + d.vs.map(function (x) { return '<div><div class="rt-k">' + esc(x[0]) + '</div><div class="rt-v' + (x[2] ? ' up' : '') + '">' + esc(x[1]) + (x[2] ? ' ▲' : '') + '</div></div>' }).join('') + '</div>';
     h += '</div><button class="rt-go" id="rtGo"' + (d.off ? ' disabled' : '') + '>' + esc(d.btn) + '</button>' + (d.hint ? '<div class="rt-hint">' + esc(d.hint) + '</div>' : '') + '</div>';
     return h;
@@ -66,6 +69,7 @@
   function paint(force) {
     if (!lay || mode !== 'today') return; var d = card(), h = html(d); if (!force && h === last) return; last = h; lay.innerHTML = h;
     var g = D.getElementById('rtGo'); if (g) g.onclick = function () { var r; try { r = C.go(d) } catch (e) { } if (r === 'app') show('app'); else setTimeout(function () { paint(true) }, 400) };  /* 'app' = the main job runs in the full app (a workout, a drill) */
+    var mt = D.getElementById('rtMeter'); if (mt) mt.onclick = function () { try { (C.meter || C.history)() } catch (e) { } };
     var a = D.getElementById('rtAcct'); if (a) a.onclick = function () { try { C.acct() } catch (e) { } };
   }
   function tabs() { if (!bar) return; [].forEach.call(bar.querySelectorAll('button'), function (b) { b.classList.toggle('on', b.dataset.t === mode); b.setAttribute('aria-selected', b.dataset.t === mode ? 'true' : 'false') }) }
@@ -114,4 +118,37 @@
     return h;
   }
   W.RivalToday = { mount: mount, inline: inline, show: function (t) { if (lay) show(t || 'today') }, mode: function () { return mode }, refresh: function () { paint(true) }, version: 'RT004' };
+})();
+
+/* CR071 · Coach E: "make sure we have swipe down screens ... a close button at the bottom and a swipe at the top, just like iPhone."
+   Every pop-up sheet in every Rival app (#sh) gets: a grab bar at the top you can pull down to close, and a CLOSE button at the
+   bottom if the sheet doesn't already end with one (DONE, CANCEL, BACK...). Closing goes through the app's own close, same as tapping outside. */
+(function () {
+  var W = window, D = document; if (W.__rtSwipe) return; W.__rtSwipe = 1;
+  var CLOSEY = /^\s*(close|done|cancel|back|not now|no thanks|leave|keep|skip|got it|later|ok|okay|×|✕)\b/i;
+  function sh() { var s = D.getElementById('sh'); if (!s) return null; var vis = s.classList.contains('on') || s.classList.contains('sh'); if (!vis) return null; return s }
+  function panel(s) { return D.getElementById('shC') && s.contains(D.getElementById('shC')) ? D.getElementById('shC') : s.firstElementChild }
+  function close(s) { s.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })) }
+  function css() { if (D.getElementById('rtSwCss')) return; var st = D.createElement('style'); st.id = 'rtSwCss';
+    st.textContent = '.rt-grab{display:flex;justify-content:center;align-items:center;height:26px;margin:-18px 0 6px;touch-action:none;cursor:grab}.rt-grab::before{content:"";width:42px;height:5px;border-radius:3px;background:rgba(140,140,150,.55)}'
+      + '.rt-shx{display:block;width:100%;margin:14px 0 0;padding:16px;border-radius:16px;border:1px solid rgba(140,140,150,.35);background:transparent;color:inherit;font:900 12px/1 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.16em;cursor:pointer}';
+    D.head.appendChild(st) }
+  function decorate() { var s = sh(); if (!s) return; var p = panel(s); if (!p) return; css();
+    if (!p.firstElementChild || !p.firstElementChild.classList.contains('rt-grab')) { var g = D.createElement('div'); g.className = 'rt-grab'; g.setAttribute('aria-hidden', 'true'); p.insertBefore(g, p.firstChild) }
+    var bs = [].slice.call(p.querySelectorAll('button')).filter(function (b) { return !b.closest('.rt-grab') }), tail = bs.slice(-3), has = p.querySelector('.rt-shx') || p.querySelector('[data-x]') || tail.some(function (b) { return CLOSEY.test(b.textContent || '') });
+    if (!has) { var x = D.createElement('button'); x.type = 'button'; x.className = 'rt-shx'; x.textContent = 'CLOSE'; x.onclick = function (e) { e.stopPropagation(); close(s) }; p.appendChild(x) }
+    if (!s.__rtSw) wire(s) }
+  function wire(s) { s.__rtSw = 1; var y0 = null, t0 = 0, dy = 0, p = null;
+    s.addEventListener('touchstart', function (e) { p = panel(s); if (!p || !p.contains(e.target)) { y0 = null; return } var onGrab = e.target.closest && e.target.closest('.rt-grab');
+      if (!onGrab && p.scrollTop > 0) { y0 = null; return } if (e.target.closest && e.target.closest('input,textarea,select,[contenteditable]')) { y0 = null; return }
+      y0 = e.touches[0].clientY; t0 = Date.now(); dy = 0 }, { passive: true });
+    s.addEventListener('touchmove', function (e) { if (y0 == null || !p) return; dy = e.touches[0].clientY - y0; if (dy <= 0) { p.style.transform = ''; if (dy < -6) y0 = null; return }
+      if (p.scrollTop > 0) { y0 = null; p.style.transform = ''; return } e.preventDefault(); p.style.transition = 'none'; p.style.transform = 'translateY(' + dy + 'px)' }, { passive: false });
+    s.addEventListener('touchend', function () { if (y0 == null || !p) return; var v = dy / Math.max(1, Date.now() - t0), q = p; y0 = null;
+      if (dy > 120 || (dy > 50 && v > .6)) { q.style.transition = 'transform .22s ease-in'; q.style.transform = 'translateY(110%)'; setTimeout(function () { close(s); setTimeout(function () { q.style.transition = ''; q.style.transform = '' }, 60) }, 210) }
+      else { q.style.transition = 'transform .2s ease-out'; q.style.transform = ''; setTimeout(function () { q.style.transition = '' }, 220) } }) }
+  W.__rtSheetDecorate = decorate;
+  var queued = 0; function q() { if (queued) return; queued = 1; (W.requestAnimationFrame || setTimeout)(function () { queued = 0; decorate() }) }
+  function start() { try { new MutationObserver(q).observe(D.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] }) } catch (e) { } decorate() }
+  if (D.body) start(); else D.addEventListener('DOMContentLoaded', start);
 })();

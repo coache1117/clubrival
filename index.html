@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#060607"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Club Rival · CR068</title>
+<title>Club Rival · CR073</title>
 <link rel="manifest" href="site.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#050506;--s1:#101014;--s2:#1b1b21;--ln:#26262e;--tx:#f5f5f7;--mut:#8d8d98;--red:#ff2a3d;--org:#ff8a1f;--yel:#ffd21a;--grn:#34c759;--rb:linear-gradient(90deg,#ff2a3d,#ff8a1f,#ffd21a,#34c759)}
@@ -107,7 +107,18 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 .evrep{font-style:normal;font-weight:900;font-size:11px;margin-left:4px;color:var(--mut);opacity:.85}
 .evch{font-style:normal;font:900 20px/1 -apple-system,sans-serif;color:var(--mut);opacity:.6;text-align:right}
 .evw .evr{flex-direction:row;align-items:center;gap:8px}.evw .evr .tg{width:auto;max-width:none;padding:5px 7px;font-size:7.5px}
-.schd{display:flex;gap:8px;align-items:center}.scplus{width:38px;height:34px;border-radius:999px;border:1px solid var(--ln);background:none;color:inherit;font:300 24px/1 -apple-system,sans-serif;display:grid;place-items:center;padding:0 0 2px;cursor:pointer}
+.schd{display:flex;gap:8px;align-items:center}.bmdgo{margin:0 0 12px}
+.bmanc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px;padding:12px 14px;border-radius:14px;background:var(--s2,rgba(127,127,127,.08));font:700 13px/1.35 -apple-system,sans-serif}
+.bmanc button{flex:none;border:1px solid var(--ln);background:none;color:inherit;border-radius:999px;padding:9px 12px;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer}
+.bml{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.bmr{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:14px;border:1px solid var(--ln);background:none;color:inherit;text-align:left;font:inherit;cursor:pointer;opacity:.55}
+.bmr.on{opacity:1;border-color:var(--ac,#ff9a3d)}
+.bmr .bmt{flex:none;width:68px;font:900 12px/1.1 -apple-system,sans-serif}
+.bmr img{flex:none;width:30px;height:30px;border-radius:8px;object-fit:cover}.bmr i{flex:none;width:30px;text-align:center;font-style:normal}
+.bmr .bmx{flex:1;min-width:0}.bmr .bmx b{display:block;font:800 14px/1.2 -apple-system,sans-serif}.bmr .bmx small{display:block;margin-top:2px;font:600 11px/1.3 -apple-system,sans-serif;opacity:.7}
+.bmr em{flex:none;font-style:normal;font:900 14px/1 -apple-system,sans-serif;color:var(--ac,#ff9a3d)}
+.bmsam .go{margin-top:12px}
+.scplus{width:38px;height:34px;border-radius:999px;border:1px solid var(--ln);background:none;color:inherit;font:300 24px/1 -apple-system,sans-serif;display:grid;place-items:center;padding:0 0 2px;cursor:pointer}
 .evw .evr .evdel{width:34px;min-height:34px;height:34px;border-radius:50%;padding:0!important;font-size:13px;display:grid;place-items:center}
 .evr .tg,.evr .evgo{box-sizing:border-box;width:96px;max-width:96px;margin:0;justify-content:center;text-align:center}
 .evr .tg{padding:6px 4px;font-size:8px;line-height:1.2}
@@ -123,8 +134,8 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 .lvs .lvgo2{font-style:normal;font-size:20px;color:var(--mut)}
 .vsn{display:flex;align-items:baseline;gap:8px;margin:2px 0 4px}.vsn b{font:900 italic 34px/1 -apple-system,sans-serif}.vsn span{font:800 12px/1 -apple-system,sans-serif;color:var(--mut)}.vsn em{margin-left:auto;font:900 12px/1 -apple-system,sans-serif;font-style:normal;color:var(--mut)}
 .vsn em.up,.vsr em.up{color:#34c759}.vsn em.dn,.vsr em.dn{color:#ff6b6b}
-.vsl{margin-top:10px}.vsr{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto 34px;gap:9px;align-items:center;padding:8px 0;border-top:1px solid var(--ln)}
-.vsr img{width:24px;height:24px;border-radius:7px;object-fit:cover}.vsr span{font:900 13px/1 -apple-system,sans-serif;color:var(--ac)}.vsr b{font:900 italic 17px/1 -apple-system,sans-serif}.vsr small{font:700 10.5px/1 -apple-system,sans-serif;color:var(--mut)}.vsr em{font:900 12px/1 -apple-system,sans-serif;font-style:normal;color:var(--mut);text-align:right}
+.vsl{margin-top:10px}.vsr{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto 62px;gap:9px;align-items:center;padding:8px 0;border-top:1px solid var(--ln)}
+.vsr img{width:24px;height:24px;border-radius:7px;object-fit:cover}.vsr span{font:900 13px/1 -apple-system,sans-serif;color:var(--ac)}.vsr b{font:900 italic 17px/1 -apple-system,sans-serif}.vsr small{font:700 10.5px/1 -apple-system,sans-serif;color:var(--mut)}.vsr em{font:900 10.5px/1.1 -apple-system,sans-serif;letter-spacing:.02em;white-space:nowrap;font-style:normal;color:var(--mut);text-align:right}
 .boss{margin:6px 0 4px;padding:12px 14px 10px;border-radius:18px;border:1px solid var(--ln);background:radial-gradient(120% 90% at 100% 0%,rgba(52,199,89,.08),transparent 60%),linear-gradient(135deg,rgba(26,26,32,.95),rgba(10,10,13,.95))}
 .boss .bh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.boss .bh b{font:900 italic 13px/1 -apple-system,sans-serif;letter-spacing:.06em}.boss .bh span{font:800 8.5px/1 -apple-system,sans-serif;letter-spacing:.14em;color:var(--mut);text-align:right}
 .bnums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 4px}.bnums.b2{grid-template-columns:1fr 1fr}
@@ -141,6 +152,7 @@ textarea{width:100%;margin-top:8px;min-height:84px;padding:14px;border-radius:15
 #boot .bt{font:900 10px/1 -apple-system,sans-serif;letter-spacing:.32em;color:#8d8d98}#boot .bt i{font-style:normal;animation:dot 1.2s infinite}#boot .bt i:nth-child(2){animation-delay:.2s}#boot .bt i:nth-child(3){animation-delay:.4s}@keyframes dot{0%,100%{opacity:.2}50%{opacity:1}}
 @media (prefers-reduced-motion: reduce){#boot circle{animation:none;opacity:1}#boot .bt i{animation:none}}
 #busy{position:fixed;top:calc(env(safe-area-inset-top) + 8px);right:14px;z-index:30;width:26px;height:26px;opacity:0;transition:opacity .2s;pointer-events:none}#busy.on{opacity:1}#busy svg{width:100%;height:100%;animation:spin 1.1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.sa69{position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top);z-index:34;background:rgba(6,6,8,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);pointer-events:none}
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:grid;grid-template-columns:repeat(4,1fr);max-width:640px;margin:0 auto;padding:8px 10px calc(env(safe-area-inset-bottom) + 8px);background:rgba(6,6,8,.92);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--ln)}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:50px;padding:6px 0;border:0;background:none;color:#7d7d88;font:900 9px/1 -apple-system,sans-serif;letter-spacing:.14em;cursor:pointer}
 .nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -229,13 +241,24 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
 .chf{align-self:center;min-height:32px;padding:0 14px;border-radius:99px;border:1px solid rgba(74,163,255,.5);background:transparent;color:inherit;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer}.chf[aria-pressed="true"]{background:rgba(74,163,255,.18)}
 .cvn{text-align:center;font:800 10.5px/1.35 -apple-system,sans-serif;letter-spacing:.06em;color:#3fb27f}.cvn.bad{color:#e0703a}.cvn:empty{display:none}
 .cost.warn{color:#e0703a;letter-spacing:.06em;line-height:1.4}
+.cat4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.cat4 button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0;padding:12px 2px 10px;border-radius:14px;background:var(--s1,rgba(255,255,255,.04));border:1px solid var(--ln,#2a2d35);color:var(--ac,#ff9a3d);cursor:pointer}
+.cat4 button .anic{width:28px;height:28px}
+.cat4 button span{font:900 11px/1.1 -apple-system,sans-serif;letter-spacing:.02em;color:var(--tx,#fff);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cat4 button.on{background:var(--org,#ff9a3d);border-color:var(--org,#ff9a3d);color:#000}
+.cat4 button.on span{color:#000}
+.cat4 button:disabled{opacity:.35}
+.an64 i .anic{width:24px;height:24px;display:block;margin:0 auto;color:var(--ac,#ff9a3d)}
+.anq-h .anic{width:20px;height:20px;vertical-align:-4px;color:var(--ac,#ff9a3d);margin-right:4px}
 .an64{display:flex;align-items:center;gap:12px;width:100%;margin:8px 0 0;padding:12px 14px;border-radius:14px;border:1px solid var(--ln,#2a2d35);background:var(--c2,rgba(255,255,255,.04));color:inherit;font:inherit;text-align:left;cursor:pointer}
 .pairb{border:1px solid color-mix(in srgb,var(--ac,#ff7a1f) 40%,transparent);background:color-mix(in srgb,#ff7a1f 12%,transparent);color:inherit;border-radius:99px;padding:6px 10px;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.04em;white-space:nowrap;cursor:pointer;margin-right:4px}
 .pof{margin-top:14px;padding-top:12px;border-top:1px solid var(--ln,#2a2d35)}.pof b{display:block;font-size:15px}.pof small{display:block;opacity:.65;font-size:12px;margin-top:2px}.pof .chips{margin-top:8px}
 .pdb{border:0;background:none;color:var(--ac,#ff7a1f);font:inherit;font-weight:900;font-size:12px;cursor:pointer;padding:4px 0}
 .pdl{margin-top:10px}.pdr{display:flex;gap:10px;align-items:center;width:100%;min-height:40px;margin:0;padding:6px 4px;border:0;border-top:1px solid var(--ln,#2a2d35);background:none;color:inherit;font:inherit;text-align:left}
-.pdr .pdt{width:66px;flex:none;font-size:12px;opacity:.6;font-weight:700}.pdr .pdx{flex:1;display:flex;align-items:center;gap:8px;min-width:0}.pdr .pdx img{width:26px;height:26px;border-radius:7px;object-fit:cover}.pdr .pdx i{font-style:normal;font-size:18px;width:26px;text-align:center}.pdr .pdx b{font-size:14px}.pdr .pdx small{margin-left:auto;font-size:11px;opacity:.6}
+.pdr .pdt{width:66px;flex:none;font-size:12px;opacity:.6;font-weight:700}.pdr .pdx{flex:1;display:flex;align-items:center;gap:8px;min-width:0}.pdr .pdx img{width:26px;height:26px;border-radius:7px;object-fit:cover}.pdr .pdx i{font-style:normal;font-size:18px;width:26px;text-align:center;color:var(--ac,#ff9a3d)}
+.pdr .pdx i .anic{width:22px;height:22px;display:block;margin:0 auto}.pdr .pdx b{font-size:14px}.pdr .pdx small{margin-left:auto;font-size:11px;opacity:.6}
 .pdr.open{cursor:pointer}.pdr.open em{font-style:normal;font-size:13px;opacity:.45}.pdr.open:active,.pdr.open:hover{background:var(--c2,rgba(255,255,255,.05))}.pdr.busy{background:var(--c2,rgba(255,255,255,.04));border-radius:10px;border-top-color:transparent;margin:3px 0}.pdr.busy.anchor{box-shadow:inset 3px 0 0 #ff7a1f}.pdr.busy.work{box-shadow:inset 3px 0 0 #5b8cff}.pdr.busy.sleep{box-shadow:inset 3px 0 0 #8a6cff}
+.pdr.busy.sess{box-shadow:inset 3px 0 0 #3ddc84}
 .pdok{margin:10px 0 0;padding:10px 12px;border-radius:10px;background:rgba(60,200,120,.14);color:#4fd18b;font-weight:800;font-size:13px}
 .pdg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.pdapp{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:14px;border:1px solid var(--ln,#2a2d35);background:var(--c2,rgba(255,255,255,.04));color:inherit;font:inherit;cursor:pointer}.pdapp img{width:46px;height:46px;border-radius:12px;object-fit:cover}.pdapp b{font-size:13px}.pdapp small{font-size:10px;opacity:.6;text-align:center}
 .anq-h{display:flex;justify-content:space-between;align-items:center;width:100%;margin:12px 0 0;padding:12px 14px;border-radius:12px;border:0;background:var(--c2,rgba(255,255,255,.06));color:inherit;font:inherit;font-weight:900;font-size:15px;cursor:pointer}.anq-h em{font-style:normal;opacity:.75;font-size:13px}
@@ -247,7 +270,7 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
 (function(){function pref(){try{return localStorage.getItem('cr_theme')||'auto'}catch(e){return 'auto'}}var mq=window.matchMedia&&matchMedia('(prefers-color-scheme: light)');
  window.crTheme=function(p){if(p){try{localStorage.setItem('cr_theme',p)}catch(e){}}p=pref();var t=p==='auto'?(mq&&mq.matches?'light':'dark'):p;document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f3f3f6':'#050506');return p};
  window.crTheme();if(mq&&mq.addEventListener)mq.addEventListener('change',function(){window.crTheme()})})();</script>
-<script src="kit/rival-today.js?v=RT004"></script>
+<script src="kit/rival-today.js?v=RT005"></script>
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="navg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff2a3d"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset=".7" stop-color="#ffd21a"/><stop offset="1" stop-color="#34c759"/></linearGradient></defs></svg><div id="sbar"></div>
 <!-- CR024 - "while it's thinking we need a dynamic image": the CR ring lights up piece by piece, round and round, until the club is ready -->
@@ -262,21 +285,21 @@ body:has(#sh.on) #rvOrb,html.rv-dock-away #rvOrb{display:none}
            'soon'  = not out yet: shown, never opened.
    url:    where the app lives. Leave '' until it has an address: an app with no address shows COMING SOON, never a dead link.
    art:    the thumbnail. Swap the file in /art with the same name to change it. */
-const BUILD='CR068';
+const BUILD='CR073';
 const APPS=[
- {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg', url:'https://striderival.netlify.app', state:'open'},
+ {id:'stride',ac:'#ff7a1f',cat:'FITNESS',       name:'Stride Rival',   line:'Walk. Run. Beat your rival.',            art:'art/stride.jpg?v=70', url:'https://striderival.netlify.app', state:'open'},
  {id:'rep',ac:'#ffa51f',   cat:'FITNESS',       name:'Rep Rival',      line:'Build strength. Beat your best.',         art:'art/rep.jpg',    url:'https://myreprival.netlify.app',  state:'open'},
  {id:'rankup',ac:'#ff2a3d',cat:'FITNESS',       name:'RankUp Boxing',  line:'Train. Compete. Climb the ranks.',        art:'art/rankup.jpg', url:'https://rankuprival.netlify.app', state:'open'},
  {id:'mind',ac:'#ff3b3b',  cat:'GAMES',         name:'Cube Rival',     line:'Challenge your mind and reactions.',      art:'art/mind.jpg',   url:'https://reflexrival.netlify.app', state:'open'},
- {id:'bmx',ac:'#ff6a2a',   cat:'EXTREME SPORTS',name:'Ride Flow BMX',  line:'Ride it. Fix it. Beat it.',               art:'art/bmx.jpg',    url:'https://rideflowbmx.com',         state:'paid'},
- {id:'trail',ac:'#3ddc6a', cat:'EXTREME SPORTS',name:'Trail Rival',    line:'Race the trail. Chase your best.',        art:'art/trail.jpg',  url:'https://rideflowmtb.com',         state:'open'},
+ {id:'bmx',ac:'#ff6a2a',   cat:'EXTREME SPORTS',name:'Ride Flow BMX',  line:'Ride it. Fix it. Beat it.',               art:'art/bmx.jpg?v=70',    url:'https://rideflowbmx.com',         state:'paid'},
+ {id:'trail',ac:'#3ddc6a', cat:'EXTREME SPORTS',name:'Trail Rival',    line:'Race the trail. Chase your best.',        art:'art/trail.jpg?v=70',  url:'https://rideflowmtb.com',         state:'open'},
  {id:'rest',ac:'#5aa2ff',  cat:'RECOVERY',      name:'Rest Rival',     line:'Track your sleep. Build your recovery.',  art:'art/rest.jpg',   url:'https://restrival.netlify.app',   state:'open'},
  {id:'money',ac:'#2fd27a', cat:'MONEY',         name:'Money Rival',    line:'Save 1% more. Watch it stack.',           art:'art/money.jpg',  url:'https://moneyrival.netlify.app',  state:'open'},
  {id:'rise',ac:'#ff9a3d',  cat:'RECOVERY',      name:'Rise Rival',     line:'Win the morning. Prove you’re up.',        art:'art/rise.jpg',   url:'https://riserival.netlify.app',   state:'open'},
  {id:'fuel',ac:'#ffb020',  cat:'RECOVERY',      name:'Fuel Rival',     line:'Fuel your whole day. Water first.',        art:'art/fuel.jpg',   url:'https://fuelrival.netlify.app',   state:'open'},
- {id:'mindrival',ac:'#8b6cff',cat:'MIND',       name:'Mind Rival',     line:'Focus. Calm. Mental toughness.',           art:'art/mindrival.jpg',url:'https://mindrival2.netlify.app',  state:'open'},
- {id:'social',ac:'#2dd4bf',cat:'MIND',       name:'Social Rival',   line:'Protect your time. Make it count.',        art:'art/social.jpg', url:'https://socialrival.netlify.app', state:'open'},
- {id:'biz',ac:'#3d8bff',   cat:'BUSINESS',      name:'Biz Rival',      line:'Leads answered. Sessions booked.',         art:'art/biz.jpg',    url:'https://mybizrival.netlify.app',  state:'open'}
+ {id:'mindrival',ac:'#8b6cff',cat:'MIND',       name:'Mind Rival',     line:'Focus. Calm. Mental toughness.',           art:'art/mindrival.jpg?v=70',url:'https://mindrival2.netlify.app',  state:'open'},
+ {id:'social',ac:'#2dd4bf',cat:'MIND',       name:'Social Rival',   line:'Protect your time. Make it count.',        art:'art/social.jpg?v=72', url:'https://socialrival.netlify.app', state:'open'},
+ {id:'biz',ac:'#3d8bff',   cat:'BUSINESS',      name:'Biz Rival',      line:'Leads answered. Sessions booked.',         art:'art/biz.jpg?v=70',    url:'https://mybizrival.netlify.app',  state:'open'}
 ];
 const CATS=['FITNESS','MIND','GAMES','EXTREME SPORTS','RECOVERY','MONEY','BUSINESS'];
 /* Bundles: not switched on. Prices and the billing interval are not final (the ~$29 all-app figure is provisional), so nothing is sold or shown. */
@@ -495,7 +518,19 @@ function dayList(days){const d=[...new Set(days||[])].sort();const k=d.join(',')
 /* CR067 · Coach E: "those markers are phenomenal ... add more ... a good, healthy onboarding, they can pre-select those ... they say they have pets,
    we know they're gonna be walking ... by doing categories we can not show them all ... training to the gym, they need time to travel ... things that
    could be getting done (audio)". [key, title, icon, days, time, minutes, category, which answers pre-check it, audio time?] */
-const ANC_CATS=[['work','💼','Work'],['family','👨‍👩‍👧','Family'],['training','🏋️','Training'],['pets','🐾','Pets'],['home','🏠','Home'],['faith','⛪','Faith'],['health','❤️','Health + care'],['school','🎓','School']];
+const ANI={work:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 13h18M11 13v2h2v-2"/>',
+family:'<circle cx="9" cy="7.5" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6M15 14.6a4.5 4.5 0 0 1 6 4.4"/>',
+training:'<path d="M6.5 7v10M3.5 9.5v5M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
+pets:'<circle cx="6" cy="10" r="1.9"/><circle cx="10" cy="5.8" r="1.9"/><circle cx="14.5" cy="5.8" r="1.9"/><circle cx="18.5" cy="10" r="1.9"/><path d="M12.2 11.5c2.6 0 5 3.3 5 5.9 0 1.6-1.3 2.4-2.6 2-1.6-.5-3.2-.5-4.8 0-1.3.4-2.6-.4-2.6-2 0-2.6 2.4-5.9 5-5.9z"/>',
+home:'<path d="M3 11.5 12 4l9 7.5M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/>',
+faith:'<path d="M12 3.2c1.7 1.9 1.9 3.6 0 5.3-1.9-1.7-1.7-3.4 0-5.3z"/><rect x="8.5" y="10.5" width="7" height="9.5" rx="1.2"/><path d="M6 20h12"/>',
+health:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/><path d="M7.5 12.5h2.6l1.2-2.2 1.8 4 1.2-1.8h2.2"/>',
+school:'<path d="M2 9.5 12 5l10 4.5L12 14z"/><path d="M6.5 11.6V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.4M22 9.5v5"/>',
+own:'<circle cx="12" cy="4.8" r="1.8"/><path d="M12 6.6V21M8.5 10.5h7M5 14.5c.4 3.7 3.3 6.5 7 6.5s6.6-2.8 7-6.5"/>',
+sleep:'<path d="M19.5 14.6A8 8 0 1 1 9.4 4.5a6.3 6.3 0 0 0 10.1 10.1z"/>'};
+const anIc=k=>'<svg class="anic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ANI[k]||ANI.own)+'</svg>';
+const anCatOf=key=>{const p=ANCH.find(x=>x[0]===key);return p?p[6]:'own'};
+const ANC_CATS=[['work',anIc('work'),'Work'],['family',anIc('family'),'Family'],['training',anIc('training'),'Training'],['pets',anIc('pets'),'Pets'],['home',anIc('home'),'Home'],['faith',anIc('faith'),'Faith'],['health',anIc('health'),'Health'],['school',anIc('school'),'School']];
 const ANCH=[['commute','Commute','🚗',[1,2,3,4,5],'08:00',30,'work',['drive'],1],['lunch','Lunch break','🥪',[1,2,3,4,5],'12:00',30,'work',['drive','wfh']],['coachp','Coach practice','📣',[1,3],'18:00',90,'work',[]],
  ['dropoff','School drop-off','🎒',[1,2,3,4,5],'07:30',20,'family',['school']],['pickup','School pickup','🏫',[1,2,3,4,5],'15:00',30,'family',['school']],
  ['practice','Kids’ practice','⚽',[2,4],'17:30',90,'family',['sports']],['games','Kids’ games','🏆',[6],'09:00',120,'family',['sports']],['homework','Homework time','✏️',[1,2,3,4],'16:30',45,'family',['school']],
@@ -510,7 +545,7 @@ const ANCH=[['commute','Commute','🚗',[1,2,3,4,5],'08:00',30,'work',['drive'],
    no and it wouldn't" + "walking the dog ... that's the kind of shit I like" + "Sunday at 3 I have food prep set - that should launch the Fuel app."
    An Anchor can carry ONE "do this too": it rides along at the same time (it isn't another block on the calendar), and the row gets a button for it.
    [app, what to open (do=), short tag, the offer in words] */
-const AU3=[['mindrival','audio-focus','🎧 FOCUS','Focus audio for the drive'],['mindrival','audio-calm','🎧 CALM','Calm audio for the drive'],['mindrival','audio-hype','🎧 HYPE','Hype audio for the drive']];
+const AU3=[['mindrival','audio-focus','🎧 FOCUS','Focus audio for the drive'],['mindrival','audio-calm','🎧 CALM','Calm audio for the drive'],['mindrival','audio-hype','🎧 HYPE','Hype audio for the drive'],['mindrival','audio-reset','🎧 RESET','Calm, focus, motivate for the drive']];
 const PAIR={commute:AU3,gymto:[AU3[2],AU3[0],AU3[1]],gymfrom:[['mindrival','audio-calm','🎧 CALM','Calm audio on the way home']],
  walkam:[['stride','walk','👟 STRIDE','Count it as a Stride walk'],['mindrival','audio-calm','🎧 CALM','Calm audio while you walk']],walkpm:[['stride','walk','👟 STRIDE','Count it as a Stride walk'],['mindrival','audio-calm','🎧 CALM','Calm audio while you walk']],
  prep:[['fuel','prep','🛒 FUEL','Open Fuel: meal prep + grocery list']],groceries:[['fuel','prep','🛒 FUEL','Open your Fuel grocery list']],
@@ -527,16 +562,16 @@ async function anchorSave(row,o){const days=[...new Set((o.days||[]).map(Number)
  if(!days.length)return 'Pick at least one day.';return row?evWrite(row,{app:'anchor',data:d}):evWrite(null,{app:'anchor',data:d})}
 let anCat='';
 function anchorsSheet(){const mine=anchors().sort((a,b)=>(a.data.time||'').localeCompare(b.data.time||'')),have=new Set(mine.map(r=>r.data.anchor)),haveT=new Set(mine.map(r=>String(r.data.title).toLowerCase())),w=myDay(),P=schedP();
- const line=r=>{const d=r.data,ex=Object.entries(d.times||{}).map(([k,v])=>WDN[k]+' '+fT(R.at(R.dayStr(Date.now()),v))).join(' · ');return '<button class="an64 have" data-anr="'+esc(r.id)+'"><i>⚓</i><span><b>'+esc(d.title)+'</b><small>'+esc(dayList(d.days))+' · '+fT(R.at(R.dayStr(Date.now()),d.time))+' · '+durTx(d.durMin||60)+(ex?'<br>'+esc(ex):'')+'</small></span><em>EDIT</em></button>'};
- const tile=(p,i)=>'<button class="an64" data-anp="'+i+'"><i>'+p[2]+'</i><span><b>'+esc(p[1])+'</b><small>'+esc(dayList(p[3]))+' · '+fT(R.at(R.dayStr(Date.now()),p[4]))+(p[8]?' · 🎧 audio time':'')+'</small></span><em>+ ADD</em></button>';
+ const line=r=>{const d=r.data,ex=Object.entries(d.times||{}).map(([k,v])=>WDN[k]+' '+fT(R.at(R.dayStr(Date.now()),v))).join(' · ');return '<button class="an64 have" data-anr="'+esc(r.id)+'"><i>'+anIc(anCatOf(d.anchor))+'</i><span><b>'+esc(d.title)+'</b><small>'+esc(dayList(d.days))+' · '+fT(R.at(R.dayStr(Date.now()),d.time))+' · '+durTx(d.durMin||60)+(ex?'<br>'+esc(ex):'')+'</small></span><em>EDIT</em></button>'};
+ const tile=(p,i)=>'<button class="an64" data-anp="'+i+'"><i>'+anIc(p[6])+'</i><span><b>'+esc(p[1])+'</b><small>'+esc(dayList(p[3]))+' · '+fT(R.at(R.dayStr(Date.now()),p[4]))+(p[8]?' · 🎧 audio time':'')+'</small></span><em>+ ADD</em></button>';
  sheet('<div class="ey">⚓ YOUR ANCHORS</div><div class="big">WHAT YOUR WEEK IS BUILT AROUND</div><div class="small">The things that don’t move. Your apps get planned around them. Tap one to add it - the days and time are already filled in, change anything.</div>'
-  +'<button class="an64 have" id="anSleep"><i>🌙</i><span><b>Sleep</b><small>'+(P?'Bed '+fT(R.at(R.dayStr(Date.now()),P.bed))+' · up '+fT(R.at(R.dayStr(Date.now()),P.wake))+' · from Rest':'Not set yet')+'</small></span><em>'+(P?'EDIT':'+ SET')+'</em></button>'
-  +'<button class="an64 have" id="anWork"><i>💼</i><span><b>Work</b><small>'+(w&&w.leave?esc(dayList(w.days||[1,2,3,4,5]))+' · '+fT(R.at(R.dayStr(Date.now()),w.leave))+(w.home?' to '+fT(R.at(R.dayStr(Date.now()),w.home)):''):'Not set yet')+'</small></span><em>'+(w&&w.leave?'EDIT':'+ SET')+'</em></button>'
+  +'<button class="an64 have" id="anSleep"><i>'+anIc('sleep')+'</i><span><b>Sleep</b><small>'+(P?'Bed '+fT(R.at(R.dayStr(Date.now()),P.bed))+' · up '+fT(R.at(R.dayStr(Date.now()),P.wake))+' · from Rest':'Not set yet')+'</small></span><em>'+(P?'EDIT':'+ SET')+'</em></button>'
+  +'<button class="an64 have" id="anWork"><i>'+anIc('work')+'</i><span><b>Work</b><small>'+(w&&w.leave?esc(dayList(w.days||[1,2,3,4,5]))+' · '+fT(R.at(R.dayStr(Date.now()),w.leave))+(w.home?' to '+fT(R.at(R.dayStr(Date.now()),w.home)):''):'Not set yet')+'</small></span><em>'+(w&&w.leave?'EDIT':'+ SET')+'</em></button>'
   +mine.map(line).join('')
   +'<button class="go" id="anQuick" style="margin-top:14px">⚡ QUICK SETUP · ANSWER A FEW TAPS</button>'
-  +'<div class="ey" style="margin-top:16px">ADD AN ANCHOR</div><div class="chips" id="anCats">'+ANC_CATS.map(c=>{const n=ANCH.filter(p=>p[6]===c[0]&&!have.has(p[0])&&!haveT.has(p[1].toLowerCase())).length;return n?'<button type="button" data-cat="'+c[0]+'" aria-pressed="'+(anCat===c[0])+'"'+(anCat===c[0]?' class="on"':'')+'>'+c[1]+' '+c[2]+'</button>':''}).join('')+'</div>'
+  +'<div class="ey" style="margin-top:16px">ADD AN ANCHOR</div><div class="cat4" id="anCats">'+ANC_CATS.map(c=>{const n=ANCH.filter(p=>p[6]===c[0]&&!have.has(p[0])&&!haveT.has(p[1].toLowerCase())).length;return '<button type="button" data-cat="'+c[0]+'" aria-pressed="'+(anCat===c[0])+'"'+(anCat===c[0]?' class="on"':'')+(n?'':' disabled')+'>'+c[1]+'<span>'+c[2]+'</span></button>'}).join('')+'</div>'
   +ANCH.map((p,i)=>p[6]!==anCat||have.has(p[0])||haveT.has(p[1].toLowerCase())?'':tile(p,i)).join('')
-  +'<button class="an64 own" id="anOwn"><i>＋</i><span><b>Add your own</b><small>Walk the dog, coach practice, class… anything</small></span><em>+ ADD</em></button>'
+  +'<button class="an64 own" id="anOwn"><i>'+anIc('own')+'</i><span><b>Add your own</b><small>Walk the dog, coach practice, class… anything</small></span><em>+ ADD</em></button>'
   +'<button class="go" id="anBuild">BUILD MY WEEK AROUND THEM</button><button class="go ghost" id="anX">DONE</button>');
  $('anX').onclick=shut;$('anSleep').onclick=()=>schedSheet(P?'series':'new');$('anWork').onclick=daySheet;$('anOwn').onclick=()=>anchorEdit(null,null);$('anQuick').onclick=()=>anchorSetup();document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{anCat=anCat===b.dataset.cat?'':b.dataset.cat;anchorsSheet()});$('anBuild').onclick=()=>{shut();buildWeekNow()};
  document.querySelectorAll('[data-anp]').forEach(b=>b.onclick=()=>anchorEdit(null,ANCH[+b.dataset.anp]));document.querySelectorAll('[data-anr]').forEach(b=>b.onclick=()=>anchorEdit(S.evs.find(r=>r.id===b.dataset.anr)))}
@@ -590,7 +625,7 @@ function anchorPick(tags,train){const T=new Set(tags);if(train==='gym'||train===
   sheet('<div class="ey">⚓ ANCHOR SETUP · 2 OF 2</div><div class="big">'+(pick.size?'HERE’S YOUR WEEK':'PICK YOUR ANCHORS')+'</div><div class="small">'+(pick.size?'Checked from what you told us. Tap to keep or toss. Change any time or day after.':'Nothing matched yet - open a group and tap what fits.')+'</div>'
    +cats.map(c=>{const it=free.filter(x=>x.p[6]===c[0]),n=it.filter(x=>pick.has(x.i)).length,o=open.has(c[0]);
     return '<button type="button" class="anq-h" data-oc="'+c[0]+'" aria-expanded="'+o+'"><span>'+c[1]+' '+c[2]+'</span><em>'+(n?n+' ✓':'')+' '+(o?'▲':'▼')+'</em></button>'
-     +(o?it.map(x=>{const p=x.p,k=pick.has(x.i);return '<button type="button" class="an64'+(k?' have':'')+'" data-pk="'+x.i+'" aria-pressed="'+k+'"><i>'+p[2]+'</i><span><b>'+esc(p[1])+'</b><small>'+esc(dayList(p[3]))+' · '+fT(R.at(tod,p[4]))+' · '+durTx(p[5])+(p[8]?' · 🎧 audio time':'')+'</small></span><em>'+(k?'✓':'+')+'</em></button>'}).join(''):'')}).join('')
+     +(o?it.map(x=>{const p=x.p,k=pick.has(x.i);return '<button type="button" class="an64'+(k?' have':'')+'" data-pk="'+x.i+'" aria-pressed="'+k+'"><i>'+anIc(p[6])+'</i><span><b>'+esc(p[1])+'</b><small>'+esc(dayList(p[3]))+' · '+fT(R.at(tod,p[4]))+' · '+durTx(p[5])+(p[8]?' · 🎧 audio time':'')+'</small></span><em>'+(k?'✓':'+')+'</em></button>'}).join(''):'')}).join('')
    +(mine.length?'<div class="small" style="margin-top:10px">Already yours: '+esc(mine.map(r=>r.data.title).join(', '))+'</div>':'')
    +'<div class="err" id="aqE"></div><button class="go" id="aqAdd"'+(pick.size?'':' disabled')+'>'+(pick.size?'ADD '+pick.size+' ANCHOR'+(pick.size>1?'S':''):'TAP TO PICK')+'</button><button class="go ghost" id="aqBk">BACK</button>');
   document.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>{const c=b.dataset.oc;open.has(c)?open.delete(c):open.add(c);draw()});
@@ -611,6 +646,80 @@ function pairOffer(rows){const ch={};
  $('poX').onclick=anchorsSheet;
  $('poGo').onclick=async()=>{$('poGo').disabled=true;$('poGo').textContent='SAVING…';let bad=0;for(const r of rows){if(ch[r.id]===undefined)continue;const x=pairsFor(r.data.anchor)[ch[r.id]];const cur=S.evs.find(y=>y.id===r.id);const res=await evWrite(cur,{app:'anchor',data:Object.assign({},cur.data,{pair:{app:x[0],do:x[1],tag:x[2],label:x[3]}})});if(res!=='ok'&&res!=='stale')bad++}
   await loadSched();if(bad){$('poGo').disabled=false;$('poGo').textContent='TRY AGAIN';$('poE').textContent='Some didn’t save. Check your connection.';return}toast('PAIRED');anchorsSheet();draw4keep()}}
+
+/* ===== CR073 · BUILD MY DAY. Coach E: "a template is onboarding with the answers filled in" - anchors first, then your goal and your days,
+   then Club fills the open time with a suggestion for each slot (tap to keep or toss). Samples live here too: COACH E'S RIVAL ROUTINE is
+   the first one, so anyone can drop a whole proven day into their week in one tap, then move things around. Everything it adds is
+   tagged with the routine it came from, so TAKE IT OFF removes exactly that and nothing you made yourself. ===== */
+const ROUTINES=[{id:'coache',name:'COACH E’S RIVAL ROUTINE',by:'Coach E',line:'Up at 4:30. Box and lift before 6. Build and sell 8 to 2. Fuel all day. Mind at every turn: Hype going in, Calm → Focus coming out, Reset through the day and on the drive.',days:[1,2,3,4,5],
+ items:[['04:30','fuel','water','Water / Fuel',5],['04:45','mindrival','audio-hype','Mind · Hype',null],['05:00','rankup','boxfit','Boxing',15],['05:15','rep','full','Lifting',45],
+  ['06:00','fuel','meal','Meal',null],['06:15','mindrival','audio-shift','Mind · Calm → Focus',null],['07:45','club','','Review the full plan',15],['08:00','biz','block','Build & Sell',360],
+  ['09:00','fuel','meal','Shake',5],['12:00','fuel','meal','Meal',null],['12:15','mindrival','audio-reset','Mind · Reset',null],['15:00','fuel','meal','Meal',null],['18:00','fuel','meal','Fuel',null],
+  ['@wind','rest','wind','Wind down: shower, clean up, lay out clothes, review tomorrow',30]]}];
+const BMD_TRAIN=[['rep','full','Lift'],['rankup','boxfit','Box'],['stride','run','Run / walk'],['bmx','sprint','BMX'],['trail','loop','Ride']];
+const BMD_DAYS={mwf:[1,3,5],tts:[2,4,6],wk:[1,2,3,4,5],all:[0,1,2,3,4,5,6]},BMD_DN={mwf:'Mon · Wed · Fri',tts:'Tue · Thu · Sat',wk:'Mon – Fri',all:'Every day'};
+let BMD={want:new Set(['train','mind','fuel','wind']),when:'am',days:'mwf',train:'rep',out:null};
+function bmdWind(){const P=S.sched&&S.sched.data;if(P&&P.bed){const t=R.at(R.dayStr(Date.now()),P.bed)-30*MIN;return hhmm(t)}return '20:30'}
+function bmdWake(){const P=S.sched&&S.sched.data;return P&&P.wake||'06:00'}
+const tAdd=(hm,m,r5)=>{const [h,mm]=hm.split(':').map(Number);let x=((h*60+mm+m)%1440+1440)%1440;if(r5)x=Math.ceil(x/5)*5%1440;return String(Math.floor(x/60)).padStart(2,'0')+':'+String(x%60).padStart(2,'0')};
+function bmdItemRow(it,i,on){const a=APPS.find(x=>x.id===it.app),pg=progOf(it.app,it.prog),dur=it.dur||(pg?pg[2]:30);
+ return '<button type="button" class="bmr'+(on?' on':'')+'" data-bm="'+i+'" aria-pressed="'+on+'"><span class="bmt">'+fT(R.at(R.dayStr(Date.now()),it.time))+'</span>'+(a?'<img src="'+esc(a.art)+'" alt="">':'<i>📋</i>')+'<span class="bmx"><b>'+esc(it.title||(pg?pg[1]:''))+'</b><small>'+(a?esc(shortApp(a))+' · ':'')+dur+' min'+(it.daysTx?' · '+esc(it.daysTx):'')+'</small></span><em>'+(on?'✓':'+')+'</em></button>'}
+/* step 1: what goes in your day (+ the samples) */
+function buildMyDay(){if(!S.user)return toast('SIGN IN FIRST');const nA=anchors().length,Q=BMD;
+ const R0=ROUTINES[0],mine=S.evs.some(r=>r.data&&r.data.routine===R0.id);
+ const chip=(k,v,t,set)=>'<button type="button" data-'+k+'="'+v+'" aria-pressed="'+set+'"'+(set?' class="on"':'')+'>'+t+'</button>';
+ sheet('<div class="ey">BUILD MY DAY · 1 OF 2</div><div class="big">WHAT GOES IN YOUR DAY?</div>'
+  +'<div class="bmanc">'+(nA?'⚓ '+nA+' Anchor'+(nA===1?'':'s')+' set - everything gets built around '+(nA===1?'it':'them')+'.':'⚓ Anchors first: work, kids, gym, church… the things that don’t move.')+'<button type="button" id="bmAnc">'+(nA?'EDIT':'SET THEM UP')+'</button></div>'
+  +'<label>I WANT</label><div class="chips bg">'+[['train','💪 Train'],['mind','🧠 Mind'],['fuel','🍽 Fuel'],['biz','💼 Business'],['wind','🌙 Wind-down']].map(x=>chip('bw',x[0],x[1],Q.want.has(x[0]))).join('')+'</div>'
+  +(Q.want.has('train')?'<label>TRAIN WHEN</label><div class="chips">'+[['am','Morning'],['mid','Midday'],['pm','Evening']].map(x=>chip('bwn',x[0],x[1],Q.when===x[0])).join('')+'</div>'
+   +'<label>WHICH DAYS</label><div class="chips">'+Object.keys(BMD_DN).map(k=>chip('bd',k,BMD_DN[k],Q.days===k)).join('')+'</div>'
+   +'<label>TRAIN HOW</label><div class="chips">'+BMD_TRAIN.map(x=>chip('bt',x[0],x[2],Q.train===x[0])).join('')+'</div>':'')
+  +'<button class="go" id="bmNext">SHOW MY DAY</button>'
+  +'<div class="cat" style="margin-top:22px">OR START FROM A SAMPLE</div>'
+  +'<div class="card bmsam"><div class="ey">'+esc(R0.by.toUpperCase())+' · MON – FRI · '+routineItems(R0).length+' ITEMS</div><div class="big" style="font-size:22px;margin:4px 0">'+esc(R0.name)+'</div><div class="small">'+esc(R0.line)+'</div>'
+  +'<button class="go" id="bmSam">'+(mine?'SEE IT · IT’S IN YOUR WEEK':'SEE THE ROUTINE')+'</button></div>');
+ const tog=(sel,fn)=>document.querySelectorAll(sel).forEach(b=>b.onclick=()=>{fn(b);buildMyDay()});
+ tog('[data-bw]',b=>{const k=b.dataset.bw;Q.want.has(k)?Q.want.delete(k):Q.want.add(k)});tog('[data-bwn]',b=>Q.when=b.dataset.bwn);tog('[data-bd]',b=>Q.days=b.dataset.bd);tog('[data-bt]',b=>Q.train=b.dataset.bt);
+ $('bmAnc').onclick=()=>nA?anchorsSheet():anchorSetup();$('bmSam').onclick=()=>routineSheet(R0.id);
+ $('bmNext').onclick=()=>{if(!Q.want.size){toast('PICK AT LEAST ONE');return}Q.out=bmdPlan();bmdShow(new Set(Q.out.map((_,i)=>i)))}}
+/* find the first open time at or after hm on that day (moves past sleep, work and anything already there) */
+function bmdFit(d,tries){let n=0;while(n++<(tries||8)){const why=fitCheck(null,d,R.dayStr(Date.now()),null);if(!why)return d;if(!FIT||!FIT.free||FIT.free===d.time)return d;d=Object.assign({},d,{time:FIT.free})}return d}
+function bmdPlan(){const Q=BMD,out=[],days=BMD_DAYS[Q.days],wk=BMD_DAYS.wk,all=BMD_DAYS.all;
+ const mk=(time,app,prog,title,dur,dd,fit)=>{const pg=progOf(app,prog);let d={title,prog,time,durMin:dur||(pg?pg[2]:30),days:dd};if(fit)d=bmdFit(d);out.push({time:d.time,app,prog,title,dur:d.durMin,days:dd,daysTx:dd.length===7?'every day':dayList(dd)})};
+ let tr=null;
+ if(Q.want.has('train')){const T=BMD_TRAIN.find(x=>x[0]===Q.train),pg=progOf(T[0],T[1]),st={am:tAdd(bmdWake(),30),mid:'12:00',pm:'17:30'}[Q.when];
+  mk(st,T[0],T[1],'',pg?pg[2]:45,days,true);tr=out[out.length-1]}
+ if(Q.want.has('mind')){if(tr){mk(tAdd(tr.time,-10),'mindrival','audio-hype','Mind · Hype',3,tr.days,false);mk(tAdd(tr.time,tr.dur+3,1),'mindrival','audio-shift','Mind · Calm → Focus',5,tr.days,false)}
+  mk('12:30','mindrival','audio-reset','Mind · Reset',7,wk,false)}
+ if(Q.want.has('fuel')){mk(bmdWake(),'fuel','water','Water',5,all,false);mk(tAdd(bmdWake(),60),'fuel','meal','Meal',null,all,false);mk('12:00','fuel','meal','Meal',null,all,false);mk('18:00','fuel','meal','Meal',null,all,false)}
+ if(Q.want.has('biz'))mk('09:00','biz','block','Build & Sell',180,wk,true);
+ if(Q.want.has('wind')&&!(S.sched&&S.sched.data&&S.sched.data.bed))mk(bmdWind(),'rest','wind','Wind down',30,all,false);
+ return out.sort((a,b)=>a.time.localeCompare(b.time))}
+function bmdShow(keep){const L=BMD.out||[];
+ sheet('<div class="ey">BUILD MY DAY · 2 OF 2</div><div class="big">HERE’S YOUR DAY</div><div class="small">Built around your sleep, work and Anchors. Tap to keep or toss. You can move any of it after in Plan My Day.</div>'
+  +'<div class="bml">'+L.map((it,i)=>bmdItemRow(it,i,keep.has(i))).join('')+'</div><div class="err" id="bmE"></div><button class="go" id="bmAdd">ADD '+keep.size+' TO MY WEEK</button><button class="go ghost" id="bmBk">BACK</button>');
+ document.querySelectorAll('[data-bm]').forEach(b=>b.onclick=()=>{const i=+b.dataset.bm;keep.has(i)?keep.delete(i):keep.add(i);bmdShow(keep)});
+ $('bmBk').onclick=buildMyDay;$('bmAdd').onclick=()=>{if(!keep.size)return;routineWrite('built',L.filter((_,i)=>keep.has(i)),$('bmAdd'),$('bmE'))}}
+/* write a routine's items as repeating events, tagged. Replaces an earlier copy of the same routine. */
+async function routineWrite(tag,items,btn,err){if(btn){btn.disabled=true;btn.textContent='ADDING…'}let bad=0;
+ CO.undo={snap:undoSnap(),at:Date.now()};
+ for(const r of S.evs.filter(r=>r.data&&r.data.routine===tag).slice()){const x=await evDelete(r);if(x!=='ok')bad++}
+ const from=R.dayStr(Date.now());
+ for(const it of items){const pg=progOf(it.app,it.prog);const d={title:it.title||'',prog:it.prog||'',plan:'',time:it.time,durMin:it.dur||(pg?pg[2]:30),days:it.days.slice(),date:null,from,routine:tag,byPlanner:true};
+  const x=await evWrite(null,{app:it.app,data:d});if(x!=='ok')bad++}
+ await loadSched();draw4keep();
+ if(bad){if(btn){btn.disabled=false;btn.textContent='TRY AGAIN'}if(err)err.textContent=bad+' didn’t save. Check your connection and try again.';return false}
+ toast('✓ '+items.length+' ADDED TO YOUR WEEK');shut();return true}
+async function routineOff(tag){CO.undo={snap:undoSnap(),at:Date.now()};let bad=0;for(const r of S.evs.filter(r=>r.data&&r.data.routine===tag).slice()){const x=await evDelete(r);if(x!=='ok')bad++}await loadSched();draw4keep();toast(bad?'SOME DIDN’T COME OFF':'✓ TAKEN OFF')}
+function routineItems(R0){const hasRest=!!(S.sched&&S.sched.data&&S.sched.data.bed);return R0.items.filter(x=>!(x[0]==='@wind'&&hasRest)).map(x=>({time:x[0]==='@wind'?bmdWind():x[0],app:x[1],prog:x[2],title:x[3],dur:x[4],days:R0.days,daysTx:dayList(R0.days)}))}
+function routineSheet(id){const R0=ROUTINES.find(r=>r.id===id);if(!R0)return;const L=routineItems(R0),mine=S.evs.some(r=>r.data&&r.data.routine===id),cm=anchorFind('Commute');
+ sheet('<div class="ey">SAMPLE ROUTINE · BY '+esc(R0.by.toUpperCase())+'</div><div class="big">'+esc(R0.name)+'</div><div class="small">'+esc(R0.line)+'</div>'
+  +'<div class="bml">'+L.map((it,i)=>bmdItemRow(it,i,true).replace('<button','<div').replace('</button>','</div>')).join('')+'</div>'
+  +(cm?'<div class="small" style="margin-top:8px">🎧 Your Commute Anchor gets the Reset audio for the drive.</div>':'')
+  +(S.sched&&S.sched.data&&S.sched.data.bed?'<div class="small" style="margin-top:8px">🌙 Wind-down is already on your schedule from Rest ('+fT(R.at(R.dayStr(Date.now()),bmdWind()))+'): shower, clean up, lay out clothes, review tomorrow’s plan.</div>':'')+'<div class="small" style="margin-top:8px">Fuel lives inside the Build & Sell block on purpose: you eat while you work.</div>'
+  +'<div class="err" id="rtE"></div><button class="go" id="rtUse">'+(mine?'PUT IT IN AGAIN (REPLACES IT)':'USE THIS ROUTINE · MON – FRI')+'</button>'+(mine?'<button class="go ghost" id="rtOff">TAKE IT OFF MY WEEK</button>':'')+'<button class="go ghost" id="rtBk">BACK</button>');
+ $('rtBk').onclick=buildMyDay;if($('rtOff'))$('rtOff').onclick=async()=>{await routineOff(id);routineSheet(id)};
+ $('rtUse').onclick=async()=>{const ok=await routineWrite(id,L,$('rtUse'),$('rtE'));if(ok&&cm&&!(cm.data.pair&&cm.data.pair.do==='audio-reset')){const cur=S.evs.find(y=>y.id===cm.id);if(cur)await evWrite(cur,{app:'anchor',data:Object.assign({},cur.data,{pair:{app:'mindrival',do:'audio-reset',tag:'🎧 RESET',label:'Calm, focus, motivate for the drive'}})});await loadSched();draw4keep()}}}
 /* Build My Week = the planner Club already has, which plans around sleep, work, and everything on the calendar - Anchors included */
 function buildWeekNow(){if(!goalNow())return goalSheet();planSheet()}
 /* ===== CR064 · UNDO. Every change the coach makes can be put back in one tap: what the schedule was before is kept for 20 seconds. ===== */
@@ -981,7 +1090,7 @@ function goalSheet(addMode,startAim){const old=goalNow();const g=old||{goal:'all
    if(r==='ok'||r==='stale')bossPlanSheet();else{$('gGo').disabled=false;$('gE').textContent=SCHERR(r)}}};
  paint()}
 /* the plan card on BOSS, and the start card on TODAY */
-function ancCardHTML(){if(!S.user||!S.evs||anchors().length)return '';return '<div class="card" id="obAncC"><div class="ey">⚓ YOUR ANCHORS · 1 MINUTE</div><div class="small" style="margin:4px 0 8px">Kids, pets, gym, church, work… a few taps and your week gets built around your real life.</div><button class="go" id="obAnc">SET UP MY ANCHORS</button></div>'}
+function ancCardHTML(){if(!S.user||!S.evs||anchors().length)return '';return '<div class="card" id="obAncC"><div class="ey">⚓ YOUR ANCHORS · 1 MINUTE</div><div class="small" style="margin:4px 0 8px">Kids, pets, gym, church, work… a few taps and your week gets built around your real life.</div><button class="go" id="obAnc">SET UP MY ANCHORS</button><button class="go ghost" id="bmdO">⚡ BUILD MY DAY · OR USE A SAMPLE</button></div>'}
 function planCardHTML(){if(!S.user)return '';const G=goalNow();
  const ancCard=ancCardHTML();
  if(!G||!G.ranked)return ancCard+'<div class="card obstart"><div class="ey">BECOME A CLUB BOSS</div><div class="big" style="font-size:24px;margin:6px 0 4px">PICK YOUR APPS.</div><div class="small">Put your apps in order and Club Rival builds your week: the days, the programs and your percent in each.</div><button class="go" id="obGo">START</button></div>';
@@ -1048,7 +1157,7 @@ function evRow(x){const a=APPS.find(q=>q.id===x.app),sb=evSub(x),ed=!!S.schedEdi
  return '<div class="evw" style="--ac:'+(a?a.ac:x.work?'#c9cbd3':'#8d8d98')+'"><button class="ev" '+at+(a?' aria-label="'+esc(x.name)+', '+esc(fT(x.t))+', opens '+esc(a.name)+'"':'')+'>'+ic+'<b><time>'+fT(x.t)+(x.rep?'<i class="evrep" title="Repeats" aria-label="repeats">↻</i>':'')+'</time>'+esc(x.name)+'</b>'+(sb?'<span>'+esc(sb)+'</span>':'')+'</button><div class="evr">'+pb+right+'</div></div>'}
 /* CR049 · "that's a pile of buttons ... not quite Steve Jobs." Under the schedule: nothing. Up top: one + and one EDIT. EDIT holds the rest. */
 function schedHTML(){if(!S.user)return '';const e=events();
- return '<div class="cat">YOUR SCHEDULE</div><div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP ONE TO CHANGE IT · ✕ TAKES IT OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b><span class="schd">'+(S.schedEdit?'':'<button type="button" class="scplus" id="scAdd" aria-label="Add to my schedule">+</button>')+'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button></span></div>'
+ return '<div class="cat">YOUR SCHEDULE</div><button type="button" class="go bmdgo" id="bmdT">⚡ BUILD MY DAY</button><div class="card'+(S.schedEdit?' editing':'')+'" id="sc"><div class="ah"><b>'+(S.schedEdit?'TAP ONE TO CHANGE IT · ✕ TAKES IT OFF':'TO DO · '+fD(R.dayStr(Date.now())).toUpperCase()+' + TONIGHT')+'</b><span class="schd">'+(S.schedEdit?'':'<button type="button" class="scplus" id="scAdd" aria-label="Add to my schedule">+</button>')+'<button type="button" class="scedit" id="scEd">'+(S.schedEdit?'DONE':'EDIT')+'</button></span></div>'
  +(e.list.length?(()=>{const tm=R.addDays(R.dayStr(Date.now()),1);let shown=false;return e.list.map(x=>{let h='';if(!shown&&R.dayStr(x.t)===tm&&!x.edit&&!/^rest-wake/.test(x.id)&&x.t>(e.list.find(y=>/^rest-wake/.test(y.id))||{t:0}).t){shown=true;h='<div class="tmrw">TOMORROW · '+esc(fD(tm)).toUpperCase()+'</div>'}return h+evRow(x)}).join('')})():'<div class="small">Nothing on the schedule yet. Tap + to add one.</div>')+'</div>'}
 function workLabel(){const w=myDay();if(!w||!w.leave)return 'WORK · SET YOUR HOURS';const t=R.dayStr(Date.now());return (w.mode==='home'?'WORK FROM HOME · ':'WORK · LEAVE ')+fT(R.at(t,w.leave))+(w.home?(w.mode==='home'?'–':' · HOME ')+fT(R.at(t,w.home)):'')}
 function schedMenu(){const e=events();
@@ -1072,7 +1181,7 @@ const PROGS={
  /* CR067 · Coach E: "choose the product, choose the program, and it'll determine the time ... all of our programs are marked in time".
     Mind Rival's are its own drills (its seconds, rounded up). Rep, Fuel, Rise, Rest, Money, Biz, Social, BMX and Trail: starting lengths - change any here. */
  rep:[['today','TODAY’S WORKOUT',45,'Rep picks it from your week.'],['push','PUSH DAY',40,'Chest · shoulders · triceps.'],['pull','PULL DAY',40,'Back · biceps.'],['legs','LEG DAY',45,'Quads · glutes · hams.'],['full','FULL BODY',45,'A bit of everything.'],['circuit','CIRCUIT',20,'Rounds, with a break between.'],['coache','COACH E WORKOUT',30,'Sent by your coach.']],
- mindrival:[['wd','WIND-DOWN',5,'Calm. Before bed.'],['bl','BREATH LADDER',3,'Calm. Every breath a little longer.'],['box','BOX BREATHING',2,'Calm.'],['lx','LONG EXHALE',2,'Calm.'],['ds','DOWNSHIFT',2,'Calm.'],['rg','REACTION GATE',1,'Focus.'],['gng','GO / NO-GO',2,'Focus. Go on one, hold on the other.'],['ft','FOCUS TRACK',2,'Focus.'],['pr','PRESSURE REPS',2,'Toughness.'],['aa','AFTER-ACTION',1,'Toughness. Look back on the day.'],['vz','VISUALIZE',2,'Toughness. See it before you do it.'],['rs','RESET',1,'Toughness. 30 seconds.']],
+ mindrival:[['audio-hype','HYPE · AUDIO',3,'Fired up. Before training.'],['audio-shift','CALM → FOCUS · AUDIO',5,'Out of the workout, into the work.'],['audio-reset','RESET · AUDIO',7,'Calm, focus, motivate. Drive-safe.'],['audio-motivate','MOTIVATE · AUDIO',3,'Steady push.'],['wd','WIND-DOWN',5,'Calm. Before bed.'],['bl','BREATH LADDER',3,'Calm. Every breath a little longer.'],['box','BOX BREATHING',2,'Calm.'],['lx','LONG EXHALE',2,'Calm.'],['ds','DOWNSHIFT',2,'Calm.'],['rg','REACTION GATE',1,'Focus.'],['gng','GO / NO-GO',2,'Focus. Go on one, hold on the other.'],['ft','FOCUS TRACK',2,'Focus.'],['pr','PRESSURE REPS',2,'Toughness.'],['aa','AFTER-ACTION',1,'Toughness. Look back on the day.'],['vz','VISUALIZE',2,'Toughness. See it before you do it.'],['rs','RESET',1,'Toughness. 30 seconds.']],
  fuel:[['meal','LOG A MEAL',5,''],['prep','MEAL PREP',60,''],['water','WATER CHECK',2,'']],
  rise:[['morning','MORNING ROUTINE',15,'']],
  rest:[['wind','WIND-DOWN',20,''],['nap','POWER NAP',20,''],['nap45','LONG NAP',45,'']],
@@ -1085,7 +1194,7 @@ const PROGS={
 const progOf=(app,id)=>(PROGS[app]||[]).find(x=>x[0]===id)||null;
 const KIND=[['money','Money check-in','Money Rival'],['biz','Business block','Biz Rival'],['rise','Morning routine','Rise Rival'],['stride','Run or walk','Stride Rival'],['rep','Rep workout','Rep Rival'],['rankup','Boxing','RankUp Boxing'],['mind','Cube games','Cube Rival'],['mindrival','Mind training','Mind Rival'],['social','Protected time','Social Rival'],['fuel','Meals + water','Fuel Rival'],['bmx','BMX session','Ride Flow BMX'],['trail','Trail ride','Trail Rival'],['rest','Wind-down or nap','Rest Rival'],['meal','Meal',''],['club','Something else','']];
 function occOn(day){const wd=R.dayDate(day).getDay(),out=[];S.evs.forEach(r=>{const d=r.data,rep=Array.isArray(d.days)&&d.days.length>0;if(rep?!(d.days.includes(wd)&&day>=(d.from||'2000-01-01')&&!(d.until&&day>d.until)):d.date!==day)return;if(d.skip&&d.skip[day])return;
-  const tm=(d.move&&d.move[day])||(d.times&&d.times[wd])||d.time,t=R.at(day,tm),dur=+d.durMin||30,k=KIND.find(x=>x[0]===r.app);const pg=progOf(r.app,d.prog);const anc=r.app==='anchor';out.push({id:r.id,day,t,t1:t+dur*MIN,name:d.title||(pg?pg[1]:(k?k[1]:'Activity')),sub:anc?durTx(dur)+' · Anchor'+(rep?'':' · one time'):dur+' min'+(k&&k[2]?' · '+k[2]:'')+(pg&&d.title?' · '+pg[1]:'')+(!pg&&PROGS[r.app]?' · pick which one':'')+(d.move&&d.move[day]?' · moved today':'')+(d.movedFrom?' · moved from '+fD(d.movedFrom.day):''),app:r.app,act:!anc,anchor:anc,rep,pair:anc&&d.pair||undefined})});return out.sort((a,b)=>a.t-b.t)}
+  const tm=(d.move&&d.move[day])||(d.times&&d.times[wd])||d.time,t=R.at(day,tm),dur=+d.durMin||30,k=KIND.find(x=>x[0]===r.app);const pg=progOf(r.app,d.prog);const anc=r.app==='anchor';out.push({id:r.id,day,t,t1:t+dur*MIN,name:d.title||(pg?pg[1]:(k?k[1]:'Activity')),sub:anc?durTx(dur)+' · Anchor'+(rep?'':' · one time'):dur+' min'+(k&&k[2]?' · '+k[2]:'')+(pg&&d.title?' · '+pg[1]:'')+(!pg&&PROGS[r.app]&&r.app!=='rep'?' · pick which one':'')+(d.move&&d.move[day]?' · moved today':'')+(d.movedFrom?' · moved from '+fD(d.movedFrom.day):''),app:r.app,act:!anc,anchor:anc,rep,pair:anc&&d.pair||undefined})});return out.sort((a,b)=>a.t-b.t)}
 function sesOn(app,day){return (S.rows||[]).filter(r=>r.app===app&&r.kind==='session'&&R.dayStr(new Date(r.at).getTime())===day).length}
 function isDone(x){if(!x.act)return false;const row=S.evs.find(r=>r.id===x.id);return !!(row&&row.data.done&&row.data.done[x.day])||sesOn(x.app,x.day)>0}
 const rid=()=>'ev-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
@@ -1291,9 +1400,9 @@ async function dayWrite(v){const go=async()=>{try{const row=S.day;if(!row){const
 /* ===== CR067 · PLAN MY DAY. Coach E: "they should be click right in place ... choose the time, choose the product, choose the program, and it'll determine
    the time ... if anything's overlapping it would know" + "choose anchors then programs". The day as a timeline: Anchors, work and sleep sit there
    already; every open half hour is a tap. Tap a time -> tap an app -> tap a program -> it's on, at that program's length. ===== */
-function dayBlocks(day){const B=[];sleepWins(day).forEach(w=>B.push({t:w[0],t1:w[1],name:w[2]?'Sleep + wind-down':'Sleep',ic:'🌙',k:'sleep'}));
- const wk=workOf(day);if(wk)B.push({t:wk.up,t1:wk.t1,name:wk.name,ic:'💼',k:'work'});
- occOn(day).forEach(o=>{const a=APPS.find(q=>q.id===o.app);B.push({t:o.t,t1:o.t1,name:o.name,ic:o.anchor?'⚓':'',art:a&&a.art,k:o.anchor?'anchor':'app',id:o.id})});return B.sort((a,b)=>a.t-b.t)}
+function dayBlocks(day){const B=[];sleepWins(day).forEach(w=>B.push({t:w[0],t1:w[1],name:w[2]?'Sleep + wind-down':'Sleep',ic:anIc('sleep'),k:'sleep'}));
+ const wk=workOf(day);if(wk)B.push({t:wk.up,t1:wk.t1,name:wk.name,ic:anIc('work'),k:'work'});
+ occOn(day).forEach(o=>{const a=APPS.find(q=>q.id===o.app);B.push({t:o.t,t1:o.t1,name:o.name,ic:o.anchor?anIc(anCatOf(o.anchor===true?'':o.anchor)):'',art:a&&a.art,k:o.anchor?'anchor':'sess',id:o.id})});return B.sort((a,b)=>a.t-b.t)}
 function planDay(day,flash){const t0=R.at(day,'05:00'),t1=R.at(day,'22:30'),B=dayBlocks(day),now=Date.now();let h='',tt=t0;const seen=new Set();
  for(;tt<t1;tt+=30*MIN){const cov=B.filter(b=>b.t<tt+30*MIN&&b.t1>tt);const fresh=cov.filter(b=>!seen.has(b));fresh.forEach(b=>seen.add(b));
   if(cov.length){h+=fresh.map(b=>'<div class="pdr busy '+b.k+'"><span class="pdt">'+fT(Math.max(b.t,t0))+'</span><span class="pdx">'+(b.art?'<img src="'+esc(b.art)+'" alt="">':'<i>'+b.ic+'</i>')+'<b>'+esc(b.name)+'</b><small>'+fT(b.t)+' – '+fT(b.t1)+'</small></span></div>').join('');continue}
@@ -1387,7 +1496,7 @@ const PCT_RULE=[[7,1],[6,1],[5,1.5],[4,2],[3,2.5],[2,3],[1,3]];
 function pctFor(n){n=Math.max(1,Math.min(7,Math.round(n||3)));return PCT_RULE.find(r=>r[0]===n)[1]}
 function planDays(app){const d=new Set();(S.evs||[]).forEach(r=>{if(r&&r.app===app&&r.data&&Array.isArray(r.data.days))r.data.days.forEach(x=>d.add(+x))});return d.size}
 function seenDays(app,now){const t0=now-28*864e5,days=new Set();(S.rows||[]).forEach(r=>{if(r.app===app&&r.kind==='session'){const t=+new Date(r.at);if(t>t0)days.add(new Date(t).toDateString())}});return days.size/4}
-function perWeek(app,now){const G=goalNow(),rd=rankDays(G,app);if(rd)return rd;const p=planDays(app);return p||Math.max(1,Math.min(7,Math.round(seenDays(app,now))||3))}
+function perWeek(app,now){const G=goalNow(),rd=rankDays(G,app);if(rd)return rd;if(app==='rise'&&!planDays('rise')&&schedP())return perWeek('rest',now);const p=planDays(app);return p||Math.max(1,Math.min(7,Math.round(seenDays(app,now))||3))}
 function bossData(now){now=now||Date.now();const rows=(S.rows||[]).filter(r=>r.kind==='session').map(r=>({app:r.app,t:+new Date(r.at)})).filter(r=>r.t<=now+6e4).sort((a,b)=>a.t-b.t);
  if(!rows.length)return null;
  const day=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
@@ -1456,7 +1565,7 @@ function bossAnim(){const g=$('bdot'),p=$('byou');if(!g||!BOSS.next)return;const
   const e=$('bossYou'),from=BOSS.last?BOSS.last.you:1,to=nx.you,t0=performance.now();if(e&&Math.abs(to-from)>.0001){const step=t=>{const k=Math.min(1,(t-t0)/900);const v=from+(to-from)*(1-Math.pow(1-k,3)),q=Math.round((v-1)*100);e.textContent=(q>=0?'+':'')+q+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}}
  BOSS.last=nx}
 function percHTML(){if(!S.user)return '';const now=Date.now(),w0=weekStart(now);
- const L=APPS.map(a=>{const pw=perWeek(a.id,now),pc=pctFor(pw),days=new Set();(S.rows||[]).forEach(r=>{if(r.app===a.id&&r.kind==='session'&&+new Date(r.at)>=w0)days.add(new Date(r.at).toDateString())});return {a,pw,pc,done:days.size,planned:planDays(a.id)>0}}).filter(x=>x.done||x.planned);
+ const L=APPS.map(a=>{const pw=perWeek(a.id,now),pc=pctFor(pw),days=new Set();(S.rows||[]).forEach(r=>{if(r.app===a.id&&r.kind==='session'&&+new Date(r.at)>=w0)days.add(new Date(r.at).toDateString())});return {a,pw,pc,done:days.size,planned:planDays(a.id)>0||((a.id==='rise'||a.id==='rest')&&!!schedP())}}).filter(x=>x.done||x.planned);
  if(!L.length)return '';
  const dayIdx=new Date(now).getDay()+1;
  return '<div class="cat">DID YOU HIT YOUR PERCENT?</div><div class="card" id="pp"><div class="ah"><b>THIS WEEK</b><span>SUN – SAT</span></div>'
@@ -1496,7 +1605,7 @@ function restPanel(){const rest=APPS.find(a=>a.id==='rest'),c=restCmp(S.pk),e=ev
  sheet(h);$('rpX').onclick=()=>{shut();draw4keep()};$('rpO').onclick=()=>openApp('rest',true);if($('rpT'))$('rpT').onclick=()=>schedSheet('tonight');if($('rpS'))$('rpS').onclick=()=>schedSheet('series');
  $('shC').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{S.pk=b.dataset.pk;try{localStorage.setItem('club_pk',S.pk)}catch(e){}restPanel()})}
 function draw4keep(){const y=scrollY;draw();scrollTo(0,y)}
-function wire4(){const on=(id,fn)=>{if($(id))$(id).onclick=fn};on('scNew',()=>schedSheet('new'));on('scT',()=>schedSheet('tonight'));on('scAdd',()=>addSheet(null));on('scDay',daySheet);on('plB',()=>goalNow()?planSheet():goalSheet());on('bfL',()=>{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(y.speaking){y.cancel();$('bfL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance('Coach’s read. '+coachRead().join(' ')+' Today’s brief. '+briefLines().map(x=>x.k.toLowerCase().replace(' · ',', ')+'. '+x.v+'.').join(' '));u.onend=()=>{if($('bfL'))$('bfL').textContent='▶ LISTEN'};y.speak(u);$('bfL').textContent='■ STOP'});on('scWk',weekSheet);wireEv($('m'));document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>b.dataset.panel==='rest'?restPanel():appPanel(b.dataset.panel))}
+function wire4(){const on=(id,fn)=>{if($(id))$(id).onclick=fn};on('scNew',()=>schedSheet('new'));on('scT',()=>schedSheet('tonight'));on('scAdd',()=>addSheet(null));on('bmdT',buildMyDay);on('bmdO',buildMyDay);on('scDay',daySheet);on('plB',()=>goalNow()?planSheet():goalSheet());on('bfL',()=>{const y=window.speechSynthesis;if(!y)return toast('THIS PHONE CANNOT READ ALOUD HERE');if(y.speaking){y.cancel();$('bfL').textContent='▶ LISTEN';return}const u=new SpeechSynthesisUtterance('Coach’s read. '+coachRead().join(' ')+' Today’s brief. '+briefLines().map(x=>x.k.toLowerCase().replace(' · ',', ')+'. '+x.v+'.').join(' '));u.onend=()=>{if($('bfL'))$('bfL').textContent='▶ LISTEN'};y.speak(u);$('bfL').textContent='■ STOP'});on('scWk',weekSheet);wireEv($('m'));document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>b.dataset.panel==='rest'?restPanel():appPanel(b.dataset.panel))}
 try{const k=localStorage.getItem('club_pk');if(['day','week','2w','month','quarter'].includes(k))S.pk=k}catch(e){}
 window.CR={APPS,stats,levelOf,weekStart,draw,S,load,stateOf,events,clubScore,restCmp,schedSave,appStats,occOn,doneDays,isDone,coachBefore,coachAfter,briefLines,bigPic,coachRead,weekPlan,rdy,buildPlan,planWeek,lineUp,savePlan,GOALS};
 draw();
@@ -1504,4 +1613,14 @@ draw();
  SB.auth.onAuthStateChange((ev,ses)=>{if(ev==='SIGNED_IN'&&ses&&ses.user&&!S.user){S.user=ses.user;try{if(location.hash.includes('access_token'))history.replaceState(null,'',location.pathname)}catch(e){}load()}})})();
 document.addEventListener('visibilitychange',()=>{if(document.hidden){RT_HID=Date.now();return}if(S.user)load();if(RT_HID&&Date.now()-RT_HID<60000){RT_HID=0;const cs=CSP();if(cs&&cs.takeSiri)siriTakeOnly();return}RT_HID=0;siriTake()});
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-</script><script src="kit/rival-orb.js?v=OR007" data-app="club" data-noorb="1" defer></script></body></html>
+</script><script src="kit/rival-orb.js?v=OR007" data-app="club" data-noorb="1" defer></script><div class="sa69" aria-hidden="true"></div>
+<script>
+/* CR069 · Coach E's screenshot: the page slid under the clock ("YOU4:25SCHEDULE") - a dark strip now sits behind the clock.
+   And the bottom bar was stuck in the middle of the screen after the keyboard closed (an iPhone web-view quirk):
+   when the keyboard goes away, the bars are put back where they belong. */
+(function(){function fix(){var y=window.scrollY;window.scrollTo(window.scrollX,y+1);window.scrollTo(window.scrollX,y);document.querySelectorAll('.nav,#rvOrb,.sa69').forEach(function(e){e.style.transform='translateZ(0)';requestAnimationFrame(function(){e.style.transform=''})})}
+ document.addEventListener('focusout',function(){setTimeout(fix,60);setTimeout(fix,400)});
+ if(window.visualViewport)visualViewport.addEventListener('resize',function(){clearTimeout(window.__vv);window.__vv=setTimeout(fix,120)});
+ window.addEventListener('orientationchange',function(){setTimeout(fix,300)})})();
+</script>
+</body></html>
