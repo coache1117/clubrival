@@ -1,4 +1,4 @@
-/* RIVAL TODAY · RT007 (26 Nov: list rows - past ones shaded, done ones tappable to see/undo) · RT006 (26 Nov: d.list - today's planned items with times, one tap each) · RT004 (23 Nov: clearer names - TODAY · PROGRESS · ALL, and an app can name its own, e.g. Biz: INBOX) · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
+/* RIVAL TODAY · RT008 (26 Nov: d.mid block under the button, d.foot buttons under the list, an app's own tab icons) · RT007 (26 Nov: list rows - past ones shaded, done ones tappable to see/undo) · RT006 (26 Nov: d.list - today's planned items with times, one tap each) · RT004 (23 Nov: clearer names - TODAY · PROGRESS · ALL, and an app can name its own, e.g. Biz: INBOX) · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
    THE STEVE JOBS SCREEN. Every Rival app opens on the same Today screen:
      top    - the name plate (icon, WORD RIVAL in the app's color, one-line job + version, account)
      middle - ONE big card: today's number vs your last time
@@ -38,6 +38,7 @@
       + '.rt-go{display:block;width:100%;margin-top:18px;min-height:64px;border:0;border-radius:20px;background:var(--rtA);color:var(--rtInk);font:900 16px/1.1 -apple-system,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px rgba(' + A + ',.32);padding:10px 14px}'
       + '.rt-go:active{transform:scale(.985)}.rt-go:disabled{opacity:.45}'
       + '.rt-inline{padding:0;margin:4px 0 22px}.rt-inline .rt-hero{margin-top:6px}'
+      + '.rt-mid{margin-top:16px}.rt-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.rt-fb{min-height:52px;border-radius:16px;border:1px solid ' + (c.accent || '#ff8a1f') + ';background:transparent;color:' + (c.accent || '#ff8a1f') + ';font:900 12px/1.2 -apple-system,sans-serif;letter-spacing:.12em;cursor:pointer;padding:8px}'
       + '.rt-list{margin-top:18px}.rt-ll{font:900 11px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#8e939c;margin:0 4px 8px}'
       + '.rt-li{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;margin-top:8px;padding:10px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:inherit;text-align:left;cursor:pointer;font:inherit}'
       + '.rt-li.now{border-color:' + (c.accent || '#ff8a1f') + '}.rt-li.done{opacity:.5}.rt-li.past{opacity:.55;filter:saturate(.5)}.rt-li.now{background:rgba(255,255,255,.07)}'
@@ -72,7 +73,10 @@
     h += '</div><button class="rt-go" id="rtGo"' + (d.off ? ' disabled' : '') + '>' + esc(d.btn) + '</button>' + (d.hint ? '<div class="rt-hint">' + esc(d.hint) + '</div>' : '');
     /* RT006 · a short list under the button: today's pre-planned items with their times (Fuel's meals). One tap logs that one.
        d.list = {label, rows:[{id, t:'8:00 AM', name, sub, done, now}]} · the app's C.pick(id) does the logging */
+    /* RT008 · d.mid: the app's own "where you're at" block (Fuel's ring + meters), right under the button. d.foot: real buttons under the list. */
+    if (d.mid) h += '<div class="rt-mid">' + d.mid + '</div>';
     if (d.list && d.list.rows && d.list.rows.length) h += '<div class="rt-list"><div class="rt-ll">' + esc(d.list.label || 'TODAY') + '</div>' + d.list.rows.map(function (r) { return '<button type="button" class="rt-li' + (r.done ? ' done' : '') + (r.now ? ' now' : '') + (r.past ? ' past' : '') + '" data-pick="' + esc(r.id) + '"><span class="rt-lt">' + esc(r.t) + '</span><span class="rt-lm"><b>' + esc(r.name) + '</b>' + (r.sub ? '<em>' + esc(r.sub) + '</em>' : '') + '</span><span class="rt-lk">' + (r.done ? '✓' : 'LOG') + '</span></button>' }).join('') + '</div>';
+    if (d.foot && d.foot.length) h += '<div class="rt-foot">' + d.foot.map(function (f) { return '<button type="button" class="rt-fb" data-pick="' + esc(f[0]) + '">' + esc(f[1]) + '</button>' }).join('') + '</div>';
     h += '</div>';
     return h;
   }
@@ -99,7 +103,7 @@
     var st = D.createElement('style'); st.id = 'rtCss'; st.textContent = css(C); D.head.appendChild(st);
     lay = D.createElement('div'); lay.id = 'rtLay'; lay.setAttribute('role', 'main'); lay.setAttribute('aria-label', C.word + ' Rival · Today');
     bar = D.createElement('nav'); bar.id = 'rtBar'; bar.setAttribute('role', 'tablist');
-    bar.innerHTML = (C.app === 'club' ? [] : [['club', 'CLUB']]).concat([['today', 'TODAY'], ['history', (C.tabs && C.tabs.history) || 'PROGRESS'], ['more', (C.tabs && C.tabs.more) || 'ALL']]).map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ICON[x[0]] + x[1] + '</button>' }).join('');
+    bar.innerHTML = (C.app === 'club' ? [] : [['club', 'CLUB']]).concat([['today', 'TODAY'], ['history', (C.tabs && C.tabs.history) || 'PROGRESS'], ['more', (C.tabs && C.tabs.more) || 'ALL']]).map(function (x) { return '<button role="tab" data-t="' + x[0] + '">' + ((C.icons && C.icons[x[0]]) || ICON[x[0]]) + x[1] + '</button>' }).join('');
     D.body.appendChild(lay); D.body.appendChild(bar);
     bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; if (b.dataset.t === 'club') { goClub(); return } show(b.dataset.t) });
     var q = ''; try { q = location.search } catch (e) { }
