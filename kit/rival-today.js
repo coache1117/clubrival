@@ -1,4 +1,4 @@
-/* RIVAL TODAY · RT006 (26 Nov: d.list - today's planned items with times, one tap each) · RT004 (23 Nov: clearer names - TODAY · PROGRESS · ALL, and an app can name its own, e.g. Biz: INBOX) · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
+/* RIVAL TODAY · RT007 (26 Nov: list rows - past ones shaded, done ones tappable to see/undo) · RT006 (26 Nov: d.list - today's planned items with times, one tap each) · RT004 (23 Nov: clearer names - TODAY · PROGRESS · ALL, and an app can name its own, e.g. Biz: INBOX) · RT003 (23 Nov: the way back to Club, on every app - a CLUB button first in the bottom bar) · RT002 - lives on the Club site (clubrival.netlify.app/kit/rival-today.js).
    THE STEVE JOBS SCREEN. Every Rival app opens on the same Today screen:
      top    - the name plate (icon, WORD RIVAL in the app's color, one-line job + version, account)
      middle - ONE big card: today's number vs your last time
@@ -40,7 +40,7 @@
       + '.rt-inline{padding:0;margin:4px 0 22px}.rt-inline .rt-hero{margin-top:6px}'
       + '.rt-list{margin-top:18px}.rt-ll{font:900 11px/1 -apple-system,sans-serif;letter-spacing:.2em;color:#8e939c;margin:0 4px 8px}'
       + '.rt-li{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;margin-top:8px;padding:10px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:inherit;text-align:left;cursor:pointer;font:inherit}'
-      + '.rt-li.now{border-color:' + (c.accent || '#ff8a1f') + '}.rt-li.done{opacity:.45;cursor:default}'
+      + '.rt-li.now{border-color:' + (c.accent || '#ff8a1f') + '}.rt-li.done{opacity:.5}.rt-li.past{opacity:.55;filter:saturate(.5)}.rt-li.now{background:rgba(255,255,255,.07)}'
       + '.rt-lt{flex:none;width:72px;font:900 12px/1.2 -apple-system,sans-serif;letter-spacing:.06em;color:' + (c.accent || '#ff8a1f') + '}.rt-li.done .rt-lt{color:#8e939c}'
       + '.rt-lm{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.rt-lm b{font:800 15px/1.2 -apple-system,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rt-lm em{font:500 12px/1.3 -apple-system,sans-serif;font-style:normal;color:#8e939c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
       + '.rt-lk{flex:none;font:900 11px/1 -apple-system,sans-serif;letter-spacing:.14em;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.16)}.rt-li.done .rt-lk{border:0;font-size:16px;color:#3ddc84}'
@@ -72,14 +72,14 @@
     h += '</div><button class="rt-go" id="rtGo"' + (d.off ? ' disabled' : '') + '>' + esc(d.btn) + '</button>' + (d.hint ? '<div class="rt-hint">' + esc(d.hint) + '</div>' : '');
     /* RT006 · a short list under the button: today's pre-planned items with their times (Fuel's meals). One tap logs that one.
        d.list = {label, rows:[{id, t:'8:00 AM', name, sub, done, now}]} · the app's C.pick(id) does the logging */
-    if (d.list && d.list.rows && d.list.rows.length) h += '<div class="rt-list"><div class="rt-ll">' + esc(d.list.label || 'TODAY') + '</div>' + d.list.rows.map(function (r) { return '<button type="button" class="rt-li' + (r.done ? ' done' : '') + (r.now ? ' now' : '') + '" data-pick="' + esc(r.id) + '"' + (r.done ? ' aria-disabled="true"' : '') + '><span class="rt-lt">' + esc(r.t) + '</span><span class="rt-lm"><b>' + esc(r.name) + '</b>' + (r.sub ? '<em>' + esc(r.sub) + '</em>' : '') + '</span><span class="rt-lk">' + (r.done ? '✓' : 'LOG') + '</span></button>' }).join('') + '</div>';
+    if (d.list && d.list.rows && d.list.rows.length) h += '<div class="rt-list"><div class="rt-ll">' + esc(d.list.label || 'TODAY') + '</div>' + d.list.rows.map(function (r) { return '<button type="button" class="rt-li' + (r.done ? ' done' : '') + (r.now ? ' now' : '') + (r.past ? ' past' : '') + '" data-pick="' + esc(r.id) + '"><span class="rt-lt">' + esc(r.t) + '</span><span class="rt-lm"><b>' + esc(r.name) + '</b>' + (r.sub ? '<em>' + esc(r.sub) + '</em>' : '') + '</span><span class="rt-lk">' + (r.done ? '✓' : 'LOG') + '</span></button>' }).join('') + '</div>';
     h += '</div>';
     return h;
   }
   function paint(force) {
     if (!lay || mode !== 'today') return; var d = card(), h = html(d); if (!force && h === last) return; last = h; lay.innerHTML = h;
     var g = D.getElementById('rtGo'); if (g) g.onclick = function () { var r; try { r = C.go(d) } catch (e) { } if (r === 'app') show('app'); else setTimeout(function () { paint(true) }, 400) };  /* 'app' = the main job runs in the full app (a workout, a drill) */
-    [].forEach.call(lay.querySelectorAll('[data-pick]'), function (b) { b.onclick = function () { if (b.classList.contains('done')) return; try { C.pick && C.pick(b.dataset.pick) } catch (e) { } setTimeout(function () { paint(true) }, 400) } });
+    [].forEach.call(lay.querySelectorAll('[data-pick]'), function (b) { b.onclick = function () { try { C.pick && C.pick(b.dataset.pick, b.classList.contains('done')) } catch (e) { } setTimeout(function () { paint(true) }, 400) } });
     var mt = D.getElementById('rtMeter'); if (mt) mt.onclick = function () { try { (C.meter || C.history)() } catch (e) { } };
     var a = D.getElementById('rtAcct'); if (a) a.onclick = function () { try { C.acct() } catch (e) { } };
   }
